@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/_260sdp">
+
+        <ImageView
+            android:id="@+id/ivFooterBack"
+            android:scaleType="centerCrop"
+            android:src="@drawable/background_food2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:layout_gravity="center">
+
+            <TextView
+                android:id="@+id/tvWebLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:textAllCaps="true"
+                android:textSize="19dp"
+                android:text="@string/footer_text"
+                android:textColor="@color/white_color"/>
+
+            <View
+                android:layout_gravity="center_horizontal"
+                android:elevation="4dp"
+                android:layout_marginStart="6dp"
+                android:id="@+id/vSingleLineRestStart"
+                android:background="@color/white_color"
+                android:layout_marginBottom="24dp"
+                android:layout_width="@dimen/_24sdp"
+                android:layout_height="@dimen/_1sdp"/>
+
+
+            <ImageView
+                android:id="@+id/ivWebLabelImg"
+                android:src="@drawable/home"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true" />
+
+
+        </LinearLayout>
+</FrameLayout>

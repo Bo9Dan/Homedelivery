@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:expandable="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="@android:color/transparent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <ImageView
+        android:id="@+id/ivBackOption"
+        android:scaleType="fitXY"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <RelativeLayout
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:layout_marginStart="@dimen/_84sdp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/ivOptionMenu"
+            android:scaleType="centerCrop"
+            android:layout_width="@dimen/_84sdp"
+            android:layout_height="@dimen/_84sdp"
+            android:minWidth="@dimen/_36sdp"
+            android:minHeight="@dimen/_36sdp"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:padding="@dimen/_8sdp"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/background_food"
+            app:riv_corner_radius="16dp"
+            app:riv_border_width="@null"
+            app:riv_mutate_background="true"
+            app:riv_oval="false" />
+
+        <com.andexert.expandablelayout.library.ExpandableLayout
+            android:id="@+id/expandableLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            expandable:el_headerLayout="@layout/header_expand"
+            expandable:el_contentLayout="@layout/expand_detail_info"
+            android:layout_below="@+id/ivOptionMenu" />
+
+        <View
+            android:alpha="0.5"
+            android:background="@drawable/bg_corner_bottom"
+            android:id="@+id/fakeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/btnCall"
+            android:layout_alignBottom="@+id/btnCall"
+            android:layout_alignLeft="@+id/btnCall"
+            android:layout_alignRight="@+id/btnCall" />
+
+        <TextView
+            android:padding="8dp"
+            android:gravity="center"
+            android:textColor="@color/color_grey_900"
+            android:elevation="2dp"
+            android:textSize="17sp"
+            android:id="@+id/btnCall"
+            android:textAllCaps="true"
+            android:text="@string/call_him"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/expandableLayout" />
+
+
+    </RelativeLayout>
+
+
+
+</RelativeLayout>

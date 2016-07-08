@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cheipesh.homedelivery.com.base.SquareView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rlGeneralFoodDetailCont"
+    android:gravity="center_vertical|center_horizontal|center"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/llFoodDetailCont"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:orientation="vertical"
+            >
+
+            <ImageView
+                android:layout_gravity="center"
+                android:id="@+id/ivFoodIcon"
+                android:padding="8dp"
+                android:layout_width="84dp"
+                android:layout_height="84dp" />
+
+            <TextView
+                style="@style/mainTextStyle"
+                android:id="@+id/tvFoodName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:ellipsize="middle"
+                android:maxLength="22"
+                android:lines="1"/>
+
+        </LinearLayout>
+
+        <View
+            android:elevation="4dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:id="@+id/vSingleLineEnd"
+            android:background="@color/white_color"
+            android:layout_width="12dp"
+            android:layout_height="1dp"/>
+
+        <View
+            android:elevation="4dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:id="@+id/vSingleLineStart"
+            android:background="@color/white_color"
+            android:layout_width="12dp"
+            android:layout_height="1dp"/>
+
+    </RelativeLayout>
+
+
+
+</cheipesh.homedelivery.com.base.SquareView>

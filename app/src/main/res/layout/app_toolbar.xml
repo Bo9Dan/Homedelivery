@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.Toolbar
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/black_color"
+    android:id="@+id/toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:elevation="4dp"
+    app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"
+    app:contentInsetEnd="0dp"
+    app:contentInsetStart="0dp">
+    <RelativeLayout
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/menu_icon"
+            android:src="@drawable/ic_menu"
+            android:padding="8dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true" />
+
+        <ImageView
+            android:visibility="invisible"
+            android:id="@+id/menu_back"
+            android:padding="8dp"
+            android:background="@drawable/bg_back"
+            android:layout_centerVertical="true"
+            android:src="@drawable/back_icon"
+            android:scaleType="fitCenter"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_alignTop="@+id/menu_icon"
+            android:layout_below="@+id/menu_icon" />
+
+        <LinearLayout
+            android:id="@+id/titleCont"
+            android:orientation="horizontal"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:scaleType="centerInside"
+                android:src="@mipmap/appicon"
+                android:id="@+id/titleIcon"
+                android:layout_width="48dp"
+                android:padding="4dp"
+                android:layout_height="48dp" />
+            <TextView
+                android:id="@+id/tvToolbarTitle"
+                style="@style/titleTextStyle"
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </RelativeLayout>
+
+
+
+</android.support.v7.widget.Toolbar>
