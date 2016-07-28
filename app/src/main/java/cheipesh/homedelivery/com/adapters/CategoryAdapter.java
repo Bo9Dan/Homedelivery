@@ -9,30 +9,32 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.elmargomez.typer.Font;
+import com.elmargomez.typer.Typer;
 import com.parse.ParseObject;
 
 import cheipesh.homedelivery.com.R;
 
-public class FoodAdapter extends ExtendBaseAdapter{
+public class CategoryAdapter extends ExtendBaseAdapter{
 
 
-    public FoodAdapter(Context context) {
+    public CategoryAdapter(Context context) {
         super(context);
     }
 
     @Override
     public int getCount() {
-        return getmData().size();
+        return getData().size();
     }
 
     @Override
     public ParseObject getItem(int position) {
-        return getmData().get(position);
+        return getData().get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return getmData().get(position).hashCode();
+        return getData().get(position).hashCode();
     }
 
     @Override
@@ -57,9 +59,10 @@ public class FoodAdapter extends ExtendBaseAdapter{
             viewHolder.lineEnd.setVisibility(View.INVISIBLE);
             viewHolder.lineStart.setVisibility(View.VISIBLE);
         }
+
         Glide.with(getContext())
                 .load(getItem(position).getParseFile("image").getUrl())
-                .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .crossFade()
                 .into(viewHolder.mFoodImage);
 
@@ -75,6 +78,7 @@ public class FoodAdapter extends ExtendBaseAdapter{
             view = v;
             mFoodImage = (ImageView) v.findViewById(R.id.ivFoodIcon);
             mFoodName = (TextView) v.findViewById(R.id.tvFoodName);
+            mFoodName.setTypeface(Typer.set(getContext()).getFont(Font.ROBOTO_REGULAR));
             lineStart    = (View) v.findViewById(R.id.vSingleLineStart);
             lineEnd    = (View) v.findViewById(R.id.vSingleLineEnd);
         }

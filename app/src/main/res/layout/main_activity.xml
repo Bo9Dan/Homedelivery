@@ -50,6 +50,7 @@
             <ImageView
                 android:id="@+id/menu_icon"
                 android:src="@drawable/ic_menu"
+                android:padding="8dp"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:layout_centerVertical="true"

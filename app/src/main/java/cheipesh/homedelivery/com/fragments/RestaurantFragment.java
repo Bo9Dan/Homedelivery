@@ -1,21 +1,26 @@
 package cheipesh.homedelivery.com.fragments;
 
-import android.content.Intent;
-import android.net.Uri;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 
 import com.parse.ParseObject;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import cheipesh.homedelivery.com.R;
 import cheipesh.homedelivery.com.adapters.RestaurantAdapter;
 import cheipesh.homedelivery.com.base.BaseFragment;
 import cheipesh.homedelivery.com.base.Constants;
+import cheipesh.homedelivery.com.util.SharedPrefManager;
 import in.srain.cube.views.GridViewWithHeaderAndFooter;
 
 public class RestaurantFragment extends BaseFragment {
@@ -37,7 +42,7 @@ public class RestaurantFragment extends BaseFragment {
 
     @Override
     protected RestaurantAdapter initAdapter() {
-        return new RestaurantAdapter(mCallingActivity);
+        return new RestaurantAdapter(activity);
     }
 
     @Override
@@ -59,26 +64,31 @@ public class RestaurantFragment extends BaseFragment {
         headerAndFooter.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (position != getAdapter().getCount() && id != -1){
+                if (position != getAdapter().getCount() && id >= 0){
+                    ImageView imageView = (ImageView) view.findViewById(R.id.ivRestIcon);
+                    if (imageView.getDrawable() != null) {
+                        Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
 
-                    mCallingActivity.setDrawable();
-                    OptionDialog placeDetail = OptionDialog
-                            .newInstance(getAdapter().getItem(position).getString(Constants.P_COLUMN_MENU),
-                                    getAdapter().getItem(position).getString(Constants.P_COLUMN_PHONE),
-                                    getAdapter().getItem(position).getParseFile("image").getUrl());
+                        activity.setDrawableHamb(bitmap);
+                    } else {
+                        activity.setDrawableHamb(null);
+                    }
+                    activity.setDrawableBack();
+                    ParseObject place = getAdapter().getItem(position).getParseObject("object");
+                    OptionDialog placeDetail = OptionDialog.newInstance(
+                                  place.getString(Constants.P_COLUMN_MENU),
+                                  place.getString(Constants.P_COLUMN_PHONE),
+                                  place.getParseFile("image").getUrl());
                     placeDetail.show(getFragmentManager(), Constants.PLACE_KEY);
                 }  else {
-                    String url = "http://www.google.com.ua";
-                    Intent i = new Intent(Intent.ACTION_VIEW);
-                    i.setData(Uri.parse(url));
-                    startActivity(i);
+                    activity.openBrowser("");
                 }
             }
         });
 
-        getData(Constants.PLACE_KEY, Constants.P_COLUMN_CATEGORY_ID, CategoryId);
+        getData(Constants.PLACE_KEY, Constants.P_COLUMN_CITY, SharedPrefManager.getInstance().retrieveCity());
 
-        mCallingActivity.setMenuBack(true);
+        activity.setMenuBack(true);
 
         return view;
     }
@@ -91,19 +101,61 @@ public class RestaurantFragment extends BaseFragment {
 
     @Override
     public void setData(List<ParseObject> data, boolean hasSave) {
-        super.setData(data, hasSave);
-        calculateFooter(data.size());
+        List<ParseObject> sortData = new ArrayList<>();
+        for (ParseObject object :data) {
+
+            for (Object category: object.getList("categories")) {
+                if (category.toString().equals(CityName)){
+                    List<String> orderList = object.getList("order");
+
+                    if(orderList != null && !orderList.isEmpty()){
+                        String order = "10000";
+                        if (orderList.size() >=  object.getList("categories").indexOf(category))
+                            order = orderList.get(object.getList("categories").indexOf(category));
+//                        object.add("myorder", order);
+
+                        sortData.add(createNewSortItem(object, order));
+                    } else {
+                        String order = "10000";
+//                        object.add("myorder", order);
+                        sortData.add(createNewSortItem(object, order));
+                    }
+
+                    break;
+                }
+            }
+        }
+
+        Collections.sort(sortData, new Comparator<ParseObject>() {
+            @Override
+            public int compare(ParseObject lhs, ParseObject rhs) {
+                return lhs.getString("mOrder").compareTo(rhs.getString("mOrder"));
+            }
+        });
+        activity.hideLoadingDialog();
+        getAdapter().setData(sortData);
+        if (hasSave){
+            ParseObject.pinAllInBackground(data);
+            SharedPrefManager.getInstance().saveLong(Constants.PLACE_KEY+SharedPrefManager.getInstance().retrieveCity(), System.currentTimeMillis());
+        }
+        calculateFooter(sortData.size());
+    }
+
+    private ParseObject createNewSortItem(ParseObject object, String positionOrder) {
+        ParseObject parseObject = new ParseObject("SortPlace");
+        parseObject.put("mOrder", positionOrder);
+        parseObject.put("object", object);
+        return parseObject;
     }
 
     private void calculateFooter(int _size) {
-        int mSize = _size%4;
 
-        int dividFoot = mCallingActivity.getFrameHeight() - Math.round(_size/2 + _size%2) * mCallingActivity.getFrameWidth()/2;
+        int dividFoot = activity.getFrameHeight() - Math.round(_size/2 + _size%2) * activity.getFrameWidth()/2;
         footerView.setVisibility(View.VISIBLE);
-        if (dividFoot > mCallingActivity.getFrameWidth()/2) {
+        if (dividFoot > activity.getFrameWidth()/2) {
             footerView.getLayoutParams().height = dividFoot;
         } else {
-            footerView.getLayoutParams().height = mCallingActivity.getFrameWidth() / 2;
+            footerView.getLayoutParams().height = activity.getFrameWidth() / 2;
         }
         footerView.requestLayout();
 

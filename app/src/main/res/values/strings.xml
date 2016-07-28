@@ -1,15 +1,15 @@
 <resources>
-    <string name="app_name">Хочу Їсти</string>
+    <string name="app_name">Wanna eat</string>
     <string name="menu_title">Menu</string>
     <string name="category_tab">Categories</string>
     <string name="cities_tab">Cities</string>
-    <string name="footer_text">Відвідайте наш веб - сайт</string>
-    <string name="menu_restaunt">МЕНЮ РЕСТОРАНУ</string>
-    <string name="call_him">Зателефонувати</string>
-    <string name="app_title">Хочу Їсти</string>
-    <string name="error">Помилка</string>
+    <string name="footer_text">Join   our   app</string>
+    <string name="menu_restaurant">Menu</string>
+    <string name="call_him">Call</string>
+    <string name="app_title">Wanna eat</string>
+    <string name="error">Error</string>
     <string name="error_msg">Помилка завантаження. Перевірте будь-ласка підключення до мережі Інтернет та спробуйте ще</string>
-    <string name="ok">Відміна</string>
-    <string name="try_again">Спробувати ще</string>
+    <string name="ok">Cancel</string>
+    <string name="try_again">Retry</string>
 
 </resources>

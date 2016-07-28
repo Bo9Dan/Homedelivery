@@ -14,24 +14,23 @@ import cheipesh.homedelivery.com.R;
 
 public class RestaurantAdapter extends ExtendBaseAdapter{
 
-
     public RestaurantAdapter(Context context) {
         super(context);
     }
 
     @Override
     public int getCount() {
-        return getmData().size();
+        return getData().size();
     }
 
     @Override
     public ParseObject getItem(int position) {
-        return getmData().get(position);
+        return getData().get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return getmData().get(position).hashCode();
+        return getData().get(position).hashCode();
     }
 
     @Override
@@ -46,18 +45,13 @@ public class RestaurantAdapter extends ExtendBaseAdapter{
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        if (position%2 == 0) {
-            viewHolder.lineEnd.setVisibility(View.VISIBLE);
-            viewHolder.lineStart.setVisibility(View.INVISIBLE);
-        } else {
-            viewHolder.lineEnd.setVisibility(View.INVISIBLE);
-            viewHolder.lineStart.setVisibility(View.VISIBLE);
-        }
         setColorView(viewHolder.view, position);
+
         Glide.with(getContext())
-                .load(getItem(position).getParseFile("image").getUrl())
-                .diskCacheStrategy(DiskCacheStrategy.RESULT)
-                .crossFade()
+                .load(getItem(position).getParseObject("object").getParseFile("image").getUrl())
+                .asBitmap()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+//                .crossFade()
                 .into(viewHolder.mFoodImage);
 
         return convertView;
@@ -65,13 +59,11 @@ public class RestaurantAdapter extends ExtendBaseAdapter{
 
     class ViewHolder {
         private ImageView mFoodImage;
-        private View view, lineStart, lineEnd;
+        private View view;
 
         public ViewHolder(View v) {
             view = v;
-            mFoodImage = (ImageView) v.findViewById(R.id.ivFoodIcon);
-            lineStart  = (View) v.findViewById(R.id.vSingleLineRestStart);
-            lineEnd    = (View) v.findViewById(R.id.vSingleLineRestEnd);
+            mFoodImage = (ImageView) v.findViewById(R.id.ivRestIcon);
         }
     }
 

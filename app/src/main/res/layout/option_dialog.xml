@@ -25,11 +25,8 @@
         <com.makeramen.roundedimageview.RoundedImageView
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/ivOptionMenu"
-            android:scaleType="centerCrop"
             android:layout_width="@dimen/_84sdp"
             android:layout_height="@dimen/_84sdp"
-            android:minWidth="@dimen/_36sdp"
-            android:minHeight="@dimen/_36sdp"
             android:layout_margin="@dimen/activity_horizontal_margin"
             android:padding="@dimen/_8sdp"
             android:layout_centerHorizontal="true"
@@ -41,6 +38,8 @@
 
         <com.andexert.expandablelayout.library.ExpandableLayout
             android:id="@+id/expandableLayout"
+            android:animateLayoutChanges="true"
+            android:animationCache="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             expandable:el_headerLayout="@layout/header_expand"
@@ -61,7 +60,7 @@
         <TextView
             android:padding="8dp"
             android:gravity="center"
-            android:textColor="@color/color_grey_900"
+            android:textColor="#666666"
             android:elevation="2dp"
             android:textSize="17sp"
             android:id="@+id/btnCall"

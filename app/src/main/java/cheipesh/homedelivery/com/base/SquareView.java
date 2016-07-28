@@ -43,6 +43,6 @@ public class SquareView extends LinearLayout {
         // теперь задаем новый размер
         // ширину оставляем такую же как у стандартной кнопки
         // высоту выбираем как максимум между стандартной высотой и шириной
-        setMeasuredDimension(width, Math.max(width, height));
+        setMeasuredDimension(width, width/*Math.max(width, height)*/);
     }
 }

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Хочу Їсти</string>
+    <string name="menu_title">Menu</string>
+    <string name="category_tab">Категорії</string>
+    <string name="cities_tab">Міста</string>
+    <string name="footer_text">Join   our   app</string>
+    <string name="menu_restaurant">МЕНЮ РЕСТОРАНУ</string>
+    <string name="call_him">Зателефонувати</string>
+    <string name="app_title">Хочу Їсти</string>
+    <string name="error">Помилка</string>
+    <string name="error_msg">Помилка завантаження. Перевірте будь-ласка підключення до мережі Інтернет та спробуйте ще</string>
+    <string name="ok">Відміна</string>
+    <string name="try_again">Спробувати ще</string>
+</resources>

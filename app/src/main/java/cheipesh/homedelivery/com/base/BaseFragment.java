@@ -1,20 +1,15 @@
 package cheipesh.homedelivery.com.base;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-import com.vistrav.ask.Ask;
-import com.vistrav.ask.annotations.AskDenied;
-import com.vistrav.ask.annotations.AskGranted;
 
 import java.util.List;
 
@@ -24,7 +19,7 @@ import cheipesh.homedelivery.com.util.SharedPrefManager;
 
 public abstract class BaseFragment extends Fragment {
 
-    protected MainActivity mCallingActivity;
+    protected MainActivity activity;
     private ExtendBaseAdapter mAdapter;
     private String saveKey;
 
@@ -36,7 +31,7 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mCallingActivity = (MainActivity) context;
+        activity = (MainActivity) context;
         mAdapter = initAdapter();
     }
 
@@ -53,12 +48,16 @@ public abstract class BaseFragment extends Fragment {
         key = _columnKey;
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery(_entityKey);
-        mCallingActivity.showLoadingDialog();
+//        query.orderByAscending(Constants.P_COLUMN_ORDER);
+        activity.showLoadingDialog();
         saveKey = _entityKey + _columnKey;
-        if (!_columnKey.isEmpty())
+        if (!_columnKey.isEmpty()) {
             query.whereEqualTo(_columnName, _columnKey);
+        } else {
+            query.orderByAscending(Constants.P_COLUMN_ORDER);
+        }
 
-        if (mCallingActivity.isOnline()) {
+        if (activity.isOnline()) {
             if (hasNewData(saveKey)){
 //                saveKey = _entityKey + _columnKey;
                 onlineData(query );
@@ -83,7 +82,7 @@ public abstract class BaseFragment extends Fragment {
                 } else {
 //                    offlineData(_query);
 
-                    AlertDialog.Builder builder = new AlertDialog.Builder(mCallingActivity);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(activity);
                     builder.setTitle(R.string.error)
                             .setMessage(R.string.error_msg)
                             .setIcon(R.mipmap.appicon)
@@ -113,7 +112,7 @@ public abstract class BaseFragment extends Fragment {
 
     private void offlineData(ParseQuery<ParseObject> _query) {
         _query.fromLocalDatastore();
-        _query.orderByAscending(Constants.P_COLUMN_ORDER);
+//        _query.orderByAscending(Constants.P_COLUMN_ORDER);
         _query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
@@ -122,10 +121,10 @@ public abstract class BaseFragment extends Fragment {
                     Log.d("SyncDel", "get offline data");
                 } else {
                     Log.d("SyncDel", "error offline data" );
-                    mCallingActivity.hideLoadingDialog();
-                   /* Toast.makeText(mCallingActivity, "??????? ???????? ?? ????????????? ?????", Toast.LENGTH_LONG).show();*/
+                    activity.hideLoadingDialog();
+                   /* Toast.makeText(activity, "??????? ???????? ?? ????????????? ?????", Toast.LENGTH_LONG).show();*/
 
-                    AlertDialog.Builder builder = new AlertDialog.Builder(mCallingActivity);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(activity);
                     builder.setTitle(R.string.error)
                             .setMessage(R.string.error_msg)
                             .setIcon(R.mipmap.appicon)
@@ -154,7 +153,7 @@ public abstract class BaseFragment extends Fragment {
     }
 
     public void setData(List<ParseObject> data, boolean hasSave) {
-        mCallingActivity.hideLoadingDialog();
+        activity.hideLoadingDialog();
         mAdapter.setData(data);
         if (hasSave){
             ParseObject.pinAllInBackground(data);
@@ -172,35 +171,4 @@ public abstract class BaseFragment extends Fragment {
             return nowDate - saveDate > 24 * 60 * 60 * 1000 * 7;
 
     }
-
-    public void getPermiss() {
-        Ask.on(mCallingActivity)
-                .forPermissions(Manifest.permission.CALL_PHONE, Manifest.permission.INTERNET)
-                .withRationales("Call permission need for call ") //optional
-                .go();
-    }
-
-    @AskGranted(Manifest.permission.CALL_PHONE)
-    public void fileAccessGranted() {
-//        Log.i(TAG, "FILE  GRANTED");
-    }
-
-    //optional
-    @AskDenied(Manifest.permission.CALL_PHONE)
-    public void fileAccessDenied() {
-//        Log.i(TAG, "FILE  DENiED");
-    }
-
-    //optional
-    @AskGranted(Manifest.permission.ACCESS_COARSE_LOCATION)
-    public void mapAccessGranted() {
-//        Log.i(TAG, "MAP GRANTED");
-    }
-
-    //optional
-    @AskDenied(Manifest.permission.ACCESS_COARSE_LOCATION)
-    public void mapAccessDenied() {
-//        Log.i(TAG, "MAP DENIED");
-    }
-
 }

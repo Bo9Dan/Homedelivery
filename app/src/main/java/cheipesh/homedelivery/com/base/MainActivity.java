@@ -1,9 +1,11 @@
 package cheipesh.homedelivery.com.base;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -12,7 +14,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
@@ -25,6 +26,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.commit451.nativestackblur.NativeStackBlur;
+import com.elmargomez.typer.Font;
+import com.elmargomez.typer.Typer;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -37,12 +40,14 @@ import java.util.concurrent.TimeUnit;
 
 import cheipesh.homedelivery.com.R;
 import cheipesh.homedelivery.com.adapters.MenuAdapter;
-import cheipesh.homedelivery.com.fragments.FoodFragment;
+import cheipesh.homedelivery.com.fragments.CategoryFragment;
 import cheipesh.homedelivery.com.fragments.CityFragment;
 import cheipesh.homedelivery.com.fragments.RestaurantFragment;
 import cheipesh.homedelivery.com.fragments.SplashDialog;
 import cheipesh.homedelivery.com.fragments.LoadingDialog;
 import cheipesh.homedelivery.com.util.SharedPrefManager;
+
+import static android.view.Gravity.END;
 
 public class MainActivity extends AppCompatActivity
 implements RadioGroup.OnCheckedChangeListener{
@@ -61,64 +66,43 @@ implements RadioGroup.OnCheckedChangeListener{
     private int frameHeight;
     private int frameWidth;
 
-    private List<ParseObject> mCities;
-    private List<ParseObject> mCategories;
-
     private MenuAdapter menuAdapter;
-    Bitmap drawable;
+    private Bitmap drawableBack, drawableOption;
 
-    public Bitmap getDrawable() {
-        return drawable;
-    }
-
-    public void setDrawable() {
-        layout.setDrawingCacheEnabled(true);
-         this.drawable = NativeStackBlur.process(layout.getDrawingCache(), 36);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
+        getData(Constants.CITY_KEY, true);
+        getData(Constants.CATEGORY_KEY, true);
         findUI();
         setupUI();
         getNextFragment();
+
     }
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-
 
     private void getNextFragment() {
 
         final SplashDialog splashDialog = new SplashDialog();
         splashDialog.show(getSupportFragmentManager(), "Splash");
 
-        ScheduledExecutorService worker =
-                Executors.newSingleThreadScheduledExecutor();
+        ScheduledExecutorService worker = Executors.newSingleThreadScheduledExecutor();
         Runnable task = new Runnable() {
             public void run() {
-                if (!SharedPrefManager.getInstance().retrieveCity().isEmpty()){
-                    replaceFragment(FoodFragment.newInstance(
-                            SharedPrefManager.getInstance().retrieveCity()),
-                            false);
-                    getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                } else {
-                    replaceFragment(new CityFragment(), false);
-                }
-                splashDialog.dismiss();
+            if (!SharedPrefManager.getInstance().retrieveCity().isEmpty()){
+                replaceFragment(new CategoryFragment(), false);
+                getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            } else {
+                replaceFragment(new CityFragment(), false);
+            }
+            splashDialog.dismiss();
             }
         };
         worker.schedule(task, 2, TimeUnit.SECONDS);
-        getData(Constants.CATEGORY_KEY);
+//        getData(Constants.CATEGORY_KEY, true);
+//        getData(Constants.CITY_KEY, true);
     }
-
-
-
 
     private void findUI() {
         drawerLayout    = (DrawerLayout) findViewById(R.id.dlDrawer);
@@ -130,6 +114,7 @@ implements RadioGroup.OnCheckedChangeListener{
         mTabGroup       = (RadioGroup) findViewById(R.id.rgTab);
         menuList        = (ListView) findViewById(R.id.lvMenu);
 
+        toolbarTitle.setTypeface(Typer.set(this).getFont(Font.ROBOTO_REGULAR));
         frameCont = (FrameLayout) findViewById(R.id.flBaseFrame);
         frameCont.getViewTreeObserver().addOnGlobalLayoutListener(
                 new ViewTreeObserver.OnGlobalLayoutListener(){
@@ -141,7 +126,6 @@ implements RadioGroup.OnCheckedChangeListener{
                     }
                 });
     }
-
 
     private void setupUI() {
         toolbarMenu.setOnClickListener(nawigateDrawerListener);
@@ -159,18 +143,16 @@ implements RadioGroup.OnCheckedChangeListener{
     private AdapterView.OnItemClickListener cityOnItemClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            drawerLayout.closeDrawer(Gravity.END);
+            drawerLayout.closeDrawer(END);
             SharedPrefManager.getInstance().saveCity(menuAdapter.getItem(position).getString(Constants.P_COLUMN_TITLE));
-            replaceFragment(FoodFragment
-                            .newInstance(menuAdapter.getItem(position).getString("title"))
-                    , true);
+            replaceFragment(new CategoryFragment(), true);
         }
     };
 
     private AdapterView.OnItemClickListener categoryOnItemClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            drawerLayout.closeDrawer(Gravity.END);
+            drawerLayout.closeDrawer(END);
             replaceFragment(RestaurantFragment
                             .newInstance(menuAdapter.getItem(position).getObjectId(),
                                     menuAdapter.getItem(position).getString(Constants.P_COLUMN_TITLE))
@@ -179,14 +161,10 @@ implements RadioGroup.OnCheckedChangeListener{
     };
 
 
-    private void getData(String _key) {
+    private void getData(String _key, boolean needOnline) {
         final ParseQuery<ParseObject> query = ParseQuery.getQuery(_key);
-        if (_key.equals(Constants.CATEGORY_KEY)){
-            query.whereEqualTo(Constants.P_COLUMN_CITY,
-                    SharedPrefManager.getInstance().retrieveCity());
-        }
-
-        if (isOnline()) {
+        query.orderByAscending(Constants.P_COLUMN_ORDER);
+        if (isOnline() && needOnline) {
             onlineData(query);
         } else {
             offlineData(query);
@@ -234,15 +212,27 @@ implements RadioGroup.OnCheckedChangeListener{
         hideLoadingDialog();
     }
 
-
+    @Override
+    public void onCheckedChanged(RadioGroup group, int checkedId) {
+        switch (checkedId){
+            case R.id.rbTabCity:
+                getData(Constants.CITY_KEY, false);
+                menuList.setOnItemClickListener(cityOnItemClickListener);
+                break;
+            case R.id.rbTabCat:
+                getData(Constants.CATEGORY_KEY, false);
+                menuList.setOnItemClickListener(categoryOnItemClickListener);
+                break;
+        }
+    }
 
     private View.OnClickListener nawigateDrawerListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             if(drawerLayout.isDrawerOpen(GravityCompat.END)) {
-                drawerLayout.closeDrawer(Gravity.END); //CLOSE Nav Drawer!
-            }else{
-                drawerLayout.openDrawer(Gravity.END); //OPEN Nav Drawer!
+                drawerLayout.closeDrawer(END); //CLOSE Nav Drawer!
+            } else{
+                drawerLayout.openDrawer(END); //OPEN Nav Drawer!
             }
         }
     };
@@ -254,7 +244,12 @@ implements RadioGroup.OnCheckedChangeListener{
         }
     };
 
-
+    public void openBrowser(String urlSite){
+        String url = "https://www.facebook.com/groups/309567489378730/?ref=aymt_homepage_panel";
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(Uri.parse(url));
+        startActivity(i);
+    }
     public void clickableMenu(boolean b) {
         toolbarMenu.setClickable(b);
     }
@@ -270,6 +265,22 @@ implements RadioGroup.OnCheckedChangeListener{
         }
     }
 
+    public Bitmap getDrawableBack() {
+        return drawableBack;
+    }
+
+
+    public Bitmap getDrawableOption() {
+        return drawableOption;
+    }
+    public void setDrawableBack() {
+        layout.setDrawingCacheEnabled(true);
+        this.drawableBack = NativeStackBlur.process(layout.getDrawingCache(), 36);
+    }
+
+    public void setDrawableHamb(Bitmap drawable){
+        this.drawableOption = drawable;
+    }
 
     public void replaceFragment(Fragment _fragment, boolean _addToBackStack) {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -286,7 +297,6 @@ implements RadioGroup.OnCheckedChangeListener{
         fragmentTransaction.show(_fragment);
         fragmentTransaction.commitAllowingStateLoss();
     }
-
 
     public int getFrameHeight() {
         return frameHeight;
@@ -309,24 +319,8 @@ implements RadioGroup.OnCheckedChangeListener{
             progressDialog.dismiss();
     }
 
-
-
     public void setTitle(String _title) {
         toolbarTitle.setText(_title);
-    }
-
-    @Override
-    public void onCheckedChanged(RadioGroup group, int checkedId) {
-        switch (checkedId){
-            case R.id.rbTabCity:
-                getData(Constants.CITY_KEY);
-                menuList.setOnItemClickListener(cityOnItemClickListener);
-                break;
-            case R.id.rbTabCat:
-                getData(Constants.CATEGORY_KEY);
-                menuList.setOnItemClickListener(categoryOnItemClickListener);
-                break;
-        }
     }
 
     @Override

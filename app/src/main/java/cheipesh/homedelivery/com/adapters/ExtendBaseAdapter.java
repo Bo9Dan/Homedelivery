@@ -47,7 +47,7 @@ public abstract class ExtendBaseAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    public List<ParseObject> getmData() {
+    public List<ParseObject> getData() {
         return mData;
     }
 

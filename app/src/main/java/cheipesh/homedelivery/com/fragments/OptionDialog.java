@@ -8,19 +8,21 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.andexert.expandablelayout.library.ExpandableLayout;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.elmargomez.typer.Font;
+import com.elmargomez.typer.Typer;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.vistrav.ask.Ask;
 import com.vistrav.ask.annotations.AskDenied;
@@ -31,11 +33,11 @@ import cheipesh.homedelivery.com.base.Constants;
 import cheipesh.homedelivery.com.base.MainActivity;
 
 public class OptionDialog extends DialogFragment {
-    private String menuList, phoneNumber, map;
+    private String propetryMenu, phoneNumber, map;
     private ExpandableLayout elMenuDetailList;
     private ImageView backOptions/*, hambMenu*/;
     private RoundedImageView hambMenu;
-    private TextView menuRestaraunt;
+    private WebView menuRestaraunt;
 
 
     public static OptionDialog newInstance(final String _menuList, final String _phoneNumber, String bitmap) {
@@ -49,7 +51,7 @@ public class OptionDialog extends DialogFragment {
     }
 
     private void getOptions(Bundle bundle) {
-        menuList = bundle.getString(Constants.TFG_OPTION_MENU_LIST);
+        propetryMenu = bundle.getString(Constants.TFG_OPTION_MENU_LIST);
         phoneNumber = bundle.getString(Constants.TFG_OPTION_PHONE_NUMBER);
         map = bundle.getString("map");
     }
@@ -77,14 +79,19 @@ public class OptionDialog extends DialogFragment {
         return dialog;
     }
 
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+//        fillView(view);
+        super.onViewCreated(view, savedInstanceState);
+    }
 
     private void fillView(Dialog dialog) {
         backOptions = (ImageView) dialog.findViewById(R.id.ivBackOption);
         elMenuDetailList = (ExpandableLayout) dialog.findViewById(R.id.expandableLayout);
         hambMenu = (RoundedImageView) dialog.findViewById(R.id.ivOptionMenu);
-        menuRestaraunt = (TextView) elMenuDetailList.findViewById(R.id.tvMenuRestaurant);
+        menuRestaraunt = (WebView) elMenuDetailList.findViewById(R.id.tvMenuRestaurant);
 
-        backOptions.setImageBitmap(((MainActivity) getActivity()).getDrawable());
+        backOptions.setImageBitmap(((MainActivity) getActivity()).getDrawableBack());
         backOptions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,28 +100,47 @@ public class OptionDialog extends DialogFragment {
         });
         elMenuDetailList.setOnClickListener(optionClickListener);
         hambMenu.setOnClickListener(optionClickListener);
-        menuRestaraunt.setText(menuList);
+        menuRestaraunt.loadDataWithBaseURL("", propetryMenu, "text/html", "UTF-8", "");
+        if (((MainActivity) getActivity()).getDrawableOption() == null) {
+            hambMenu.setVisibility(View.GONE);
+        } else {
 
-        Glide.with(this)
-                .load(map)
-                .asBitmap()
-//                .override(120,120)
-//                .centerCrop()
-//                .transform(new RoundedCornersTransformation(getContext(), 16, 2))
-                .diskCacheStrategy(DiskCacheStrategy.RESULT)
-                .into(hambMenu);
+            hambMenu.setImageBitmap(((MainActivity) getActivity()).getDrawableOption());
+        }
+//        menuRestaraunt.setText(Html.fromHtml(propetryMenu));
+//        Glide.with(this)
+//                .load(map)
+//                .asBitmap()
+//                .diskCacheStrategy(DiskCacheStrategy.RESULT)
+//                .into(hambMenu);
 
         TextView callBtn = (TextView) dialog.findViewById(R.id.btnCall);
+        callBtn.setTypeface(Typer.set(getContext()).getFont(Font.ROBOTO_REGULAR));
         callBtn.setOnClickListener(callListener);
+//
+//        TextView showBTN = (TextView) dialog.findViewById(R.id.btnShowList);
+//        showBTN.setTypeface(Typer.set(getContext()).getFont(Font.ROBOTO_REGULAR));
+//        showBTN.setOnClickListener(optionClickListener);
     }
 
 
     private View.OnClickListener optionClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if (elMenuDetailList.isOpened())
-                elMenuDetailList.hide();
-            else elMenuDetailList.show();
+            switch (menuRestaraunt.getVisibility()){
+                case View.VISIBLE:
+                    menuRestaraunt.setVisibility(View.GONE);
+                    break;
+                case View.GONE:
+                    menuRestaraunt.setVisibility(View.VISIBLE);
+                    break;
+                case View.INVISIBLE:
+                    menuRestaraunt.setVisibility(View.GONE);
+                    break;
+                default:
+                    menuRestaraunt.setVisibility(View.GONE);
+                    break;
+            }
         }
     };
 
@@ -123,32 +149,12 @@ public class OptionDialog extends DialogFragment {
         public void onClick(View v) {
             Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + phoneNumber));
             if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
                 getPermiss();
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
                 return;
             }
             getContext().startActivity(intent);
         }
     };
-
-//    private void call() {
-//        PhoneCallListener phoneListener = new PhoneCallListener();
-//        TelephonyManager telephonyManager = (TelephonyManager) getActivity()
-//                .getSystemService(Context.TELEPHONY_SERVICE);
-//        telephonyManager.listen(phoneListener,
-//                PhoneStateListener.LISTEN_CALL_STATE);
-//
-//        Intent callIntent = new Intent(Intent.ACTION_CALL);
-//        callIntent.setData(Uri.parse("tel:0377778888"));
-//        startActivity(callIntent);
-//
-//    }
 
     public void getPermiss() {
         Ask.on(getActivity())
@@ -180,78 +186,6 @@ public class OptionDialog extends DialogFragment {
 //        Log.i(TAG, "MAP DENIED");
     }
 
-//    public void deleteCallLogByNumber(String number) {
-//        String queryString = "NUMBER=" + number;
-//        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_CALL_LOG) != PackageManager.PERMISSION_GRANTED) {
-//            // TODO: Consider calling
-//            //    ActivityCompat#requestPermissions
-//            // here to request the missing permissions, and then overriding
-//            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-//            //                                          int[] grantResults)
-//            // to handle the case where the user grants the permission. See the documentation
-//            // for ActivityCompat#requestPermissions for more details.
-//            return;
-//        }
-//        getActivity().getContentResolver().delete(CallLog.Calls.CONTENT_URI, queryString, null);
-//    }
-//    class PhoneCallListener extends PhoneStateListener {
-//
-//        private boolean isPhoneCalling = false;
-//
-//        String LOG_TAG = "LOGGING 123";
-//
-//        @Override
-//        public void onCallStateChanged(int state, String incomingNumber) {
-//
-//            if (TelephonyManager.CALL_STATE_RINGING == state) {
-//                // phone ringing
-//                Log.i(LOG_TAG, "RINGING, number: " + incomingNumber);
-//            }
-//
-//            if (TelephonyManager.CALL_STATE_OFFHOOK == state) {
-//                // active
-//                Log.i(LOG_TAG, "OFFHOOK");
-//
-//                isPhoneCalling = true;
-//            }
-//
-//            if (TelephonyManager.CALL_STATE_IDLE == state) {
-//                // run when class initial and phone call ended, need detect flag
-//                // from CALL_STATE_OFFHOOK
-//                Log.i(LOG_TAG, "IDLE");
-//
-//                if (isPhoneCalling) {
-//
-//                    Log.i(LOG_TAG, "restart app");
-//                    deleteCallLogByNumber(incomingNumber);
-////                    // restart app
-////                    Intent i = App.getAppContext().getPackageManager()
-////                            .getLaunchIntentForPackage(
-////                                    App.getAppContext().getPackageName());
-////                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-////                    startActivity(i);
-//
-//                    isPhoneCalling = false;
-//                }
-//
-//            }
-//        }
-//
-//        private void deleteCallLogByNumber(String queryString) {
-//
-//            if (ActivityCompat.checkSelfPermission(App.getAppContext(), Manifest.permission.WRITE_CALL_LOG) != PackageManager.PERMISSION_GRANTED) {
-//                // TODO: Consider calling
-//                //    ActivityCompat#requestPermissions
-//                // here to request the missing permissions, and then overriding
-//                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-//                //                                          int[] grantResults)
-//                // to handle the case where the user grants the permission. See the documentation
-//                // for ActivityCompat#requestPermissions for more details.
-//                return;
-//            }
-//            App.getAppContext().getContentResolver().delete(CallLog.Calls.CONTENT_URI, queryString, null);
-//        }
-//    }
 }
 
 

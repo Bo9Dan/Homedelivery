@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "24.0.0 rc2"
+    buildToolsVersion "24.0.0"
 
     defaultConfig {
         applicationId "cheipesh.homedelivery.com"
@@ -26,6 +26,7 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
     compile 'com.vistrav:ask:2.3'
+    compile 'com.elmargomez.typer:typerlib:1.0.0'
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile 'com.joooonho:selectableroundedimageview:1.0.1'
     compile 'com.makeramen:roundedimageview:2.2.1'

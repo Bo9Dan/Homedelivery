@@ -1,7 +1,5 @@
 package cheipesh.homedelivery.com.fragments;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.TypedValue;
@@ -23,14 +21,13 @@ import in.srain.cube.views.GridViewWithHeaderAndFooter;
 
 public class CityFragment extends BaseFragment {
 
-    private static final int ITEM_HEIGHT = 68;
     private GridViewWithHeaderAndFooter gridView;
     private View footerView;
 
 
     @Override
     protected CityAdapter initAdapter() {
-        return new CityAdapter(mCallingActivity);
+        return new CityAdapter(activity);
     }
 
     @Override
@@ -39,7 +36,7 @@ public class CityFragment extends BaseFragment {
         gridView = (GridViewWithHeaderAndFooter) view.findViewById(R.id.gvGridView);
         footerView = inflater.inflate(R.layout.grid_foother, null);
 
-        mCallingActivity.setMenuBack(false);
+        activity.setMenuBack(false);
 
         gridView.addFooterView(footerView);
         gridView.setNumColumns(1);
@@ -57,28 +54,21 @@ public class CityFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mCallingActivity.setTitle(mCallingActivity.getString(R.string.app_title));
-        mCallingActivity.clickableMenu(false);
+        activity.setTitle(activity.getString(R.string.app_title));
+        activity.clickableMenu(false);
     }
 
     private AdapterView.OnItemClickListener onCityClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            if (position != getAdapter().getCount() && position >= 0){
-                mCallingActivity.replaceFragment(FoodFragment
-                        .newInstance(getAdapter().getItem(position)
-                                .getString(Constants.P_COLUMN_TITLE))
-                        , true);
-                SharedPrefManager.getInstance().saveCity(getAdapter().getItem(position).getString(Constants.P_COLUMN_TITLE));
-            } else {
-                String url = "http://www.google.com.ua";
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(url));
-                startActivity(i);
-            }
+        if (position != getAdapter().getCount() && position >= 0){
+            activity.replaceFragment(new CategoryFragment (), true);
+            SharedPrefManager.getInstance().saveCity(getAdapter().getItem(position).getString(Constants.P_COLUMN_TITLE));
+        } else {
+            activity.openBrowser("");
+        }
         }
     };
-
 
 
     @Override
@@ -87,21 +77,17 @@ public class CityFragment extends BaseFragment {
         calculateCityFooter(data.size());
     }
 
-
     private void calculateCityFooter(int _size) {
-//        int hhh = (int) getResources().getDimension(R.dimen._48sdp);
-        int listItemHeight = (int) TypedValue
-                .applyDimension(TypedValue.COMPLEX_UNIT_DIP, 48,
+        int listItemHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 48,
                         getResources().getDisplayMetrics());
 
-        int diffFoot = mCallingActivity.getFrameHeight() - listItemHeight * _size;
+        int diffFoot = activity.getFrameHeight() - listItemHeight * _size;
 
-        if (diffFoot > mCallingActivity.getFrameWidth()/2) {
+        if (diffFoot > activity.getFrameWidth()/2) {
             footerView.getLayoutParams().height = diffFoot;
         } else {
-            footerView.getLayoutParams().height = mCallingActivity.getFrameWidth()/2;
+            footerView.getLayoutParams().height = activity.getFrameWidth()/2;
         }
-
 
         footerView.requestLayout();
 

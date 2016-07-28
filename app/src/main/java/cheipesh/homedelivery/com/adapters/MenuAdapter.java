@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.elmargomez.typer.Font;
+import com.elmargomez.typer.Typer;
 import com.parse.ParseObject;
 
 import java.util.ArrayList;
@@ -61,6 +63,7 @@ public class MenuAdapter extends BaseAdapter {
 
         public ViewHolder(View v) {
             itemName = (TextView) v.findViewById(R.id.tvNameItemMenu);
+            itemName.setTypeface(Typer.set(context).getFont(Font.ROBOTO_REGULAR));
         }
     }
 

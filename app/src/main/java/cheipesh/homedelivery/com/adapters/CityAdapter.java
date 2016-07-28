@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.elmargomez.typer.Font;
+import com.elmargomez.typer.Typer;
 import com.parse.ParseObject;
 
 import cheipesh.homedelivery.com.R;
@@ -19,20 +21,19 @@ public class CityAdapter extends ExtendBaseAdapter {
         super(context);
     }
 
-
     @Override
     public int getCount() {
-        return getmData().size();
+        return getData().size();
     }
 
     @Override
     public ParseObject getItem(int position) {
-        return getmData().get(position);
+        return getData().get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return getmData().get(position).hashCode();
+        return getData().get(position).getObjectId().hashCode();
     }
 
     @Override
@@ -46,7 +47,7 @@ public class CityAdapter extends ExtendBaseAdapter {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        viewHolder.mFoodName.setText(getItem(position).getString("title"));
+        viewHolder.mCityName.setText(getItem(position).getString("title"));
         setColorView(convertView, position);
 
         return convertView;
@@ -54,23 +55,23 @@ public class CityAdapter extends ExtendBaseAdapter {
 
 
     class ViewHolder {
-        private ImageView mFoodImage;
-        private TextView mFoodName;
+        private ImageView ivCityIcon;
+        private TextView mCityName;
         private View view;
 
         public ViewHolder(View v) {
             view = v;
-            mFoodImage = (ImageView) v.findViewById(R.id.ivCityPictogram);
-            mFoodName = (TextView) v.findViewById(R.id.tvCitName);
+            ivCityIcon = (ImageView) v.findViewById(R.id.ivCityPictogram);
+            mCityName = (TextView) v.findViewById(R.id.tvCitName);
+            mCityName.setTypeface(Typer.set(getContext()).getFont(Font.ROBOTO_REGULAR));
         }
     }
 
 
 
     private void setColorView(View view, int position) {
-        view.getLayoutParams().height = (int) TypedValue.applyDimension(
-                                TypedValue.COMPLEX_UNIT_DIP,
-                                48,
+        view.getLayoutParams().height =
+                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 48,
                                 getContext().getResources().getDisplayMetrics());
 
         if (position%2 == 0) {
