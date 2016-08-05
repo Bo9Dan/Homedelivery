@@ -48,7 +48,6 @@ public abstract class BaseFragment extends Fragment {
         key = _columnKey;
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery(_entityKey);
-//        query.orderByAscending(Constants.P_COLUMN_ORDER);
         activity.showLoadingDialog();
         saveKey = _entityKey + _columnKey;
         if (!_columnKey.isEmpty()) {
@@ -58,15 +57,11 @@ public abstract class BaseFragment extends Fragment {
         }
 
         if (activity.isOnline()) {
-            if (hasNewData(saveKey)){
-//                saveKey = _entityKey + _columnKey;
-                onlineData(query );
-            } else {
-                offlineData(query);
-            }
-
+            if (hasNewData(saveKey))
+                            onlineData(query );
+            else offlineData(query);
         } else {
-            offlineData(query/*, _callback*/);
+            offlineData(query);
         }
     }
 
@@ -76,77 +71,26 @@ public abstract class BaseFragment extends Fragment {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
                 if (e == null){
-
                     setData(objects, !objects.isEmpty());
                     Log.d("SyncDel", "get online data");
                 } else {
-//                    offlineData(_query);
-
-                    AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-                    builder.setTitle(R.string.error)
-                            .setMessage(R.string.error_msg)
-                            .setIcon(R.mipmap.appicon)
-                            .setCancelable(false)
-                            .setNegativeButton(R.string.ok,
-                                    new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                            offlineData(_query);
-                                            dialog.cancel();
-                                        }
-                                    })
-                            .setPositiveButton(R.string.try_again, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    getData(ent, name, key);
-                                }
-                            });
-
-                    AlertDialog alert = builder.create();
-                    alert.show();
-
+                    showAlert(true, _query);
                     Log.d("SyncDel", "error online data");
                 }
             }
         });
     }
 
-    private void offlineData(ParseQuery<ParseObject> _query) {
+    private void offlineData(final ParseQuery<ParseObject> _query) {
         _query.fromLocalDatastore();
-//        _query.orderByAscending(Constants.P_COLUMN_ORDER);
         _query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
                 if (e == null) {
                     setData(objects, false);
-                    Log.d("SyncDel", "get offline data");
                 } else {
-                    Log.d("SyncDel", "error offline data" );
                     activity.hideLoadingDialog();
-                   /* Toast.makeText(activity, "??????? ???????? ?? ????????????? ?????", Toast.LENGTH_LONG).show();*/
-
-                    AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-                    builder.setTitle(R.string.error)
-                            .setMessage(R.string.error_msg)
-                            .setIcon(R.mipmap.appicon)
-                            .setCancelable(false)
-                            .setNegativeButton(R.string.ok,
-                                    new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                            dialog.cancel();
-                                        }
-                                    })
-                            .setPositiveButton(R.string.try_again, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    getData(ent, name, key);
-                                }
-                            });
-
-                    AlertDialog alert = builder.create();
-                    alert.show();
-
-
-
+                    showAlert(false, _query);
                 }
             }
         });
@@ -170,5 +114,30 @@ public abstract class BaseFragment extends Fragment {
         } else
             return nowDate - saveDate > 24 * 60 * 60 * 1000 * 7;
 
+    }
+
+    private void showAlert(final boolean needOffline, final ParseQuery<ParseObject> _query) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setTitle(R.string.error)
+                .setMessage(R.string.error_msg)
+                .setIcon(R.mipmap.appicon)
+                .setCancelable(false)
+                .setNegativeButton(R.string.ok,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                                if (needOffline)
+                                    offlineData(_query);
+                            }
+                        })
+                .setPositiveButton(R.string.try_again, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        getData(ent, name, key);
+                    }
+                });
+
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 }

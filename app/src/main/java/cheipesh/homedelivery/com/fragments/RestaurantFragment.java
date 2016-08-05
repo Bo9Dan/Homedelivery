@@ -1,6 +1,5 @@
 package cheipesh.homedelivery.com.fragments;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
@@ -27,7 +26,7 @@ import in.srain.cube.views.GridViewWithHeaderAndFooter;
 
 public class RestaurantFragment extends BaseFragment {
 
-    private String CategoryId, CityName;
+    private String mCategoryId, mCategoryName;
     private GridViewWithHeaderAndFooter headerAndFooter;
     private View footerView;
 
@@ -51,8 +50,8 @@ public class RestaurantFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         if (getArguments() != null) {
-            CategoryId = getArguments().getString(Constants.PLACE_KEY, "");
-            CityName = getArguments().getString(Constants.CITY_TITLE, "");
+            mCategoryId = getArguments().getString(Constants.PLACE_KEY, "");
+            mCategoryName = getArguments().getString(Constants.CITY_TITLE, "");
         }
 
         View view = inflater.inflate(R.layout.grid_layout, container, false);
@@ -81,18 +80,10 @@ public class RestaurantFragment extends BaseFragment {
                 ParseObject place = getAdapter().getItem(position).getParseObject("object");
                 saveDrawable(view);
                 activity.setDrawableBack();
-                ParcelableParseObject parseObject = new ParcelableParseObject(place, CityName);
+                ParcelableParseObject parseObject = new ParcelableParseObject(place, mCategoryName);
 
                 OptionDialog placeDetail = OptionDialog.newInstance(parseObject);
                 placeDetail.show(getFragmentManager(), Constants.PLACE_KEY);
-
-
-//                Intent intent = new Intent(getContext(), OptionActivity.class);
-//                Bundle bundle = new Bundle();
-//                intent.putExtra(Constants.TFG_OPTION_MENU_LIST, parseObject.getMenu());
-//                intent.putExtra(Constants.TFG_OPTION_PHONE_NUMBER, parseObject.getPhone());
-//                startActivity(intent);
-
             }  else {
                 activity.openBrowser("");
             }
@@ -121,7 +112,7 @@ public class RestaurantFragment extends BaseFragment {
         for (ParseObject object :data) {
 
             for (Object category: object.getList("categories")) {
-                if (category.toString().equals(CityName)){
+                if (category.toString().equals(mCategoryName)){
                     List<String> orderList = object.getList("order");
 
                     if(orderList != null && !orderList.isEmpty()){
@@ -152,7 +143,7 @@ public class RestaurantFragment extends BaseFragment {
         getAdapter().setData(sortData);
         if (hasSave){
             ParseObject.pinAllInBackground(data);
-            SharedPrefManager.getInstance().saveLong(Constants.PLACE_KEY+SharedPrefManager.getInstance().retrieveCity(), System.currentTimeMillis());
+            SharedPrefManager.getInstance().saveLong(Constants.PLACE_KEY + SharedPrefManager.getInstance().retrieveCity(), System.currentTimeMillis());
         }
         calculateFooter(sortData.size());
     }
@@ -165,7 +156,6 @@ public class RestaurantFragment extends BaseFragment {
     }
 
     private void calculateFooter(int _size) {
-
         int dividFoot = activity.getFrameHeight() - Math.round(_size/2 + _size%2) * activity.getFrameWidth()/2;
         footerView.setVisibility(View.VISIBLE);
         if (dividFoot > activity.getFrameWidth()/2) {

@@ -75,7 +75,7 @@ public class OptionDialog extends DialogFragment {
 
 
         // creating the fullscreen dialog
-        final Dialog dialog = new Dialog(getActivity());
+        final Dialog dialog = new Dialog(getActivity(), R.style.MyCustomTheme);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         dialog.setContentView(R.layout.dialog_option);
@@ -84,6 +84,7 @@ public class OptionDialog extends DialogFragment {
                                      ViewGroup.LayoutParams.WRAP_CONTENT);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(getContext(),
                                                                    R.color.transparent)));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.MyAnimation_Window;
 
         prepareDialog(dialog);
 
