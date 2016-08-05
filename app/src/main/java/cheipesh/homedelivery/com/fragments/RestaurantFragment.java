@@ -83,15 +83,15 @@ public class RestaurantFragment extends BaseFragment {
                 activity.setDrawableBack();
                 ParcelableParseObject parseObject = new ParcelableParseObject(place, CityName);
 
-//                OptionDialog placeDetail = OptionDialog.newInstance(parseObject);
-//                placeDetail.show(getFragmentManager(), Constants.PLACE_KEY);
+                OptionDialog placeDetail = OptionDialog.newInstance(parseObject);
+                placeDetail.show(getFragmentManager(), Constants.PLACE_KEY);
 
 
-                Intent intent = new Intent(getContext(), OptionActivity.class);
-                Bundle bundle = new Bundle();
-                intent.putExtra(Constants.TFG_OPTION_MENU_LIST, parseObject.getMenu());
-                intent.putExtra(Constants.TFG_OPTION_PHONE_NUMBER, parseObject.getPhone());
-                startActivity(intent);
+//                Intent intent = new Intent(getContext(), OptionActivity.class);
+//                Bundle bundle = new Bundle();
+//                intent.putExtra(Constants.TFG_OPTION_MENU_LIST, parseObject.getMenu());
+//                intent.putExtra(Constants.TFG_OPTION_PHONE_NUMBER, parseObject.getPhone());
+//                startActivity(intent);
 
             }  else {
                 activity.openBrowser("");
