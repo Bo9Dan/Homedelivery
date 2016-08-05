@@ -14,6 +14,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.github.aakira.expandablelayout.ExpandableLinearLayout;
+import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.vistrav.ask.Ask;
 import com.vistrav.ask.annotations.AskDenied;
@@ -29,7 +31,8 @@ public class OptionActivity extends AppCompatActivity {
     private RoundedImageView rivTopButton;
     private TextView btnCall, btnExpandMenu;
     private ImageView ivBackground;
-    private String mPhoneNumber, mTextMenuPrice, mMap;
+    private String mPhoneNumber, mTextMenuPrice;
+    private ExpandableRelativeLayout expandableLinearLayout;
 
 
 
@@ -42,6 +45,8 @@ public class OptionActivity extends AppCompatActivity {
         if (getIntent().getExtras() != null) {
             getOptions(getIntent().getExtras());
         }
+
+        expandableLinearLayout = (ExpandableRelativeLayout) findViewById(R.id.expandableLayout);
         ivBackground = (ImageView) findViewById(R.id.ivOptionBackground);
 
         rivTopButton = (RoundedImageView) findViewById(R.id.ivOptionMenu);
@@ -51,22 +56,28 @@ public class OptionActivity extends AppCompatActivity {
         btnCall = (TextView) findViewById(R.id.btnCall);
         btnExpandMenu = (TextView) findViewById(R.id.btnShowList);
 
-        Glide.with(this)
-                .load(mMap)
-                .asBitmap()
-                .diskCacheStrategy(DiskCacheStrategy.RESULT)
-                .into(rivTopButton);
+//        Glide.with(this)
+//                .load(mMap)
+//                .asBitmap()
+//                .diskCacheStrategy(DiskCacheStrategy.RESULT)
+//                .into(rivTopButton);
 
         wvRestarauntMenuPrice.loadDataWithBaseURL("", mTextMenuPrice, "text/html", "UTF-8", "");
-        rivTopButton.setOnClickListener(optionClickListener);
-        btnExpandMenu.setOnClickListener(optionClickListener);
+        rivTopButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                expandableLinearLayout.toggle();
+            }
+        });
+//        rivTopButton.setOnClickListener(optionClickListener);
+//        btnExpandMenu.setOnClickListener(optionClickListener);
         btnCall.setOnClickListener(callListener);
+
     }
 
     private void getOptions(Bundle bundle) {
         mTextMenuPrice = bundle.getString(Constants.TFG_OPTION_MENU_LIST);
         mPhoneNumber = bundle.getString(Constants.TFG_OPTION_PHONE_NUMBER);
-        mMap = bundle.getString("map");
     }
 
 

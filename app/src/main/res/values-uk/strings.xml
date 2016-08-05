@@ -12,7 +12,7 @@
     <string name="error_msg">Помилка завантаження. Перевірте будь-ласка підключення до мережі Інтернет та спробуйте ще</string>
     <string name="ok">Відміна</string>
     <string name="try_again">Спробувати ще</string>
-
+    <string name="delivery_time">хвилин</string>
 
 
 </resources>

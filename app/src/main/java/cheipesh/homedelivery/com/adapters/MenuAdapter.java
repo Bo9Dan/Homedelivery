@@ -22,7 +22,7 @@ public class MenuAdapter extends BaseAdapter {
     private Context context;
 
     public MenuAdapter(Context context) {
-        this.mData = new ArrayList<ParseObject>();
+        this.mData = new ArrayList<>();
         this.context = context;
     }
 

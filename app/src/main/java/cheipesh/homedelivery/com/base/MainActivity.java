@@ -21,6 +21,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -100,8 +101,6 @@ implements RadioGroup.OnCheckedChangeListener{
             }
         };
         worker.schedule(task, 2, TimeUnit.SECONDS);
-//        getData(Constants.CATEGORY_KEY, true);
-//        getData(Constants.CITY_KEY, true);
     }
 
     private void findUI() {
@@ -129,6 +128,7 @@ implements RadioGroup.OnCheckedChangeListener{
 
     private void setupUI() {
         toolbarMenu.setOnClickListener(nawigateDrawerListener);
+        toolbarTitle.setOnClickListener(nawigateDrawerListener);
         menuBack.setOnClickListener(backClick);
         mTabGroup.setOnCheckedChangeListener(this);
         menuAdapter = new MenuAdapter(this);
@@ -143,7 +143,7 @@ implements RadioGroup.OnCheckedChangeListener{
     private AdapterView.OnItemClickListener cityOnItemClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            drawerLayout.closeDrawer(END);
+            closeDriwer();
             SharedPrefManager.getInstance().saveCity(menuAdapter.getItem(position).getString(Constants.P_COLUMN_TITLE));
             replaceFragment(new CategoryFragment(), true);
         }
@@ -152,7 +152,7 @@ implements RadioGroup.OnCheckedChangeListener{
     private AdapterView.OnItemClickListener categoryOnItemClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            drawerLayout.closeDrawer(END);
+            closeDriwer();
             replaceFragment(RestaurantFragment
                             .newInstance(menuAdapter.getItem(position).getObjectId(),
                                     menuAdapter.getItem(position).getString(Constants.P_COLUMN_TITLE))
@@ -229,13 +229,32 @@ implements RadioGroup.OnCheckedChangeListener{
     private View.OnClickListener nawigateDrawerListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if(drawerLayout.isDrawerOpen(GravityCompat.END)) {
-                drawerLayout.closeDrawer(END); //CLOSE Nav Drawer!
-            } else{
-                drawerLayout.openDrawer(END); //OPEN Nav Drawer!
+            switch (v.getId()) {
+                case R.id.tvToolbarTitle:
+                    getData(Constants.CITY_KEY, false);
+                    menuList.setOnItemClickListener(cityOnItemClickListener);
+                    RadioButton rbCity = (RadioButton) mTabGroup.findViewById(R.id.rbTabCity);
+                    rbCity.setChecked(true);
+                    closeDriwer();
+                    break;
+                case R.id.menu_icon:
+                    getData(Constants.CATEGORY_KEY, false);
+                    menuList.setOnItemClickListener(categoryOnItemClickListener);
+                    RadioButton rbCat = (RadioButton) mTabGroup.findViewById(R.id.rbTabCat);
+                    rbCat.setChecked(true);
+                    closeDriwer();
+                    break;
             }
         }
     };
+
+    private void closeDriwer() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.END)) {
+            drawerLayout.closeDrawer(END); //CLOSE Nav Drawer!
+        } else {
+            drawerLayout.openDrawer(END); //OPEN Nav Drawer!
+        }
+    }
 
     private View.OnClickListener backClick = new View.OnClickListener() {
         @Override
@@ -250,12 +269,12 @@ implements RadioGroup.OnCheckedChangeListener{
         i.setData(Uri.parse(url));
         startActivity(i);
     }
+
     public void clickableMenu(boolean b) {
         toolbarMenu.setClickable(b);
     }
 
     public boolean isOnline() {
-
         ConnectivityManager cm = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         if (netInfo != null && netInfo.isConnectedOrConnecting()) {
@@ -269,10 +288,10 @@ implements RadioGroup.OnCheckedChangeListener{
         return drawableBack;
     }
 
-
     public Bitmap getDrawableOption() {
         return drawableOption;
     }
+
     public void setDrawableBack() {
         layout.setDrawingCacheEnabled(true);
         this.drawableBack = NativeStackBlur.process(layout.getDrawingCache(), 36);

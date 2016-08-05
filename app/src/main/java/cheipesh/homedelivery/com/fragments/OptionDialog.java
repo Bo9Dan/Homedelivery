@@ -8,7 +8,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
@@ -20,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.amplitude.api.Amplitude;
 import com.andexert.expandablelayout.library.ExpandableLayout;
 import com.elmargomez.typer.Font;
 import com.elmargomez.typer.Typer;
@@ -28,32 +28,42 @@ import com.vistrav.ask.Ask;
 import com.vistrav.ask.annotations.AskDenied;
 import com.vistrav.ask.annotations.AskGranted;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import cheipesh.homedelivery.com.R;
 import cheipesh.homedelivery.com.base.Constants;
 import cheipesh.homedelivery.com.base.MainActivity;
+import cheipesh.homedelivery.com.base.ParcelableParseObject;
 
 public class OptionDialog extends DialogFragment {
-    private String propetryMenu, phoneNumber, map;
-    private ExpandableLayout elMenuDetailList;
-    private ImageView backOptions/*, hambMenu*/;
-    private RoundedImageView hambMenu;
-    private WebView menuRestaraunt;
 
+    private ExpandableLayout elMenuDetail;
+    private ImageView ivBackOptions;
+    private RoundedImageView rivLogo;
+    private WebView wvMenuRestaurant;
+    private TextView tvWork, tvDelivery, tvCall;
+    private String menuRestaurant, phoneRestaurant, workRestaurant, deliveryRestaurant;
+    private ParcelableParseObject parseObject;
 
-    public static OptionDialog newInstance(final String _menuList, final String _phoneNumber, String bitmap) {
+    public static OptionDialog newInstance(ParcelableParseObject object) {
         OptionDialog fragment = new OptionDialog();
         Bundle args = new Bundle();
-        args.putString(Constants.TFG_OPTION_MENU_LIST, _menuList);
-        args.putString(Constants.TFG_OPTION_PHONE_NUMBER, _phoneNumber);
-        args.putString("map", bitmap);
+        args.putParcelable("Object", object);
+//        args.putString(Constants.TFG_OPTION_MENU_LIST, _menuList);
+//        args.putString(Constants.TFG_OPTION_PHONE_NUMBER, _phoneNumber);
+//        args.putString(Constants.TFG_OPTION_DELIVERY, _delivery);
+//        args.putString(Constants.TFG_OPTION_WORK, _work);
         fragment.setArguments(args);
         return fragment;
     }
 
     private void getOptions(Bundle bundle) {
-        propetryMenu = bundle.getString(Constants.TFG_OPTION_MENU_LIST);
-        phoneNumber = bundle.getString(Constants.TFG_OPTION_PHONE_NUMBER);
-        map = bundle.getString("map");
+        parseObject = bundle.getParcelable("Object");
+        menuRestaurant = parseObject.getMenu();
+        phoneRestaurant = parseObject.getPhone();
+        deliveryRestaurant = parseObject.getDelivery();
+        workRestaurant = parseObject.getWork();
     }
 
     @NonNull
@@ -79,66 +89,61 @@ public class OptionDialog extends DialogFragment {
         return dialog;
     }
 
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-//        fillView(view);
-        super.onViewCreated(view, savedInstanceState);
-    }
-
     private void fillView(Dialog dialog) {
-        backOptions = (ImageView) dialog.findViewById(R.id.ivBackOption);
-        elMenuDetailList = (ExpandableLayout) dialog.findViewById(R.id.expandableLayout);
-        hambMenu = (RoundedImageView) dialog.findViewById(R.id.ivOptionMenu);
-        menuRestaraunt = (WebView) elMenuDetailList.findViewById(R.id.tvMenuRestaurant);
+        ivBackOptions = (ImageView) dialog.findViewById(R.id.ivBackOption);
+        elMenuDetail = (ExpandableLayout) dialog.findViewById(R.id.expandableLayout);
+        rivLogo = (RoundedImageView) dialog.findViewById(R.id.ivOptionMenu);
+        wvMenuRestaurant = (WebView) elMenuDetail.findViewById(R.id.tvMenuRestaurant);
 
-        backOptions.setImageBitmap(((MainActivity) getActivity()).getDrawableBack());
-        backOptions.setOnClickListener(new View.OnClickListener() {
+        ivBackOptions.setImageBitmap(((MainActivity) getActivity()).getDrawableBack());
+        ivBackOptions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getDialog().dismiss();
             }
         });
-        elMenuDetailList.setOnClickListener(optionClickListener);
-        hambMenu.setOnClickListener(optionClickListener);
-        menuRestaraunt.loadDataWithBaseURL("", propetryMenu, "text/html", "UTF-8", "");
+//        elMenuDetail.setOnClickListener(optionClickListener);
+//        rivLogo.setOnClickListener(optionClickListener);
+        wvMenuRestaurant.loadDataWithBaseURL("", menuRestaurant, "text/html", "UTF-8", "");
         if (((MainActivity) getActivity()).getDrawableOption() == null) {
-            hambMenu.setVisibility(View.GONE);
+            rivLogo.setVisibility(View.GONE);
         } else {
 
-            hambMenu.setImageBitmap(((MainActivity) getActivity()).getDrawableOption());
+            rivLogo.setImageBitmap(((MainActivity) getActivity()).getDrawableOption());
         }
-//        menuRestaraunt.setText(Html.fromHtml(propetryMenu));
-//        Glide.with(this)
-//                .load(map)
-//                .asBitmap()
-//                .diskCacheStrategy(DiskCacheStrategy.RESULT)
-//                .into(hambMenu);
 
-        TextView callBtn = (TextView) dialog.findViewById(R.id.btnCall);
-        callBtn.setTypeface(Typer.set(getContext()).getFont(Font.ROBOTO_REGULAR));
-        callBtn.setOnClickListener(callListener);
-//
-//        TextView showBTN = (TextView) dialog.findViewById(R.id.btnShowList);
-//        showBTN.setTypeface(Typer.set(getContext()).getFont(Font.ROBOTO_REGULAR));
-//        showBTN.setOnClickListener(optionClickListener);
+        tvWork = (TextView) dialog.findViewById(R.id.tvWorkingTime);
+        tvWork.setTypeface(Typer.set(getContext()).getFont(Font.ROBOTO_REGULAR));
+        tvWork.setText(workRestaurant);
+
+        tvDelivery = (TextView) dialog.findViewById(R.id.tvDeliveryTime);
+        tvDelivery.setTypeface(Typer.set(getContext()).getFont(Font.ROBOTO_REGULAR));
+        tvDelivery.setText(deliveryRestaurant + " " + getResources().getString(R.string.delivery_time));
+
+        tvCall = (TextView) dialog.findViewById(R.id.btnCall);
+        tvCall.setTypeface(Typer.set(getContext()).getFont(Font.ROBOTO_REGULAR));
+        tvCall.setOnClickListener(callListener);
+
+
+
     }
 
 
     private View.OnClickListener optionClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            switch (menuRestaraunt.getVisibility()){
+            switch (wvMenuRestaurant.getVisibility()){
                 case View.VISIBLE:
-                    menuRestaraunt.setVisibility(View.GONE);
+                    wvMenuRestaurant.setVisibility(View.GONE);
                     break;
                 case View.GONE:
-                    menuRestaraunt.setVisibility(View.VISIBLE);
+                    wvMenuRestaurant.setVisibility(View.VISIBLE);
                     break;
                 case View.INVISIBLE:
-                    menuRestaraunt.setVisibility(View.GONE);
+                    wvMenuRestaurant.setVisibility(View.GONE);
                     break;
                 default:
-                    menuRestaraunt.setVisibility(View.GONE);
+                    wvMenuRestaurant.setVisibility(View.GONE);
                     break;
             }
         }
@@ -147,43 +152,54 @@ public class OptionDialog extends DialogFragment {
     private View.OnClickListener callListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + phoneNumber));
+            Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + phoneRestaurant));
             if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                 getPermiss();
                 return;
             }
             getContext().startActivity(intent);
+
+            Amplitude.getInstance().logEvent(Constants.P_COLUMN_CALL, trackEventModel());
         }
     };
 
     public void getPermiss() {
         Ask.on(getActivity())
-                .forPermissions(Manifest.permission.CALL_PHONE, Manifest.permission.INTERNET/*, Manifest.permission.WRITE_CALL_LOG*/)
-                .withRationales("Call permission need for call ") //optional
+                .forPermissions(Manifest.permission.CALL_PHONE, Manifest.permission.INTERNET)
+                .withRationales("Call permission need for call ")
                 .go();
+    }
+
+    private JSONObject trackEventModel() {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put(Constants.P_COLUMN_CITY, parseObject.getCity());
+            jsonObject.put(Constants.P_COLUMN_CATEGORY, parseObject.getCategory());
+            jsonObject.put(Constants.P_COLUMN_PLACE, parseObject.getPlace());
+            jsonObject.put(Constants.P_COLUMN_PLATFORM, "Android");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonObject;
     }
 
     @AskGranted(Manifest.permission.CALL_PHONE)
     public void fileAccessGranted() {
-//        Log.i(TAG, "FILE  GRANTED");
     }
 
     //optional
     @AskDenied(Manifest.permission.CALL_PHONE)
     public void fileAccessDenied() {
-//        Log.i(TAG, "FILE  DENiED");
     }
 
     //optional
     @AskGranted(Manifest.permission.ACCESS_COARSE_LOCATION)
     public void mapAccessGranted() {
-//        Log.i(TAG, "MAP GRANTED");
     }
 
     //optional
     @AskDenied(Manifest.permission.ACCESS_COARSE_LOCATION)
     public void mapAccessDenied() {
-//        Log.i(TAG, "MAP DENIED");
     }
 
 }

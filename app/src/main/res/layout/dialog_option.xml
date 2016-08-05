@@ -61,11 +61,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
         </RelativeLayout>
-        <include
-            android:id="@+id/inContWeb"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            layout="@layout/web_layout"/>
 
        <!-- <FrameLayout
             android:animateLayoutChanges="true"
@@ -81,6 +76,25 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
         </FrameLayout>-->
+
+        <com.github.aakira.expandablelayout.ExpandableRelativeLayout
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/expandableLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:ael_expanded="false"
+            app:ael_duration="500"
+            app:ael_interpolator="linearOutSlowIn"
+            app:ael_orientation="vertical">
+            <!--fastOutSlowIn = norm-->
+            <WebView
+                android:id="@+id/wvListMenu"
+                android:layout_width="match_parent"
+                android:layout_height="250dp">
+
+            </WebView>
+
+        </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
 
         <RelativeLayout
             android:layout_width="wrap_content"

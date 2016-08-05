@@ -17,7 +17,7 @@
     <RelativeLayout
         android:layout_centerInParent="true"
         android:orientation="vertical"
-        android:layout_marginStart="@dimen/_84sdp"
+        android:layout_margin="@dimen/activity_horizontal_margin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
@@ -25,10 +25,8 @@
         <com.makeramen.roundedimageview.RoundedImageView
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/ivOptionMenu"
-            android:layout_width="@dimen/_84sdp"
-            android:layout_height="@dimen/_84sdp"
-            android:layout_margin="@dimen/activity_horizontal_margin"
-            android:padding="@dimen/_8sdp"
+            android:layout_width="@dimen/_76sdp"
+            android:layout_height="@dimen/_76sdp"
             android:layout_centerHorizontal="true"
             android:src="@drawable/background_food"
             app:riv_corner_radius="16dp"
@@ -36,29 +34,59 @@
             app:riv_mutate_background="true"
             app:riv_oval="false" />
 
+
+        <TextView
+            android:id="@+id/tvWorkingTime"
+            android:drawableStart="@drawable/ic_access_time_black_24dp"
+            android:textAllCaps="true"
+            android:padding="8dp"
+            android:drawablePadding="8dp"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:textColor="@color/black_black_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ivOptionMenu"
+            android:layout_centerHorizontal="true" />
+
+        <TextView
+            android:id="@+id/tvDeliveryTime"
+            android:drawableStart="@drawable/ic_delivery_black"
+            android:drawablePadding="8dp"
+            android:textAllCaps="true"
+            android:padding="8dp"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:textColor="@color/black_black_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvWorkingTime"
+            android:layout_centerHorizontal="true" />
+
         <com.andexert.expandablelayout.library.ExpandableLayout
             android:id="@+id/expandableLayout"
             android:animateLayoutChanges="true"
-            android:animationCache="true"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             expandable:el_headerLayout="@layout/header_expand"
             expandable:el_contentLayout="@layout/expand_detail_info"
-            android:layout_below="@+id/ivOptionMenu" />
+            app:duration="10"
+            android:layout_below="@+id/tvDeliveryTime" />
 
         <View
             android:alpha="0.5"
             android:background="@drawable/bg_corner_bottom"
             android:id="@+id/fakeButton"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/btnCall"
             android:layout_alignBottom="@+id/btnCall"
-            android:layout_alignLeft="@+id/btnCall"
-            android:layout_alignRight="@+id/btnCall" />
+            />
 
         <TextView
+            android:drawableStart="@drawable/ic_call_black_24dp"
             android:padding="8dp"
+            android:drawablePadding="8dp"
             android:gravity="center"
             android:textColor="#666666"
             android:elevation="2dp"
@@ -66,7 +94,8 @@
             android:id="@+id/btnCall"
             android:textAllCaps="true"
             android:text="@string/call_him"
-            android:layout_width="match_parent"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/expandableLayout" />
 

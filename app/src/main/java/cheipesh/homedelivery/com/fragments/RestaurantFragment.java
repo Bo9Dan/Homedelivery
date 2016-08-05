@@ -1,5 +1,6 @@
 package cheipesh.homedelivery.com.fragments;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import cheipesh.homedelivery.com.R;
 import cheipesh.homedelivery.com.adapters.RestaurantAdapter;
 import cheipesh.homedelivery.com.base.BaseFragment;
 import cheipesh.homedelivery.com.base.Constants;
+import cheipesh.homedelivery.com.base.ParcelableParseObject;
 import cheipesh.homedelivery.com.util.SharedPrefManager;
 import in.srain.cube.views.GridViewWithHeaderAndFooter;
 
@@ -61,36 +63,50 @@ public class RestaurantFragment extends BaseFragment {
         headerAndFooter.addFooterView(footerView);
         headerAndFooter.setNumColumns(2);
         headerAndFooter.setAdapter(getAdapter());
-        headerAndFooter.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (position != getAdapter().getCount() && id >= 0){
-                    ImageView imageView = (ImageView) view.findViewById(R.id.ivRestIcon);
-                    if (imageView.getDrawable() != null) {
-                        Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
-
-                        activity.setDrawableHamb(bitmap);
-                    } else {
-                        activity.setDrawableHamb(null);
-                    }
-                    activity.setDrawableBack();
-                    ParseObject place = getAdapter().getItem(position).getParseObject("object");
-                    OptionDialog placeDetail = OptionDialog.newInstance(
-                                  place.getString(Constants.P_COLUMN_MENU),
-                                  place.getString(Constants.P_COLUMN_PHONE),
-                                  place.getParseFile("image").getUrl());
-                    placeDetail.show(getFragmentManager(), Constants.PLACE_KEY);
-                }  else {
-                    activity.openBrowser("");
-                }
-            }
-        });
+        headerAndFooter.setOnItemClickListener(restaurantOnClickListener);
 
         getData(Constants.PLACE_KEY, Constants.P_COLUMN_CITY, SharedPrefManager.getInstance().retrieveCity());
 
         activity.setMenuBack(true);
 
         return view;
+    }
+
+    private AdapterView.OnItemClickListener restaurantOnClickListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            if (position != getAdapter().getCount() && id >= 0) {
+
+                ParseObject place = getAdapter().getItem(position).getParseObject("object");
+                saveDrawable(view);
+                activity.setDrawableBack();
+                ParcelableParseObject parseObject = new ParcelableParseObject(place, CityName);
+
+//                OptionDialog placeDetail = OptionDialog.newInstance(parseObject);
+//                placeDetail.show(getFragmentManager(), Constants.PLACE_KEY);
+
+
+                Intent intent = new Intent(getContext(), OptionActivity.class);
+                Bundle bundle = new Bundle();
+                intent.putExtra(Constants.TFG_OPTION_MENU_LIST, parseObject.getMenu());
+                intent.putExtra(Constants.TFG_OPTION_PHONE_NUMBER, parseObject.getPhone());
+                startActivity(intent);
+
+            }  else {
+                activity.openBrowser("");
+            }
+        }
+    };
+
+    private void saveDrawable(View view) {
+        ImageView imageView = (ImageView) view.findViewById(R.id.ivRestIcon);
+        if (imageView.getDrawable() != null) {
+            Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+            activity.setDrawableHamb(bitmap);
+        } else {
+            activity.setDrawableHamb(null);
+        }
     }
 
     @Override

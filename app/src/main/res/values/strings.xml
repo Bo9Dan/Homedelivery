@@ -8,8 +8,9 @@
     <string name="call_him">Call</string>
     <string name="app_title">Wanna eat</string>
     <string name="error">Error</string>
-    <string name="error_msg">Помилка завантаження. Перевірте будь-ласка підключення до мережі Інтернет та спробуйте ще</string>
+    <string name="error_msg">Downloading error. Please check Internet connection and try again</string>
     <string name="ok">Cancel</string>
     <string name="try_again">Retry</string>
+    <string name="delivery_time">mins</string>
 
 </resources>
