@@ -303,6 +303,7 @@ implements RadioGroup.OnCheckedChangeListener{
 
     public void replaceFragment(Fragment _fragment, boolean _addToBackStack) {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
         if (_addToBackStack) fragmentTransaction.addToBackStack(null);
 
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.flBaseFrame);
