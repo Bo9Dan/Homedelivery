@@ -42,7 +42,7 @@
 
             <ImageView
                 android:id="@+id/ivWebLabelImg"
-                android:src="@mipmap/appicon"
+                android:src="@drawable/ic_action_256"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true" />

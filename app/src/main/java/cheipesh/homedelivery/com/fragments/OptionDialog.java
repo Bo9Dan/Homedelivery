@@ -1,12 +1,15 @@
 package cheipesh.homedelivery.com.fragments;
 
 import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Outline;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -14,6 +17,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewOutlineProvider;
 import android.view.Window;
 import android.webkit.WebView;
 import android.widget.ImageView;
@@ -35,6 +39,7 @@ import org.json.JSONObject;
 
 import cheipesh.homedelivery.com.R;
 import cheipesh.homedelivery.com.base.Constants;
+import cheipesh.homedelivery.com.base.MagicTextView;
 import cheipesh.homedelivery.com.base.MainActivity;
 import cheipesh.homedelivery.com.base.ParcelableParseObject;
 
@@ -43,7 +48,8 @@ public class OptionDialog extends DialogFragment {
     private ImageView ivDialogBackground;
     private RoundedImageView ivOptionLogo;
     private TextView tvWorking, tvDelivery;
-    private TextView btnMenu, btnCall;
+    private TextView tvMenu, tvCall;
+    private View btnMenu, btnCall;
     private ExpandableRelativeLayout erlContainer;
     private WebView wvMenuRestaurant;
 
@@ -102,14 +108,17 @@ public class OptionDialog extends DialogFragment {
         tvWorking           = (TextView) _dialog.findViewById(R.id.tvWorkingTime);
         tvDelivery          = (TextView) _dialog.findViewById(R.id.tvDeliveryTime);
 
-        btnMenu             = (TextView) _dialog.findViewById(R.id.btnShowList);
-        btnCall             = (TextView) _dialog.findViewById(R.id.btnCall);
+        tvMenu           = (TextView) _dialog.findViewById(R.id.btnShowList);
+        tvCall          = (TextView) _dialog.findViewById(R.id.btnCall);
+
+        btnMenu             = (View) _dialog.findViewById(R.id.fakeButtonShow);
+        btnCall             = (View) _dialog.findViewById(R.id.fakeButtonCall);
 
         // adEffectTypeface
         applyTypeFace(tvWorking);
         applyTypeFace(tvDelivery);
-        applyTypeFace(btnMenu);
-        applyTypeFace(btnCall);
+        applyTypeFace(tvMenu);
+        applyTypeFace(tvCall);
 
 
         // fillData
@@ -142,11 +151,11 @@ public class OptionDialog extends DialogFragment {
                 case R.id.ivOptionBackground:
                     getDialog().dismiss();
                     break;
-                case R.id.btnCall:
+                case R.id.fakeButtonCall:
                     callHim();
                     break;
                 case R.id.ivOptionMenu:
-                case R.id.btnShowList:
+                case R.id.fakeButtonShow:
                     erlContainer.toggle();
                     break;
             }

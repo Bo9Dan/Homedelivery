@@ -294,7 +294,7 @@ implements RadioGroup.OnCheckedChangeListener{
 
     public void setDrawableBack() {
         layout.setDrawingCacheEnabled(true);
-        this.drawableBack = NativeStackBlur.process(layout.getDrawingCache(), 36);
+        this.drawableBack = NativeStackBlur.process(layout.getDrawingCache(), 160);
     }
 
     public void setDrawableHamb(Bitmap drawable){
