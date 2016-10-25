@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<cheipesh.homedelivery.com.base.SquareView
+<myahkota.homedelivery.com.base.SquareView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/rlGeneralFoodDetailCont"
     android:gravity="center_vertical|center_horizontal|center"
@@ -59,4 +59,4 @@
 
 
 
-</cheipesh.homedelivery.com.base.SquareView>
+</myahkota.homedelivery.com.base.SquareView>
