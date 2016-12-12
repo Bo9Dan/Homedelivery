@@ -91,24 +91,24 @@
                 android:layout_height="wrap_content" />
         </RelativeLayout>
 
-        <com.github.aakira.expandablelayout.ExpandableRelativeLayout
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/expandableLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:ael_expanded="false"
-            app:ael_duration="600"
-            app:ael_interpolator="fastOutSlowIn"
-            app:ael_orientation="vertical">
-            <!--fastOutSlowIn = norm = linearOutSlowIn-->
-            <WebView
-                android:id="@+id/wvListMenu"
-                android:layout_width="match_parent"
-                android:layout_height="250dp">
+        <!--<com.github.aakira.expandablelayout.ExpandableRelativeLayout-->
+            <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+            <!--android:id="@+id/expandableLayout"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--app:ael_expanded="false"-->
+            <!--app:ael_duration="600"-->
+            <!--app:ael_interpolator="fastOutSlowIn"-->
+            <!--app:ael_orientation="vertical">-->
+            <!--&lt;!&ndash;fastOutSlowIn = norm = linearOutSlowIn&ndash;&gt;-->
+            <!--<WebView-->
+                <!--android:id="@+id/wvListMenu"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="250dp">-->
 
-            </WebView>
+            <!--</WebView>-->
 
-        </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
+        <!--</com.github.aakira.expandablelayout.ExpandableRelativeLayout>-->
 
         <RelativeLayout
             android:layout_width="wrap_content"

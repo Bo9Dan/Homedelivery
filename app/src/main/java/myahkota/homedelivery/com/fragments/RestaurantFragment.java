@@ -16,13 +16,13 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import in.srain.cube.views.GridViewWithHeaderAndFooter;
 import myahkota.homedelivery.com.R;
 import myahkota.homedelivery.com.adapters.RestaurantAdapter;
 import myahkota.homedelivery.com.base.BaseFragment;
 import myahkota.homedelivery.com.base.Constants;
 import myahkota.homedelivery.com.base.ParcelableParseObject;
 import myahkota.homedelivery.com.util.SharedPrefManager;
-import in.srain.cube.views.GridViewWithHeaderAndFooter;
 
 public class RestaurantFragment extends BaseFragment {
 

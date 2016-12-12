@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/frameDialog"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:id="@+id/ivOptionBackground"
+        android:scaleType="fitXY"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <RelativeLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <net.cachapa.expandablelayout.ExpandableLayout
+            android:layout_alignParentTop="true"
+            android:id="@+id/expandableLayoutTop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:el_duration="1000"
+            app:el_expanded="true">
+
+            <LinearLayout
+                android:id="@+id/llTopContErl"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+
+                <com.makeramen.roundedimageview.RoundedImageView
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/ivOptionMenu"
+                    android:layout_width="@dimen/_76sdp"
+                    android:layout_height="@dimen/_76sdp"
+                    android:src="@drawable/background_food"
+                    app:riv_corner_radius="16dp"
+                    app:riv_border_width="@null"
+                    app:riv_mutate_background="true"
+                    app:riv_oval="false"
+                    />
+
+                <TextView
+                    android:id="@+id/tvWorkingTime"
+                    android:drawableStart="@drawable/ic_access_time_black_24dp"
+                    android:textAllCaps="true"
+                    android:padding="8dp"
+                    android:drawablePadding="8dp"
+                    android:gravity="center"
+                    android:textAlignment="center"
+                    android:textColor="#000000"
+                    android:shadowColor="#FFF"
+                    android:shadowRadius="24"
+                    android:textSize="19sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/tvDeliveryTime"
+                    android:drawableStart="@drawable/ic_delivery_black"
+                    android:drawablePadding="8dp"
+                    android:padding="8dp"
+                    android:gravity="center"
+                    android:textAllCaps="true"
+                    android:textAlignment="center"
+                    android:textColor="#000000"
+                    android:shadowColor="#FFF"
+                    android:shadowRadius="24"
+                    android:textSize="18sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+
+            </LinearLayout>
+
+            </net.cachapa.expandablelayout.ExpandableLayout>
+
+        <RelativeLayout
+            android:layout_below="@+id/expandableLayoutTop"
+            android:layout_above="@+id/expandableLayoutBottom"
+            android:id="@+id/rlMainDetail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+                <RelativeLayout
+                    android:id="@+id/rlMenuCont"
+                    android:layout_alignParentTop="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <View
+                        android:id="@+id/fakeButtonShow"
+                        android:alpha="0.4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_corner_up"
+                        android:layout_alignTop="@+id/btnShowList"
+                        android:layout_alignBottom="@+id/btnShowList"/>
+
+                    <TextView
+                        android:id="@+id/btnShowList"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:drawablePadding="8dp"
+                        android:elevation="2dp"
+                        android:gravity="center"
+                        android:textSize="22sp"
+                        android:textAllCaps="true"
+                        android:textColor="#666666"
+                        android:layout_centerHorizontal="true"
+                        android:text="@string/menu_restaurant"
+                        android:drawableStart="@drawable/ic_format_align_justify_black_24dp"
+                        />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_alignParentBottom="true"
+                    android:id="@+id/rlCallCont"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <View
+                        android:id="@+id/fakeButtonCall"
+                        android:alpha="0.4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_corner_bottom"
+                        android:layout_alignTop="@+id/btnCall"
+                        android:layout_alignBottom="@+id/btnCall"
+                        />
+
+                    <TextView
+                        android:id="@+id/btnCall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:drawablePadding="8dp"
+                        android:elevation="2dp"
+                        android:gravity="center"
+                        android:textColor="#666666"
+                        android:textAllCaps="true"
+                        android:textSize="22sp"
+                        android:layout_centerHorizontal="true"
+                        android:text="@string/call_him"
+                        android:drawableStart="@drawable/ic_call_black_24dp"
+                        />
+                </RelativeLayout>
+
+                    <myahkota.homedelivery.com.base.ObservableWebView
+                        android:id="@+id/wvListMenu"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_below="@id/rlMenuCont"
+                        android:layout_above="@id/rlCallCont"
+                        />
+
+            </RelativeLayout>
+
+        <net.cachapa.expandablelayout.ExpandableLayout
+            android:layout_alignParentBottom="true"
+            android:id="@+id/expandableLayoutBottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:el_duration="1000"
+            app:el_expanded="true">
+
+            <TextView
+                android:id="@+id/spaceBottom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </net.cachapa.expandablelayout.ExpandableLayout>
+
+    </RelativeLayout>
+
+</FrameLayout>
