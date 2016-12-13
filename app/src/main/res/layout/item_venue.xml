@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<myahkota.homedelivery.com.base.SquareView
+<myahkota.homedelivery.com.present.view.SquareView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/rlGeneralFoodDetailCont"
-    android:gravity="center_vertical|center_horizontal|center"
     android:layout_width="match_parent"
-    android:padding="8dp"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:padding="8dp">
 
     <RelativeLayout
         android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <ImageView
             android:id="@+id/ivRestIcon"
             android:layout_width="@dimen/_156sdp"
             android:layout_height="@dimen/_156sdp" />
-    </RelativeLayout>
 
-</myahkota.homedelivery.com.base.SquareView>
+    </RelativeLayout>
+</myahkota.homedelivery.com.present.view.SquareView>

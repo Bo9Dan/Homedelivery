@@ -1,22 +1,24 @@
 package myahkota.homedelivery.com;
 
 import android.app.Application;
-import android.content.Context;
-
 import com.amplitude.api.Amplitude;
 import com.parse.Parse;
 
-import myahkota.homedelivery.com.base.Const;
+import myahkota.homedelivery.com.data.Const;
 
 public class App extends Application {
 
-    private static Context mContext;
+    private static App instance;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        mContext = getApplicationContext();
-        Amplitude.getInstance().initialize(this, Const.AMPLITUDE_API_KEY).enableForegroundTracking(this);
+        instance = this;
+
+        Amplitude.getInstance()
+                .initialize(this, Const.AMPLITUDE_API_KEY)
+                .enableForegroundTracking(this);
+
         Parse.initialize(new Parse.Configuration.Builder(this)
                 .server(Const.PROJECT_URL)
                 .applicationId(Const.PROJECT_ID)
@@ -27,8 +29,7 @@ public class App extends Application {
 
     }
 
-
-    public static Context getAppContext() {
-        return mContext;
+    public static App getInstance() {
+        return instance;
     }
 }

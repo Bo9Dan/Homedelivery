@@ -1,4 +1,4 @@
-package myahkota.homedelivery.com.adapters;
+package myahkota.homedelivery.com.present.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,8 +11,9 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.parse.ParseObject;
 
 import myahkota.homedelivery.com.R;
+import myahkota.homedelivery.com.present.base.ExtendBaseAdapter;
 
-public class PlaceAdapter extends ExtendBaseAdapter{
+public class PlaceAdapter extends ExtendBaseAdapter {
 
     public PlaceAdapter(Context context) {
         super(context);

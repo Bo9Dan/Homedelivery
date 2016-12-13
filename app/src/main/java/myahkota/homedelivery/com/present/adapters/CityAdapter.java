@@ -1,4 +1,4 @@
-package myahkota.homedelivery.com.adapters;
+package myahkota.homedelivery.com.present.adapters;
 
 import android.content.Context;
 import android.util.TypedValue;
@@ -13,6 +13,7 @@ import com.elmargomez.typer.Typer;
 import com.parse.ParseObject;
 
 import myahkota.homedelivery.com.R;
+import myahkota.homedelivery.com.present.base.ExtendBaseAdapter;
 
 public class CityAdapter extends ExtendBaseAdapter {
 

@@ -1,4 +1,4 @@
-package myahkota.homedelivery.com.util;
+package myahkota.homedelivery.com.data;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -18,7 +18,7 @@ public class SharedPrefManager {
 
     public static SharedPrefManager getInstance() {
         if (instance == null) {
-            instance = new SharedPrefManager(App.getAppContext());
+            instance = new SharedPrefManager(App.getInstance());
         }
         return instance;
     }
@@ -47,12 +47,12 @@ public class SharedPrefManager {
         editor.apply();
     }
 
-
     public void saveBoolean(String _key, boolean _value) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(_key, _value);
         editor.apply();
     }
+
 
     public String retrieveString(String _s) {
         return sharedPreferences.getString(_s, "");

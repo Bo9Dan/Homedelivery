@@ -1,4 +1,4 @@
-package myahkota.homedelivery.com.base;
+package myahkota.homedelivery.com.present;
 
 import android.content.Context;
 import android.content.Intent;
@@ -45,18 +45,19 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import myahkota.homedelivery.com.R;
-import myahkota.homedelivery.com.adapters.MenuAdapter;
-import myahkota.homedelivery.com.fragments.CategoryFragment;
-import myahkota.homedelivery.com.fragments.CityFragment;
-import myahkota.homedelivery.com.fragments.LoadingDialog;
-import myahkota.homedelivery.com.fragments.RestaurantFragment;
-import myahkota.homedelivery.com.fragments.SplashDialog;
-import myahkota.homedelivery.com.util.SharedPrefManager;
+import myahkota.homedelivery.com.present.adapters.MenuAdapter;
+import myahkota.homedelivery.com.data.Const;
+import myahkota.homedelivery.com.present.fragments.CategoryFragment;
+import myahkota.homedelivery.com.present.fragments.CityFragment;
+import myahkota.homedelivery.com.present.view.LoadingDialog;
+import myahkota.homedelivery.com.present.fragments.RestaurantFragment;
+import myahkota.homedelivery.com.SplashDialog;
+import myahkota.homedelivery.com.data.SharedPrefManager;
 
 import static android.view.Gravity.END;
 
 public class MainActivity extends AppCompatActivity
-implements RadioGroup.OnCheckedChangeListener{
+                implements RadioGroup.OnCheckedChangeListener{
 
     private LoadingDialog progressDialog;
 
@@ -161,7 +162,7 @@ implements RadioGroup.OnCheckedChangeListener{
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
 //                    getData();
-                    ((BaseFragment) getSupportFragmentManager().findFragmentById(R.id.flBaseFrame)).search(inputView.getText().toString());
+//                    ((BaseFragment) getSupportFragmentManager().findFragmentById(R.id.flBaseFrame)).search(inputView.getText().toString());
                     return true;
                 }
                 return false;

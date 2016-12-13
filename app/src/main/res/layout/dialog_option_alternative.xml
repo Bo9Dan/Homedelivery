@@ -34,16 +34,12 @@
                 android:orientation="vertical">
 
 
-                <com.makeramen.roundedimageview.RoundedImageView
+                <myahkota.homedelivery.com.present.view.CircleImageView
                     xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/ivOptionMenu"
                     android:layout_width="@dimen/_76sdp"
                     android:layout_height="@dimen/_76sdp"
                     android:src="@drawable/background_food"
-                    app:riv_corner_radius="16dp"
-                    app:riv_border_width="@null"
-                    app:riv_mutate_background="true"
-                    app:riv_oval="false"
                     />
 
                 <TextView

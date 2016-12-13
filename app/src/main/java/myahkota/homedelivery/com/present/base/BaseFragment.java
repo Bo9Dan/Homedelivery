@@ -1,4 +1,4 @@
-package myahkota.homedelivery.com.base;
+package myahkota.homedelivery.com.present.base;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -14,8 +14,9 @@ import com.parse.ParseQuery;
 import java.util.List;
 
 import myahkota.homedelivery.com.R;
-import myahkota.homedelivery.com.adapters.ExtendBaseAdapter;
-import myahkota.homedelivery.com.util.SharedPrefManager;
+import myahkota.homedelivery.com.data.Const;
+import myahkota.homedelivery.com.data.SharedPrefManager;
+import myahkota.homedelivery.com.present.MainActivity;
 
 public abstract class BaseFragment extends Fragment {
 

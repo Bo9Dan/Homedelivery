@@ -1,11 +1,11 @@
-package myahkota.homedelivery.com.base;
+package myahkota.homedelivery.com.data;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.parse.ParseObject;
 
-public class ParcelableParseObject implements Parcelable {
+public class ParcelableDTO implements Parcelable {
 
     private String category;
     private String city;
@@ -15,7 +15,7 @@ public class ParcelableParseObject implements Parcelable {
     private String menu;
     private String phone;
 
-    public ParcelableParseObject(ParseObject parseObject, String _category) {
+    public ParcelableDTO(ParseObject parseObject, String _category) {
         category = _category;
         city = parseObject.getString(Const.P_COLUMN_CITY);
         place = parseObject.getString(Const.P_COLUMN_TITLE);
@@ -98,7 +98,7 @@ public class ParcelableParseObject implements Parcelable {
         dest.writeString(this.phone);
     }
 
-    protected ParcelableParseObject(Parcel in) {
+    protected ParcelableDTO(Parcel in) {
         this.category = in.readString();
         this.city = in.readString();
         this.place = in.readString();
@@ -108,15 +108,15 @@ public class ParcelableParseObject implements Parcelable {
         this.phone = in.readString();
     }
 
-    public static final Parcelable.Creator<ParcelableParseObject> CREATOR = new Parcelable.Creator<ParcelableParseObject>() {
+    public static final Parcelable.Creator<ParcelableDTO> CREATOR = new Parcelable.Creator<ParcelableDTO>() {
         @Override
-        public ParcelableParseObject createFromParcel(Parcel source) {
-            return new ParcelableParseObject(source);
+        public ParcelableDTO createFromParcel(Parcel source) {
+            return new ParcelableDTO(source);
         }
 
         @Override
-        public ParcelableParseObject[] newArray(int size) {
-            return new ParcelableParseObject[size];
+        public ParcelableDTO[] newArray(int size) {
+            return new ParcelableDTO[size];
         }
     };
 }

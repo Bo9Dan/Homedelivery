@@ -1,4 +1,4 @@
-package myahkota.homedelivery.com.base;
+package myahkota.homedelivery.com.data;
 
 public class Const {
 

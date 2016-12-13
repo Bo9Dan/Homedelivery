@@ -1,4 +1,4 @@
-package myahkota.homedelivery.com.adapters;
+package myahkota.homedelivery.com.present.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -13,6 +13,7 @@ import com.parse.ParseObject;
 import java.util.List;
 
 import myahkota.homedelivery.com.R;
+import myahkota.homedelivery.com.present.base.ExtendBaseAdapter;
 
 public class MenuAdapter extends ExtendBaseAdapter {
 

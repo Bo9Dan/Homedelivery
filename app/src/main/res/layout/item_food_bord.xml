@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<myahkota.homedelivery.com.base.SquareView
+<myahkota.homedelivery.com.present.view.SquareView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/rlGeneralFoodDetailCont"
     android:gravity="center_vertical|center_horizontal|center"
@@ -59,4 +59,4 @@
 
 
 
-</myahkota.homedelivery.com.base.SquareView>
+</myahkota.homedelivery.com.present.view.SquareView>

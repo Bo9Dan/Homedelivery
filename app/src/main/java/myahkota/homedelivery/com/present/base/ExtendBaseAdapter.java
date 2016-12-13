@@ -1,4 +1,4 @@
-package myahkota.homedelivery.com.adapters;
+package myahkota.homedelivery.com.present.base;
 
 import android.content.Context;
 import android.view.View;
@@ -15,7 +15,7 @@ public abstract class ExtendBaseAdapter extends BaseAdapter {
     private List<ParseObject> mData;
     private Context context;
 
-    ExtendBaseAdapter(Context context) {
+    public ExtendBaseAdapter(Context context) {
         this.context = context;
         this.mData = new ArrayList<>();
     }

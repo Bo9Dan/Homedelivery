@@ -1,4 +1,4 @@
-package myahkota.homedelivery.com.fragments;
+package myahkota.homedelivery.com.present.fragments;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -18,11 +18,12 @@ import java.util.List;
 
 import in.srain.cube.views.GridViewWithHeaderAndFooter;
 import myahkota.homedelivery.com.R;
-import myahkota.homedelivery.com.adapters.PlaceAdapter;
-import myahkota.homedelivery.com.base.BaseFragment;
-import myahkota.homedelivery.com.base.Const;
-import myahkota.homedelivery.com.base.ParcelableParseObject;
-import myahkota.homedelivery.com.util.SharedPrefManager;
+import myahkota.homedelivery.com.present.adapters.PlaceAdapter;
+import myahkota.homedelivery.com.present.base.BaseFragment;
+import myahkota.homedelivery.com.data.Const;
+import myahkota.homedelivery.com.data.ParcelableDTO;
+import myahkota.homedelivery.com.data.SharedPrefManager;
+import myahkota.homedelivery.com.present.view.OptionDialog;
 
 public class RestaurantFragment extends BaseFragment {
 
@@ -80,7 +81,7 @@ public class RestaurantFragment extends BaseFragment {
                 ParseObject place = getAdapter().getItem(position).getParseObject("object");
                 saveDrawable(view);
                 activity.setDrawableBack();
-                ParcelableParseObject parseObject = new ParcelableParseObject(place, mCategoryName);
+                ParcelableDTO parseObject = new ParcelableDTO(place, mCategoryName);
 
                 OptionDialog placeDetail = OptionDialog.newInstance(parseObject);
                 placeDetail.show(getFragmentManager(), Const.PLACE_KEY);

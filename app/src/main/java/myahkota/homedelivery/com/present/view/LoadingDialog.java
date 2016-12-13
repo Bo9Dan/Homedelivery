@@ -1,4 +1,4 @@
-package myahkota.homedelivery.com.fragments;
+package myahkota.homedelivery.com.present.view;
 
 import android.app.Dialog;
 import android.content.DialogInterface;

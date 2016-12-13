@@ -1,4 +1,4 @@
-package myahkota.homedelivery.com.adapters;
+package myahkota.homedelivery.com.present.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -14,8 +14,9 @@ import com.elmargomez.typer.Typer;
 import com.parse.ParseObject;
 
 import myahkota.homedelivery.com.R;
+import myahkota.homedelivery.com.present.base.ExtendBaseAdapter;
 
-public class CategoryAdapter extends ExtendBaseAdapter{
+public class CategoryAdapter extends ExtendBaseAdapter {
 
     public CategoryAdapter(Context context) {
         super(context);

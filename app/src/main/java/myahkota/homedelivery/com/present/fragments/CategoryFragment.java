@@ -1,4 +1,4 @@
-package myahkota.homedelivery.com.fragments;
+package myahkota.homedelivery.com.present.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,11 +11,11 @@ import com.parse.ParseObject;
 import java.util.List;
 
 import myahkota.homedelivery.com.R;
-import myahkota.homedelivery.com.adapters.CategoryAdapter;
-import myahkota.homedelivery.com.base.BaseFragment;
-import myahkota.homedelivery.com.base.Const;
-import myahkota.homedelivery.com.base.MainActivity;
-import myahkota.homedelivery.com.util.SharedPrefManager;
+import myahkota.homedelivery.com.present.adapters.CategoryAdapter;
+import myahkota.homedelivery.com.present.base.BaseFragment;
+import myahkota.homedelivery.com.data.Const;
+import myahkota.homedelivery.com.present.MainActivity;
+import myahkota.homedelivery.com.data.SharedPrefManager;
 import in.srain.cube.views.GridViewWithHeaderAndFooter;
 
 public class CategoryFragment extends BaseFragment {

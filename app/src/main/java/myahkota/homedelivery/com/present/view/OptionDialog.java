@@ -1,4 +1,4 @@
-package myahkota.homedelivery.com.fragments;
+package myahkota.homedelivery.com.present.view;
 
 import android.Manifest;
 import android.app.Dialog;
@@ -28,7 +28,6 @@ import android.widget.TextView;
 import com.amplitude.api.Amplitude;
 import com.elmargomez.typer.Font;
 import com.elmargomez.typer.Typer;
-import com.makeramen.roundedimageview.RoundedImageView;
 import com.vistrav.ask.Ask;
 import com.vistrav.ask.annotations.AskDenied;
 import com.vistrav.ask.annotations.AskGranted;
@@ -39,14 +38,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import myahkota.homedelivery.com.R;
-import myahkota.homedelivery.com.base.Const;
-import myahkota.homedelivery.com.base.MainActivity;
-import myahkota.homedelivery.com.base.ParcelableParseObject;
+import myahkota.homedelivery.com.data.Const;
+import myahkota.homedelivery.com.present.MainActivity;
+import myahkota.homedelivery.com.data.ParcelableDTO;
 
 public class OptionDialog extends DialogFragment {
 
     private ImageView ivDialogBackground;
-    private RoundedImageView ivOptionLogo;
+    private CircleImageView ivOptionLogo;
 
     private TextView tvWorking, tvDelivery;
     private TextView tvMenu, tvCall;
@@ -60,9 +59,9 @@ public class OptionDialog extends DialogFragment {
     private LinearLayout topLayout;
     private RelativeLayout relativeMenu, relativeCall;
 
-    private ParcelableParseObject mRestaurantDetail;
+    private ParcelableDTO mRestaurantDetail;
 
-    public static OptionDialog newInstance(ParcelableParseObject _placeDetail) {
+    public static OptionDialog newInstance(ParcelableDTO _placeDetail) {
         OptionDialog fragment = new OptionDialog();
         Bundle args = new Bundle();
         args.putParcelable(Const.P_COLUMN_OBJECT, _placeDetail);
@@ -127,7 +126,7 @@ public class OptionDialog extends DialogFragment {
         wvMenuRestaurant    = (WebView) _dialog.findViewById(R.id.wvListMenu);
 
         ivDialogBackground  = (ImageView) _dialog.findViewById(R.id.ivOptionBackground);
-        ivOptionLogo        = (RoundedImageView) _dialog.findViewById(R.id.ivOptionMenu);
+        ivOptionLogo        = (CircleImageView) _dialog.findViewById(R.id.ivOptionMenu);
 
         bottomSpace = (TextView) _dialog.findViewById(R.id.spaceBottom);
 
@@ -144,7 +143,7 @@ public class OptionDialog extends DialogFragment {
         setListeners();
     }
 
-    private void fillData(ParcelableParseObject model) {
+    private void fillData(ParcelableDTO model) {
         ivDialogBackground.setImageBitmap(((MainActivity) getActivity()).getDrawableBack());
 
         final Bitmap logoImage = ((MainActivity) getActivity()).getDrawableOption();

@@ -1,4 +1,4 @@
-package myahkota.homedelivery.com.fragments;
+package myahkota.homedelivery.com.present.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,11 +12,11 @@ import com.parse.ParseObject;
 
 import java.util.List;
 
-import myahkota.homedelivery.com.base.Const;
+import myahkota.homedelivery.com.data.Const;
 import myahkota.homedelivery.com.R;
-import myahkota.homedelivery.com.util.SharedPrefManager;
-import myahkota.homedelivery.com.adapters.CityAdapter;
-import myahkota.homedelivery.com.base.BaseFragment;
+import myahkota.homedelivery.com.data.SharedPrefManager;
+import myahkota.homedelivery.com.present.adapters.CityAdapter;
+import myahkota.homedelivery.com.present.base.BaseFragment;
 import in.srain.cube.views.GridViewWithHeaderAndFooter;
 
 public class CityFragment extends BaseFragment {

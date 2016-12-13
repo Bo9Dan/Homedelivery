@@ -1,4 +1,4 @@
-package myahkota.homedelivery.com.base;
+package myahkota.homedelivery.com.present.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -11,11 +11,11 @@ public class SquareView extends LinearLayout {
     }
 
     public SquareView(Context context, AttributeSet attrs) {
-        this(context);
+        super(context, attrs);
     }
 
     public SquareView(Context context, AttributeSet attrs, int defStyleAttr) {
-        this(context);
+        super(context, attrs, defStyleAttr);
     }
 
     @Override

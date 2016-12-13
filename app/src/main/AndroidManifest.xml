@@ -19,7 +19,7 @@
         android:theme="@style/AppTheme">
 
 
-        <activity android:name="myahkota.homedelivery.com.base.MainActivity"
+        <activity android:name="myahkota.homedelivery.com.present.MainActivity"
             android:screenOrientation="portrait">
 
             <intent-filter>
