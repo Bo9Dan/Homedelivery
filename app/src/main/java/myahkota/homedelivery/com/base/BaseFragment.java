@@ -33,6 +33,11 @@ public abstract class BaseFragment extends Fragment {
         super.onAttach(context);
         activity = (MainActivity) context;
         mAdapter = initAdapter();
+        activity.setSearchVisible(false);
+    }
+
+    protected void search(String text) {
+
     }
 
     public ExtendBaseAdapter getAdapter() {
@@ -53,7 +58,7 @@ public abstract class BaseFragment extends Fragment {
         if (!_columnKey.isEmpty()) {
             query.whereEqualTo(_columnName, _columnKey);
         } else {
-            query.orderByAscending(Constants.P_COLUMN_ORDER);
+            query.orderByAscending(Const.P_COLUMN_ORDER);
         }
 
         if (activity.isOnline()) {

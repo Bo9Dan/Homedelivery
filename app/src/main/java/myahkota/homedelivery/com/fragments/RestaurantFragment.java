@@ -18,9 +18,9 @@ import java.util.List;
 
 import in.srain.cube.views.GridViewWithHeaderAndFooter;
 import myahkota.homedelivery.com.R;
-import myahkota.homedelivery.com.adapters.RestaurantAdapter;
+import myahkota.homedelivery.com.adapters.PlaceAdapter;
 import myahkota.homedelivery.com.base.BaseFragment;
-import myahkota.homedelivery.com.base.Constants;
+import myahkota.homedelivery.com.base.Const;
 import myahkota.homedelivery.com.base.ParcelableParseObject;
 import myahkota.homedelivery.com.util.SharedPrefManager;
 
@@ -34,24 +34,24 @@ public class RestaurantFragment extends BaseFragment {
     public static RestaurantFragment newInstance(final String _categoryID, final String _title) {
         RestaurantFragment fragment = new RestaurantFragment();
         Bundle args = new Bundle();
-        args.putString(Constants.PLACE_KEY, _categoryID);
-        args.putString(Constants.CITY_TITLE, _title);
+        args.putString(Const.PLACE_KEY, _categoryID);
+        args.putString(Const.CITY_TITLE, _title);
         fragment.setArguments(args);
         return fragment;
     }
 
 
     @Override
-    protected RestaurantAdapter initAdapter() {
-        return new RestaurantAdapter(activity);
+    protected PlaceAdapter initAdapter() {
+        return new PlaceAdapter(activity);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         if (getArguments() != null) {
-            mCategoryId = getArguments().getString(Constants.PLACE_KEY, "");
-            mCategoryName = getArguments().getString(Constants.CITY_TITLE, "");
+            mCategoryId = getArguments().getString(Const.PLACE_KEY, "");
+            mCategoryName = getArguments().getString(Const.CITY_TITLE, "");
         }
 
         View view = inflater.inflate(R.layout.grid_layout, container, false);
@@ -64,7 +64,7 @@ public class RestaurantFragment extends BaseFragment {
         headerAndFooter.setAdapter(getAdapter());
         headerAndFooter.setOnItemClickListener(restaurantOnClickListener);
 
-        getData(Constants.PLACE_KEY, Constants.P_COLUMN_CITY, SharedPrefManager.getInstance().retrieveCity());
+        getData(Const.PLACE_KEY, Const.P_COLUMN_CITY, SharedPrefManager.getInstance().retrieveCity());
 
         activity.setMenuBack(true);
 
@@ -83,7 +83,7 @@ public class RestaurantFragment extends BaseFragment {
                 ParcelableParseObject parseObject = new ParcelableParseObject(place, mCategoryName);
 
                 OptionDialog placeDetail = OptionDialog.newInstance(parseObject);
-                placeDetail.show(getFragmentManager(), Constants.PLACE_KEY);
+                placeDetail.show(getFragmentManager(), Const.PLACE_KEY);
             }  else {
                 activity.openBrowser("");
             }
@@ -119,12 +119,10 @@ public class RestaurantFragment extends BaseFragment {
                         String order = "10000";
                         if (orderList.size() >=  object.getList("categories").indexOf(category))
                             order = orderList.get(object.getList("categories").indexOf(category));
-//                        object.add("myorder", order);
 
                         sortData.add(createNewSortItem(object, order));
                     } else {
                         String order = "10000";
-//                        object.add("myorder", order);
                         sortData.add(createNewSortItem(object, order));
                     }
 
@@ -143,7 +141,7 @@ public class RestaurantFragment extends BaseFragment {
         getAdapter().setData(sortData);
         if (hasSave){
             ParseObject.pinAllInBackground(data);
-            SharedPrefManager.getInstance().saveLong(Constants.PLACE_KEY + SharedPrefManager.getInstance().retrieveCity(), System.currentTimeMillis());
+            SharedPrefManager.getInstance().saveLong(Const.PLACE_KEY + SharedPrefManager.getInstance().retrieveCity(), System.currentTimeMillis());
         }
         calculateFooter(sortData.size());
     }

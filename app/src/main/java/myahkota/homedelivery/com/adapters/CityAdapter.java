@@ -16,14 +16,8 @@ import myahkota.homedelivery.com.R;
 
 public class CityAdapter extends ExtendBaseAdapter {
 
-
     public CityAdapter(Context context) {
         super(context);
-    }
-
-    @Override
-    public int getCount() {
-        return getData().size();
     }
 
     @Override
@@ -38,36 +32,33 @@ public class CityAdapter extends ExtendBaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder viewHolder;
+        CityHolder cityHolder;
 
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_city, parent, false);
-            viewHolder = new ViewHolder(convertView);
-            convertView.setTag(viewHolder);
+            cityHolder = new CityHolder(convertView);
+            convertView.setTag(cityHolder);
         } else {
-            viewHolder = (ViewHolder) convertView.getTag();
+            cityHolder = (CityHolder) convertView.getTag();
         }
-        viewHolder.mCityName.setText(getItem(position).getString("title"));
+        cityHolder.mCityName.setText(getItem(position).getString("title"));
         setColorView(convertView, position);
 
         return convertView;
     }
 
-
-    class ViewHolder {
+    private class CityHolder {
         private ImageView ivCityIcon;
         private TextView mCityName;
         private View view;
 
-        public ViewHolder(View v) {
+        public CityHolder(View v) {
             view = v;
             ivCityIcon = (ImageView) v.findViewById(R.id.ivCityPictogram);
             mCityName = (TextView) v.findViewById(R.id.tvCitName);
             mCityName.setTypeface(Typer.set(getContext()).getFont(Font.ROBOTO_REGULAR));
         }
     }
-
-
 
     private void setColorView(View view, int position) {
         view.getLayoutParams().height =

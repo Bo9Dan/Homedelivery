@@ -17,14 +17,8 @@ import myahkota.homedelivery.com.R;
 
 public class CategoryAdapter extends ExtendBaseAdapter{
 
-
     public CategoryAdapter(Context context) {
         super(context);
-    }
-
-    @Override
-    public int getCount() {
-        return getData().size();
     }
 
     @Override
@@ -39,58 +33,55 @@ public class CategoryAdapter extends ExtendBaseAdapter{
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder viewHolder;
+        CategoryHolder categoryHolder;
 
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_food_bord, null);
-            viewHolder = new ViewHolder(convertView);
-            convertView.setTag(viewHolder);
+            categoryHolder = new CategoryHolder(convertView);
+            convertView.setTag(categoryHolder);
         } else {
-            viewHolder = (ViewHolder) convertView.getTag();
+            categoryHolder = (CategoryHolder) convertView.getTag();
         }
 
-        viewHolder.mFoodName.setText(getItem(position).getString("title"));
-        setColorView(viewHolder.view, position);
+        categoryHolder.mFoodName.setText(getItem(position).getString("title"));
+        setColorView(categoryHolder.view, position);
 
         if (position%2 == 0) {
-            viewHolder.lineEnd.setVisibility(View.VISIBLE);
-            viewHolder.lineStart.setVisibility(View.INVISIBLE);
+            categoryHolder.lineEnd.setVisibility(View.VISIBLE);
+            categoryHolder.lineStart.setVisibility(View.INVISIBLE);
         } else {
-            viewHolder.lineEnd.setVisibility(View.INVISIBLE);
-            viewHolder.lineStart.setVisibility(View.VISIBLE);
+            categoryHolder.lineEnd.setVisibility(View.INVISIBLE);
+            categoryHolder.lineStart.setVisibility(View.VISIBLE);
         }
 
         Glide.with(getContext())
                 .load(getItem(position).getParseFile("image").getUrl())
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .crossFade()
-                .into(viewHolder.mFoodImage);
+                .into(categoryHolder.mFoodImage);
 
         return convertView;
     }
 
-    class ViewHolder {
+    private class CategoryHolder {
         private ImageView mFoodImage;
         private TextView  mFoodName;
         private View view, lineStart, lineEnd;
 
-        public ViewHolder(View v) {
+        public CategoryHolder(View v) {
             view = v;
             mFoodImage = (ImageView) v.findViewById(R.id.ivFoodIcon);
             mFoodName = (TextView) v.findViewById(R.id.tvFoodName);
             mFoodName.setTypeface(Typer.set(getContext()).getFont(Font.ROBOTO_REGULAR));
-            lineStart    = (View) v.findViewById(R.id.vSingleLineStart);
-            lineEnd    = (View) v.findViewById(R.id.vSingleLineEnd);
+            lineStart    = v.findViewById(R.id.vSingleLineStart);
+            lineEnd    = v.findViewById(R.id.vSingleLineEnd);
         }
     }
 
     private void setColorView(View view, int position) {
-        int indicator = 0;
-        if (position < 6 ){
-            indicator = position;
-        } else {
-            indicator = position%6;
-        }
+        int indicator;
+        if (position < 6 ) indicator = position;
+            else indicator = position%6;
 
         switch (indicator) {
             case 0:

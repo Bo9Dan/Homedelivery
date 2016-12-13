@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.Window;
+import android.webkit.WebView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -38,9 +39,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import myahkota.homedelivery.com.R;
-import myahkota.homedelivery.com.base.Constants;
+import myahkota.homedelivery.com.base.Const;
 import myahkota.homedelivery.com.base.MainActivity;
-import myahkota.homedelivery.com.base.ObservableWebView;
 import myahkota.homedelivery.com.base.ParcelableParseObject;
 
 public class OptionDialog extends DialogFragment {
@@ -53,7 +53,7 @@ public class OptionDialog extends DialogFragment {
     private TextView bottomSpace;
 
     private View btnMenu, btnCall;
-    private ObservableWebView wvMenuRestaurant;
+    private WebView wvMenuRestaurant;
 
     private ExpandableLayout erlTop, erlBottom;
     private FrameLayout frameLayout;
@@ -65,13 +65,13 @@ public class OptionDialog extends DialogFragment {
     public static OptionDialog newInstance(ParcelableParseObject _placeDetail) {
         OptionDialog fragment = new OptionDialog();
         Bundle args = new Bundle();
-        args.putParcelable(Constants.P_COLUMN_OBJECT, _placeDetail);
+        args.putParcelable(Const.P_COLUMN_OBJECT, _placeDetail);
         fragment.setArguments(args);
         return fragment;
     }
 
     private void getOptions(Bundle bundle) {
-        mRestaurantDetail = bundle.getParcelable(Constants.P_COLUMN_OBJECT);
+        mRestaurantDetail = bundle.getParcelable(Const.P_COLUMN_OBJECT);
     }
 
     @NonNull
@@ -124,7 +124,7 @@ public class OptionDialog extends DialogFragment {
         erlTop      = (ExpandableLayout) _dialog.findViewById(R.id.expandableLayoutTop);
         erlBottom   = (ExpandableLayout) _dialog.findViewById(R.id.expandableLayoutBottom);
 
-        wvMenuRestaurant    = (ObservableWebView) _dialog.findViewById(R.id.wvListMenu);
+        wvMenuRestaurant    = (WebView) _dialog.findViewById(R.id.wvListMenu);
 
         ivDialogBackground  = (ImageView) _dialog.findViewById(R.id.ivOptionBackground);
         ivOptionLogo        = (RoundedImageView) _dialog.findViewById(R.id.ivOptionMenu);
@@ -267,6 +267,10 @@ public class OptionDialog extends DialogFragment {
                 case R.id.fakeButtonShow:
                     if (erlTop.isExpanded())
                         erlBottom.toggle();
+                    else {
+                        erlTop.toggle();
+                        erlBottom.toggle();
+                    }
                     break;
             }
         }
@@ -282,7 +286,7 @@ public class OptionDialog extends DialogFragment {
 
             getContext().startActivity(intent);
 
-            Amplitude.getInstance().logEvent(Constants.P_COLUMN_CALL, trackEventModel());
+            Amplitude.getInstance().logEvent(Const.P_COLUMN_CALL, trackEventModel());
     }
 
     public void getPermissions() {
@@ -295,10 +299,10 @@ public class OptionDialog extends DialogFragment {
     private JSONObject trackEventModel() {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put(Constants.P_COLUMN_CITY, mRestaurantDetail.getCity());
-            jsonObject.put(Constants.P_COLUMN_CATEGORY, mRestaurantDetail.getCategory());
-            jsonObject.put(Constants.P_COLUMN_PLACE, mRestaurantDetail.getPlace());
-            jsonObject.put(Constants.P_COLUMN_PLATFORM, "Android");
+            jsonObject.put(Const.P_COLUMN_CITY, mRestaurantDetail.getCity());
+            jsonObject.put(Const.P_COLUMN_CATEGORY, mRestaurantDetail.getCategory());
+            jsonObject.put(Const.P_COLUMN_PLACE, mRestaurantDetail.getPlace());
+            jsonObject.put(Const.P_COLUMN_PLATFORM, "Android");
         } catch (JSONException e) {
             e.printStackTrace();
         }

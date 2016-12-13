@@ -15,15 +15,14 @@ public abstract class ExtendBaseAdapter extends BaseAdapter {
     private List<ParseObject> mData;
     private Context context;
 
-
-    public ExtendBaseAdapter(Context context) {
+    ExtendBaseAdapter(Context context) {
         this.context = context;
-        this.mData = new ArrayList<ParseObject>();
+        this.mData = new ArrayList<>();
     }
 
     @Override
     public int getCount() {
-        return 0;
+        return mData.size();
     }
 
     @Override
@@ -41,10 +40,13 @@ public abstract class ExtendBaseAdapter extends BaseAdapter {
         return null;
     }
 
-
     public void setData(List<ParseObject> mData) {
         this.mData.addAll(mData);
         notifyDataSetChanged();
+    }
+
+    public void clear() {
+        mData.clear();
     }
 
     public List<ParseObject> getData() {

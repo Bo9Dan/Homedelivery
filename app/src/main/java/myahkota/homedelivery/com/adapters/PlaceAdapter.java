@@ -12,15 +12,10 @@ import com.parse.ParseObject;
 
 import myahkota.homedelivery.com.R;
 
-public class RestaurantAdapter extends ExtendBaseAdapter{
+public class PlaceAdapter extends ExtendBaseAdapter{
 
-    public RestaurantAdapter(Context context) {
+    public PlaceAdapter(Context context) {
         super(context);
-    }
-
-    @Override
-    public int getCount() {
-        return getData().size();
     }
 
     @Override
@@ -35,46 +30,41 @@ public class RestaurantAdapter extends ExtendBaseAdapter{
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder viewHolder;
+        PlaceHolder placeHolder;
 
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_venue, parent, false);
-            viewHolder = new ViewHolder(convertView);
-            convertView.setTag(viewHolder);
+            placeHolder = new PlaceHolder(convertView);
+            convertView.setTag(placeHolder);
         } else {
-            viewHolder = (ViewHolder) convertView.getTag();
+            placeHolder = (PlaceHolder) convertView.getTag();
         }
 
-        setColorView(viewHolder.view, position);
+        setColorView(placeHolder.view, position);
 
         Glide.with(getContext())
                 .load(getItem(position).getParseObject("object").getParseFile("image").getUrl())
                 .asBitmap()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
-//                .crossFade()
-                .into(viewHolder.mFoodImage);
+                .into(placeHolder.mFoodImage);
 
         return convertView;
     }
 
-    class ViewHolder {
+    private class PlaceHolder {
         private ImageView mFoodImage;
         private View view;
 
-        public ViewHolder(View v) {
+        public PlaceHolder(View v) {
             view = v;
             mFoodImage = (ImageView) v.findViewById(R.id.ivRestIcon);
         }
     }
 
-
     private void setColorView(View view, int position) {
-        int indicator = 0;
-        if (position < 6 ){
-            indicator = position;
-        } else {
-            indicator = position%6;
-        }
+        int indicator;
+        if (position < 6 ) indicator = position;
+            else indicator = position%6;
 
         switch (indicator) {
             case 0:

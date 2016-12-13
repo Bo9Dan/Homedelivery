@@ -11,7 +11,6 @@ import myahkota.homedelivery.com.R;
 
 public class SplashDialog extends DialogFragment{
 
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

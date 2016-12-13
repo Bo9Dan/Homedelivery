@@ -6,7 +6,7 @@ import android.content.Context;
 import com.amplitude.api.Amplitude;
 import com.parse.Parse;
 
-import myahkota.homedelivery.com.base.Constants;
+import myahkota.homedelivery.com.base.Const;
 
 public class App extends Application {
 
@@ -16,11 +16,11 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         mContext = getApplicationContext();
-        Amplitude.getInstance().initialize(this, Constants.AMPLITUDE_API_KEY).enableForegroundTracking(this);
+        Amplitude.getInstance().initialize(this, Const.AMPLITUDE_API_KEY).enableForegroundTracking(this);
         Parse.initialize(new Parse.Configuration.Builder(this)
-                .server(Constants.PROJECT_URL)
-                .applicationId(Constants.PROJECT_ID)
-                .clientKey(Constants.CLIENT_ID)
+                .server(Const.PROJECT_URL)
+                .applicationId(Const.PROJECT_ID)
+                .clientKey(Const.CLIENT_ID)
                 .enableLocalDataStore()
                 .build()
         );

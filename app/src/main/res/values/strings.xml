@@ -12,5 +12,6 @@
     <string name="ok">Cancel</string>
     <string name="try_again">Retry</string>
     <string name="delivery_time">mins</string>
+    <string name="action_search">Search</string>
 
 </resources>

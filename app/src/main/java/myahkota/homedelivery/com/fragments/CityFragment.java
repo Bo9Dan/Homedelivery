@@ -12,7 +12,7 @@ import com.parse.ParseObject;
 
 import java.util.List;
 
-import myahkota.homedelivery.com.base.Constants;
+import myahkota.homedelivery.com.base.Const;
 import myahkota.homedelivery.com.R;
 import myahkota.homedelivery.com.util.SharedPrefManager;
 import myahkota.homedelivery.com.adapters.CityAdapter;
@@ -42,7 +42,7 @@ public class CityFragment extends BaseFragment {
         gridView.setNumColumns(1);
         gridView.setAdapter(getAdapter());
         gridView.setOnItemClickListener(onCityClickListener);
-        getData(Constants.CITY_KEY, "", "");
+        getData(Const.CITY_KEY, "", "");
         return view;
     }
 
@@ -63,7 +63,7 @@ public class CityFragment extends BaseFragment {
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (position != getAdapter().getCount() && position >= 0){
             activity.replaceFragment(new CategoryFragment (), true);
-            SharedPrefManager.getInstance().saveCity(getAdapter().getItem(position).getString(Constants.P_COLUMN_TITLE));
+            SharedPrefManager.getInstance().saveCity(getAdapter().getItem(position).getString(Const.P_COLUMN_TITLE));
         } else {
             activity.openBrowser("");
         }

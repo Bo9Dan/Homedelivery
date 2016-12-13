@@ -17,12 +17,12 @@ public class ParcelableParseObject implements Parcelable {
 
     public ParcelableParseObject(ParseObject parseObject, String _category) {
         category = _category;
-        city = parseObject.getString(Constants.P_COLUMN_CITY);
-        place = parseObject.getString(Constants.P_COLUMN_TITLE);
-        work = parseObject.getString(Constants.P_COLUMN_WORK);
-        delivery = parseObject.getString(Constants.P_COLUMN_DELIVERY);
-        menu = parseObject.getString(Constants.P_COLUMN_MENU);
-        phone = parseObject.getString(Constants.P_COLUMN_PHONE);
+        city = parseObject.getString(Const.P_COLUMN_CITY);
+        place = parseObject.getString(Const.P_COLUMN_TITLE);
+        work = parseObject.getString(Const.P_COLUMN_WORK);
+        delivery = parseObject.getString(Const.P_COLUMN_DELIVERY);
+        menu = parseObject.getString(Const.P_COLUMN_MENU);
+        phone = parseObject.getString(Const.P_COLUMN_PHONE);
 
     }
 

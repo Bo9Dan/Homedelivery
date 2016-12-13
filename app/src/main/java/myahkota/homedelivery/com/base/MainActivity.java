@@ -14,15 +14,20 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,9 +48,9 @@ import myahkota.homedelivery.com.R;
 import myahkota.homedelivery.com.adapters.MenuAdapter;
 import myahkota.homedelivery.com.fragments.CategoryFragment;
 import myahkota.homedelivery.com.fragments.CityFragment;
+import myahkota.homedelivery.com.fragments.LoadingDialog;
 import myahkota.homedelivery.com.fragments.RestaurantFragment;
 import myahkota.homedelivery.com.fragments.SplashDialog;
-import myahkota.homedelivery.com.fragments.LoadingDialog;
 import myahkota.homedelivery.com.util.SharedPrefManager;
 
 import static android.view.Gravity.END;
@@ -58,11 +63,17 @@ implements RadioGroup.OnCheckedChangeListener{
     private DrawerLayout drawerLayout;
     private Toolbar mToolbar;
     private RadioGroup mTabGroup;
-    private ImageView toolbarMenu, drawerMenu, menuBack;
+    private ImageView toolbarMenu, search, menuBack;
     private TextView toolbarTitle;
     private ListView menuList;
     private FrameLayout frameCont;
     private LinearLayout layout;
+
+    private RelativeLayout infoActionBar;
+    private LinearLayout searchActionBar;
+    private TextView cancel;
+    private EditText inputView;
+
 
     private int frameHeight;
     private int frameWidth;
@@ -75,8 +86,8 @@ implements RadioGroup.OnCheckedChangeListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
-        getData(Constants.CITY_KEY, true);
-        getData(Constants.CATEGORY_KEY, true);
+        getData(Const.CITY_KEY, true);
+        getData(Const.CATEGORY_KEY, true);
         findUI();
         setupUI();
         getNextFragment();
@@ -108,6 +119,7 @@ implements RadioGroup.OnCheckedChangeListener{
         mToolbar        = (Toolbar) findViewById(R.id.toolbar);
         toolbarTitle    = (TextView) /*mToolbar.*/findViewById(R.id.tvToolbarTitle);
         toolbarMenu     = (ImageView) mToolbar.findViewById(R.id.menu_icon);
+        search          = (ImageView) mToolbar.findViewById(R.id.search_icon);
         menuBack        = (ImageView) mToolbar.findViewById(R.id.menu_back);
         layout          = (LinearLayout) findViewById(R.id.mainContainer);
         mTabGroup       = (RadioGroup) findViewById(R.id.rgTab);
@@ -124,6 +136,13 @@ implements RadioGroup.OnCheckedChangeListener{
                         frameWidth = frameCont.getWidth();
                     }
                 });
+
+
+        infoActionBar = (RelativeLayout) findViewById(R.id.rlInfoCont);
+        searchActionBar = (LinearLayout) findViewById(R.id.llSearchCont);
+        cancel = (TextView) findViewById(R.id.tvSearchDisable);
+        inputView = (EditText) findViewById(R.id.etSearch_input);
+
     }
 
     private void setupUI() {
@@ -134,7 +153,26 @@ implements RadioGroup.OnCheckedChangeListener{
         menuAdapter = new MenuAdapter(this);
         menuList.setAdapter(menuAdapter);
         menuList.setOnItemClickListener(cityOnItemClickListener);
+        search.setOnClickListener(mSearchClickListener);
+        cancel.setOnClickListener(mSearchClickListener);
+
+        inputView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+//                    getData();
+                    ((BaseFragment) getSupportFragmentManager().findFragmentById(R.id.flBaseFrame)).search(inputView.getText().toString());
+                    return true;
+                }
+                return false;
+            }
+        });
     }
+
+    public void setSearchVisible(boolean b) {
+        search.setVisibility(b ? View.VISIBLE : View.GONE);
+    }
+
 
     public void setMenuBack(Boolean isVisible) {
         menuBack.setVisibility(isVisible ? View.VISIBLE : View.INVISIBLE);
@@ -144,7 +182,7 @@ implements RadioGroup.OnCheckedChangeListener{
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             closeDriwer();
-            SharedPrefManager.getInstance().saveCity(menuAdapter.getItem(position).getString(Constants.P_COLUMN_TITLE));
+            SharedPrefManager.getInstance().saveCity(menuAdapter.getItem(position).getString(Const.P_COLUMN_TITLE));
             replaceFragment(new CategoryFragment(), true);
         }
     };
@@ -155,15 +193,32 @@ implements RadioGroup.OnCheckedChangeListener{
             closeDriwer();
             replaceFragment(RestaurantFragment
                             .newInstance(menuAdapter.getItem(position).getObjectId(),
-                                    menuAdapter.getItem(position).getString(Constants.P_COLUMN_TITLE))
+                                    menuAdapter.getItem(position).getString(Const.P_COLUMN_TITLE))
                     , true);
         }
     };
 
+    private View.OnClickListener mSearchClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+           switch (v.getId()) {
+               case R.id.search_icon:
+                   infoActionBar.setVisibility(View.GONE);
+                   searchActionBar.setVisibility(View.VISIBLE);
+                   imm.showSoftInput(inputView, 0);
+                   break;
+               case R.id.tvSearchDisable:
+                   imm.hideSoftInputFromWindow(inputView.getWindowToken(), 0);
+                   infoActionBar.setVisibility(View.VISIBLE);
+                   searchActionBar.setVisibility(View.GONE);
+           }
+        }
+    };
 
     private void getData(String _key, boolean needOnline) {
         final ParseQuery<ParseObject> query = ParseQuery.getQuery(_key);
-        query.orderByAscending(Constants.P_COLUMN_ORDER);
+        query.orderByAscending(Const.P_COLUMN_ORDER);
         if (isOnline() && needOnline) {
             onlineData(query);
         } else {
@@ -216,11 +271,11 @@ implements RadioGroup.OnCheckedChangeListener{
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         switch (checkedId){
             case R.id.rbTabCity:
-                getData(Constants.CITY_KEY, false);
+                getData(Const.CITY_KEY, false);
                 menuList.setOnItemClickListener(cityOnItemClickListener);
                 break;
             case R.id.rbTabCat:
-                getData(Constants.CATEGORY_KEY, false);
+                getData(Const.CATEGORY_KEY, false);
                 menuList.setOnItemClickListener(categoryOnItemClickListener);
                 break;
         }
@@ -231,14 +286,14 @@ implements RadioGroup.OnCheckedChangeListener{
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.tvToolbarTitle:
-                    getData(Constants.CITY_KEY, false);
+                    getData(Const.CITY_KEY, false);
                     menuList.setOnItemClickListener(cityOnItemClickListener);
                     RadioButton rbCity = (RadioButton) mTabGroup.findViewById(R.id.rbTabCity);
                     rbCity.setChecked(true);
                     closeDriwer();
                     break;
                 case R.id.menu_icon:
-                    getData(Constants.CATEGORY_KEY, false);
+                    getData(Const.CATEGORY_KEY, false);
                     menuList.setOnItemClickListener(categoryOnItemClickListener);
                     RadioButton rbCat = (RadioButton) mTabGroup.findViewById(R.id.rbTabCat);
                     rbCat.setChecked(true);
