@@ -1,4 +1,4 @@
-package myahkota.homedelivery.com.present.adapters;
+package myahkota.homedelivery.com.present.place;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -43,11 +43,14 @@ public class PlaceAdapter extends ExtendBaseAdapter {
 
         setColorView(placeHolder.view, position);
 
-        Glide.with(getContext())
-                .load(getItem(position).getParseObject("object").getParseFile("image").getUrl())
-                .asBitmap()
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(placeHolder.mFoodImage);
+        if (getItem(position).getParseFile("image") != null) {
+
+            Glide.with(getContext())
+                    .load(getItem(position)/*.getParseObject("object").*/.getParseFile("image").getUrl())
+                    .asBitmap()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(placeHolder.mFoodImage);
+        }
 
         return convertView;
     }

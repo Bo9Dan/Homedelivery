@@ -10,6 +10,8 @@ public class Const {
     public static final String AMPLITUDE_API_KEY = "f313c507028bd0378fbbf2988d6ad5f9";
     public static final String AMPLITUDE_SECRET_KEY = "fcd3f88dec08b00715490db9d28094fc";
 
+    public static final String FOOTER_LINK = "https://www.facebook.com/groups/309567489378730/?ref=aymt_homepage_panel";
+
 
     public static final  String CITY_KEY = "City";
     public static final  String CATEGORY_KEY = "Category";
@@ -28,6 +30,7 @@ public class Const {
     public static final  String P_COLUMN_CATEGORY_ID = "categoryId";
     public static final  String P_COLUMN_CITY = "city";
     public static final  String P_COLUMN_CATEGORY = "category";
+    public static final  String P_COLUMN_CATEGORIES = "categories";
     public static final  String P_COLUMN_PLACE = "place";
     public static final  String P_COLUMN_CALL = "Call";
     public static final  String P_COLUMN_PLATFORM = "platform";

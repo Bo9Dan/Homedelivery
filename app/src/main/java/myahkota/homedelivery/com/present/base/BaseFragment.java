@@ -1,9 +1,9 @@
 package myahkota.homedelivery.com.present.base;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
 import com.parse.FindCallback;
@@ -54,7 +54,7 @@ public abstract class BaseFragment extends Fragment {
         key = _columnKey;
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery(_entityKey);
-        activity.showLoadingDialog();
+        /*activity.showLoadingDialog();*/
         saveKey = _entityKey + _columnKey;
         if (!_columnKey.isEmpty()) {
             query.whereEqualTo(_columnName, _columnKey);
@@ -95,7 +95,7 @@ public abstract class BaseFragment extends Fragment {
                 if (e == null) {
                     setData(objects, false);
                 } else {
-                    activity.hideLoadingDialog();
+                    /*activity.hideLoadingDialog();*/
                     showAlert(false, _query);
                 }
             }
@@ -103,7 +103,7 @@ public abstract class BaseFragment extends Fragment {
     }
 
     public void setData(List<ParseObject> data, boolean hasSave) {
-        activity.hideLoadingDialog();
+        /*activity.hideLoadingDialog();*/
         mAdapter.setData(data);
         if (hasSave){
             ParseObject.pinAllInBackground(data);

@@ -11,14 +11,14 @@ import com.parse.ParseObject;
 import java.util.List;
 
 import myahkota.homedelivery.com.R;
-import myahkota.homedelivery.com.present.adapters.CategoryAdapter;
+import myahkota.homedelivery.com.present.categ.CategoryAdapter;
 import myahkota.homedelivery.com.present.base.BaseFragment;
 import myahkota.homedelivery.com.data.Const;
 import myahkota.homedelivery.com.present.MainActivity;
 import myahkota.homedelivery.com.data.SharedPrefManager;
 import in.srain.cube.views.GridViewWithHeaderAndFooter;
 
-public class CategoryFragment extends BaseFragment {
+public class OldCategoryFragment extends BaseFragment {
 
     private GridViewWithHeaderAndFooter gridView;
     private View footerView;
@@ -52,30 +52,25 @@ public class CategoryFragment extends BaseFragment {
         return view;
     }
 
-
     @Override
     protected void search(String text) {
         super.search(text);
         getData(Const.PLACE_KEY, Const.P_COLUMN_MENU, text);
     }
 
-
     private AdapterView.OnItemClickListener onCategoryClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (position != getAdapter().getCount() && id >= 0){
-            activity.replaceFragment(RestaurantFragment
-                            .newInstance(getAdapter().getItem(position).getObjectId(),
-                                    getAdapter().getItem(position).getString("title"))
+            activity.replaceFragment(OldRestaurantFragment.newInstance(
+                    getAdapter().getItem(position).getObjectId(),
+                    getAdapter().getItem(position).getString("title"))
                     , true);
         }  else {
-           activity.openBrowser("");
+           /*activity.openBrowser("");*/
         }
         }
     };
-
-
-
 
     @Override
     public void onResume() {
@@ -84,13 +79,11 @@ public class CategoryFragment extends BaseFragment {
         ((MainActivity)getActivity()).setSearchVisible(true);
     }
 
-
     @Override
     public void setData(List<ParseObject> data, boolean hasSave) {
         super.setData(data, hasSave);
         calculateFooter(data.size());
     }
-
 
     private void calculateFooter(int _size) {
         int dividFoot = activity.getFrameHeight() -  Math.round(_size/2 + _size%2) * activity.getFrameWidth()  ;
@@ -103,7 +96,5 @@ public class CategoryFragment extends BaseFragment {
 
         footerView.requestLayout();
     }
-
-
 
 }

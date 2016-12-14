@@ -18,22 +18,22 @@ import java.util.List;
 
 import in.srain.cube.views.GridViewWithHeaderAndFooter;
 import myahkota.homedelivery.com.R;
-import myahkota.homedelivery.com.present.adapters.PlaceAdapter;
+import myahkota.homedelivery.com.present.place.PlaceAdapter;
 import myahkota.homedelivery.com.present.base.BaseFragment;
 import myahkota.homedelivery.com.data.Const;
 import myahkota.homedelivery.com.data.ParcelableDTO;
 import myahkota.homedelivery.com.data.SharedPrefManager;
 import myahkota.homedelivery.com.present.view.OptionDialog;
 
-public class RestaurantFragment extends BaseFragment {
+public class OldRestaurantFragment extends BaseFragment {
 
     private String mCategoryId, mCategoryName;
     private GridViewWithHeaderAndFooter headerAndFooter;
     private View footerView;
 
 
-    public static RestaurantFragment newInstance(final String _categoryID, final String _title) {
-        RestaurantFragment fragment = new RestaurantFragment();
+    public static OldRestaurantFragment newInstance(final String _categoryID, final String _title) {
+        OldRestaurantFragment fragment = new OldRestaurantFragment();
         Bundle args = new Bundle();
         args.putString(Const.PLACE_KEY, _categoryID);
         args.putString(Const.CITY_TITLE, _title);
@@ -80,13 +80,13 @@ public class RestaurantFragment extends BaseFragment {
 
                 ParseObject place = getAdapter().getItem(position).getParseObject("object");
                 saveDrawable(view);
-                activity.setDrawableBack();
+                activity.takeScreen();
                 ParcelableDTO parseObject = new ParcelableDTO(place, mCategoryName);
 
                 OptionDialog placeDetail = OptionDialog.newInstance(parseObject);
                 placeDetail.show(getFragmentManager(), Const.PLACE_KEY);
             }  else {
-                activity.openBrowser("");
+                /*activity.openBrowser("");*/
             }
         }
     };
@@ -101,10 +101,6 @@ public class RestaurantFragment extends BaseFragment {
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
 
 
     @Override
@@ -138,7 +134,7 @@ public class RestaurantFragment extends BaseFragment {
                 return lhs.getString("mOrder").compareTo(rhs.getString("mOrder"));
             }
         });
-        activity.hideLoadingDialog();
+        /*activity.hideLoadingDialog();*/
         getAdapter().setData(sortData);
         if (hasSave){
             ParseObject.pinAllInBackground(data);

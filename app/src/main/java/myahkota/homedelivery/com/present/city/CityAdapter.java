@@ -1,4 +1,4 @@
-package myahkota.homedelivery.com.present.adapters;
+package myahkota.homedelivery.com.present.city;
 
 import android.content.Context;
 import android.util.TypedValue;

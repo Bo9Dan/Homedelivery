@@ -12,14 +12,15 @@ import com.parse.ParseObject;
 
 import java.util.List;
 
-import myahkota.homedelivery.com.data.Const;
-import myahkota.homedelivery.com.R;
-import myahkota.homedelivery.com.data.SharedPrefManager;
-import myahkota.homedelivery.com.present.adapters.CityAdapter;
-import myahkota.homedelivery.com.present.base.BaseFragment;
 import in.srain.cube.views.GridViewWithHeaderAndFooter;
+import myahkota.homedelivery.com.R;
+import myahkota.homedelivery.com.data.Const;
+import myahkota.homedelivery.com.data.SharedPrefManager;
+import myahkota.homedelivery.com.present.city.CityAdapter;
+import myahkota.homedelivery.com.present.base.BaseFragment;
+import myahkota.homedelivery.com.present.categ.CategoryFragment;
 
-public class CityFragment extends BaseFragment {
+public class OldCityFragment extends BaseFragment {
 
     private GridViewWithHeaderAndFooter gridView;
     private View footerView;
@@ -47,11 +48,6 @@ public class CityFragment extends BaseFragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity.setTitle(activity.getString(R.string.app_title));
@@ -62,10 +58,10 @@ public class CityFragment extends BaseFragment {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (position != getAdapter().getCount() && position >= 0){
-            activity.replaceFragment(new CategoryFragment (), true);
+            activity.replaceFragment(new CategoryFragment(), true);
             SharedPrefManager.getInstance().saveCity(getAdapter().getItem(position).getString(Const.P_COLUMN_TITLE));
         } else {
-            activity.openBrowser("");
+            /*activity.openBrowser("");*/
         }
         }
     };

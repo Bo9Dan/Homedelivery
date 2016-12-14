@@ -45,14 +45,14 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import myahkota.homedelivery.com.R;
-import myahkota.homedelivery.com.present.adapters.MenuAdapter;
-import myahkota.homedelivery.com.data.Const;
-import myahkota.homedelivery.com.present.fragments.CategoryFragment;
-import myahkota.homedelivery.com.present.fragments.CityFragment;
-import myahkota.homedelivery.com.present.view.LoadingDialog;
-import myahkota.homedelivery.com.present.fragments.RestaurantFragment;
 import myahkota.homedelivery.com.SplashDialog;
+import myahkota.homedelivery.com.data.Const;
 import myahkota.homedelivery.com.data.SharedPrefManager;
+import myahkota.homedelivery.com.present.categ.CategoryFragment;
+import myahkota.homedelivery.com.present.city.CityFragment;
+import myahkota.homedelivery.com.present.fragments.OldRestaurantFragment;
+import myahkota.homedelivery.com.present.place.PlaceFragment;
+import myahkota.homedelivery.com.present.view.LoadingDialog;
 
 import static android.view.Gravity.END;
 
@@ -192,9 +192,8 @@ public class MainActivity extends AppCompatActivity
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             closeDriwer();
-            replaceFragment(RestaurantFragment
-                            .newInstance(menuAdapter.getItem(position).getObjectId(),
-                                    menuAdapter.getItem(position).getString(Const.P_COLUMN_TITLE))
+            replaceFragment(PlaceFragment
+                            .newInstance(menuAdapter.getItem(position).getString(Const.P_COLUMN_TITLE))
                     , true);
         }
     };
@@ -252,7 +251,7 @@ public class MainActivity extends AppCompatActivity
                 if (e == null) {
                     setDate(objects, true);
                 } else {
-                    hideLoadingDialog();
+                    /*hideLoadingDialog();*/
                     Toast.makeText(getBaseContext(), "", Toast.LENGTH_LONG).show();
                 }
             }
@@ -265,7 +264,7 @@ public class MainActivity extends AppCompatActivity
             ParseObject.pinAllInBackground(_data);
         }
         menuAdapter.setData(_data);
-        hideLoadingDialog();
+        /*hideLoadingDialog();*/
     }
 
     @Override
@@ -319,13 +318,6 @@ public class MainActivity extends AppCompatActivity
         }
     };
 
-    public void openBrowser(String urlSite){
-        String url = "https://www.facebook.com/groups/309567489378730/?ref=aymt_homepage_panel";
-        Intent i = new Intent(Intent.ACTION_VIEW);
-        i.setData(Uri.parse(url));
-        startActivity(i);
-    }
-
     public void clickableMenu(boolean b) {
         toolbarMenu.setClickable(b);
     }
@@ -348,7 +340,7 @@ public class MainActivity extends AppCompatActivity
         return drawableOption;
     }
 
-    public void setDrawableBack() {
+    public void takeScreen() {
         layout.setDrawingCacheEnabled(true);
         this.drawableBack = NativeStackBlur.process(layout.getDrawingCache(), 160);
     }
@@ -382,18 +374,7 @@ public class MainActivity extends AppCompatActivity
         return frameWidth;
     }
 
-    public void showLoadingDialog() {
-        if (progressDialog == null) {
-            progressDialog = new LoadingDialog();
-        }
-        if (!progressDialog.isShowing())
-            progressDialog.show(getSupportFragmentManager(), "");
-    }
 
-    public void hideLoadingDialog() {
-        if (progressDialog != null && progressDialog.isShowing())
-            progressDialog.dismiss();
-    }
 
     public void setTitle(String _title) {
         toolbarTitle.setText(_title);

@@ -1,4 +1,4 @@
-package myahkota.homedelivery.com.present.adapters;
+package myahkota.homedelivery.com.present.categ;
 
 import android.content.Context;
 import android.view.LayoutInflater;
