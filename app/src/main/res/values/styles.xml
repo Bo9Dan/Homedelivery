@@ -13,6 +13,11 @@
         <item name="android:windowBackground">@color/black_color</item>
     </style>
 
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
 
     <style name="titleTextStyle">
         <item name="android:background">@android:color/transparent</item>

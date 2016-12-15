@@ -8,7 +8,7 @@
     <ImageView
         android:id="@+id/ivSplashIcon"
         android:scaleType="centerCrop"
-        android:src="@drawable/back"
+        android:src="@drawable/ic_bg_splash_food_tint"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
