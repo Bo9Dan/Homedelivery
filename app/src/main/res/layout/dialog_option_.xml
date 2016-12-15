@@ -39,7 +39,6 @@
                     android:id="@+id/ivOptionMenu"
                     android:layout_width="@dimen/_76sdp"
                     android:layout_height="@dimen/_76sdp"
-                    android:src="@drawable/background_food"
                     />
 
                 <TextView

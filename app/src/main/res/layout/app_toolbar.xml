@@ -46,7 +46,7 @@
                 android:padding="8dp"
                 android:background="@drawable/bg_back"
                 android:layout_centerVertical="true"
-                android:src="@drawable/back_icon"
+                android:src="@drawable/ic_back_button"
                 android:scaleType="fitCenter"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
@@ -61,7 +61,7 @@
                 android:layout_height="wrap_content">
                 <ImageView
                     android:scaleType="centerInside"
-                    android:src="@drawable/ic_action_256"
+                    android:src="@drawable/ic_app_logo_white"
                     android:id="@+id/titleIcon"
                     android:padding="2dp"
                     android:layout_width="48dp"

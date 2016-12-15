@@ -8,7 +8,7 @@
         <ImageView
             android:id="@+id/ivFooterBack"
             android:scaleType="centerCrop"
-            android:src="@drawable/background_food2"
+            android:src="@drawable/ic_bg_footer_background"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
@@ -42,7 +42,7 @@
 
             <ImageView
                 android:id="@+id/ivWebLabelImg"
-                android:src="@drawable/ic_action_256"
+                android:src="@drawable/ic_app_logo_white"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true" />

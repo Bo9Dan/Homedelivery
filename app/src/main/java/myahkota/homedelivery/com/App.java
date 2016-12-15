@@ -1,6 +1,10 @@
 package myahkota.homedelivery.com;
 
 import android.app.Application;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+
 import com.amplitude.api.Amplitude;
 import com.parse.Parse;
 
@@ -31,5 +35,15 @@ public class App extends Application {
 
     public static App getInstance() {
         return instance;
+    }
+
+    public boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

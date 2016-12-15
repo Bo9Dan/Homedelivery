@@ -5,10 +5,18 @@ import android.support.v4.app.Fragment;
 import com.parse.ParseObject;
 
 import myahkota.homedelivery.com.data.Const;
+import myahkota.homedelivery.com.data.DataProvider;
 import myahkota.homedelivery.com.present.BaseGridFragment;
 import myahkota.homedelivery.com.present.categ.CategoryFragment;
 
 public class CityFragment extends BaseGridFragment {
+
+    private DataProvider provider = new DataProvider();
+
+    @Override
+    protected void getData() {
+        provider.getCitiesOff(callback);
+    }
 
     @Override
     public int getCount() {
@@ -27,7 +35,7 @@ public class CityFragment extends BaseGridFragment {
 
     @Override
     protected void onClickItem(ParseObject model) {
-        replaceFragment(new CategoryFragment(), true);
+        replaceFragment(CategoryFragment.newInstance(model.getString(Const.P_COLUMN_TITLE)), true);
     }
 
     @Override

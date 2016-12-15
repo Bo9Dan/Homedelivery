@@ -16,7 +16,6 @@ import android.widget.AdapterView;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
-import com.parse.ParseQuery;
 
 import java.util.List;
 
@@ -33,7 +32,6 @@ public abstract class BaseGridFragment extends Fragment {
     private ExtendBaseAdapter adapter;
     private View rootView, footerView;
     protected GridViewWithHeaderAndFooter view;
-    private ParseQuery<ParseObject> query;
 
 //    protected abstract void findUI(View rootView);
 //
@@ -93,10 +91,6 @@ public abstract class BaseGridFragment extends Fragment {
         return activity;
     }
 
-    public ParseQuery<ParseObject> getQuerry() {
-        return query;
-    }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -112,7 +106,6 @@ public abstract class BaseGridFragment extends Fragment {
         findDataView(rootView);
 //        findUI(rootView);
 //        setupUI();
-        query = ParseQuery.getQuery(EntityName());
         progressDialog = new LoadingDialog();
         return rootView;
     }
@@ -120,7 +113,8 @@ public abstract class BaseGridFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getData(query);
+        showLoadingDialog();
+        getData();
     }
 
     private void findDataView(View _rootView) {
@@ -142,22 +136,19 @@ public abstract class BaseGridFragment extends Fragment {
         }
     };
 
-    private FindCallback<ParseObject> callback = new FindCallback<ParseObject>() {
+    protected FindCallback<ParseObject> callback = new FindCallback<ParseObject>() {
         @Override
         public void done(List<ParseObject> objects, ParseException e) {
             if (e == null) {
                 setData(objects);
-                ParseObject.pinAllInBackground(objects);
+//                ParseObject.pinAllInBackground(objects);
             } else {
 
             }
         }
     };
 
-    public void getData(ParseQuery<ParseObject> query) {
-        showLoadingDialog();
-        query.findInBackground(callback);
-    }
+    protected abstract void getData();
 
     public void setData(List<ParseObject> data) {
         getAdapter().setData(data);
@@ -188,4 +179,6 @@ public abstract class BaseGridFragment extends Fragment {
         if (progressDialog != null && progressDialog.isShowing())
             progressDialog.dismiss();
     }
+
+
 }

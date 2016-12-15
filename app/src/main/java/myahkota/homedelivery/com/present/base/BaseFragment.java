@@ -107,18 +107,18 @@ public abstract class BaseFragment extends Fragment {
         mAdapter.setData(data);
         if (hasSave){
             ParseObject.pinAllInBackground(data);
-            SharedPrefManager.getInstance().saveLong(saveKey, System.currentTimeMillis());
+            SharedPrefManager.getInstance().savePinDate();
         }
     }
 
 
     private boolean hasNewData(String _key) {
-        long saveDate = SharedPrefManager.getInstance().retrieveLong(_key);
-        long nowDate = System.currentTimeMillis();
-        if (saveDate == -1) {
+//        long saveDate = SharedPrefManager.getInstance().retrieveLong(_key);
+//        long nowDate = System.currentTimeMillis();
+//        if (saveDate == -1) {
             return true;
-        } else
-            return nowDate - saveDate > 24 * 60 * 60 * 1000 * 7;
+//        } else
+//            return nowDate - saveDate > 24 * 60 * 60 * 1000 * 7;
 
     }
 
