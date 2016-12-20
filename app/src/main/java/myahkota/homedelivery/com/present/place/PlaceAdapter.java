@@ -46,10 +46,14 @@ public class PlaceAdapter extends ExtendBaseAdapter {
         if (getItem(position).getParseFile("image") != null) {
 
             Glide.with(getContext())
-                    .load(getItem(position)/*.getParseObject("object").*/.getParseFile("image").getUrl())
+                    .load(getItem(position).getParseFile("image").getUrl())
                     .asBitmap()
+                    .error(R.drawable.ic_room_service_white_48dp)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(placeHolder.mFoodImage);
+        } else {
+            placeHolder.mFoodImage.setImageDrawable(
+                    getContext().getResources().getDrawable(R.drawable.ic_room_service_white_48dp));
         }
 
         return convertView;

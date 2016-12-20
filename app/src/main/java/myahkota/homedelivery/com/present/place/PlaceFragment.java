@@ -14,22 +14,16 @@ import java.util.Comparator;
 import java.util.List;
 
 import myahkota.homedelivery.com.data.Const;
+import myahkota.homedelivery.com.data.DataProvider;
 import myahkota.homedelivery.com.data.ParcelableDTO;
+import myahkota.homedelivery.com.data.SharedPrefManager;
 import myahkota.homedelivery.com.present.BaseGridFragment;
 import myahkota.homedelivery.com.present.view.OptionDialog;
 
 public class PlaceFragment extends BaseGridFragment {
 
     private String mCategory, mCity;
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if (getArguments() != null) {
-            mCategory = getArguments().getString(Const.CATEGORY_KEY, "");
-            mCity = getArguments().getString(Const.CITY_TITLE, "");
-        }
-        return super.onCreateView(inflater, container, savedInstanceState);
-    }
+    private DataProvider provider = new DataProvider();
 
     public static PlaceFragment newInstance(final String category) {
         PlaceFragment fragment = new PlaceFragment();
@@ -37,6 +31,20 @@ public class PlaceFragment extends BaseGridFragment {
         args.putString(Const.CATEGORY_KEY, category);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        if (getArguments() != null) {
+            mCategory = getArguments().getString(Const.CATEGORY_KEY, "");
+            mCity = SharedPrefManager.getInstance().retrieveCity();
+        }
+        return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
+    @Override
+    protected void getData() {
+        provider.getPlacesOff(callback, mCity, mCategory);
     }
 
     @Override
@@ -62,7 +70,7 @@ public class PlaceFragment extends BaseGridFragment {
     }
 
     private ParcelableDTO getDTO(ParseObject object) {
-        return new ParcelableDTO(object, "tudu");
+        return new ParcelableDTO(object, mCategory);
     }
 
     @Override

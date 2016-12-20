@@ -10,6 +10,9 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import myahkota.homedelivery.com.App;
 import myahkota.homedelivery.com.R;
@@ -26,12 +29,15 @@ public class SplashScreen extends AppCompatActivity {
         setContentView(R.layout.splash);
         if (hasNewData() && App.getInstance().isOnline()) {
             dataProvider.getCitiesOn(callbackCity);
-
-//            dataProvider.getPlacesOn(callbackPlace);
         } else {
-            openMain();
+            ScheduledExecutorService worker = Executors.newSingleThreadScheduledExecutor();
+            Runnable task = new Runnable() {
+                    public void run() {
+                        openMain();
+                    }
+            };
+            worker.schedule(task, 3, TimeUnit.SECONDS);
         }
-
 
     }
 

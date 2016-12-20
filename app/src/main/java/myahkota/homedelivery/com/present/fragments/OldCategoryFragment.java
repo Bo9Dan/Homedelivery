@@ -10,13 +10,12 @@ import com.parse.ParseObject;
 
 import java.util.List;
 
-import myahkota.homedelivery.com.R;
-import myahkota.homedelivery.com.present.categ.CategoryAdapter;
-import myahkota.homedelivery.com.present.base.BaseFragment;
-import myahkota.homedelivery.com.data.Const;
-import myahkota.homedelivery.com.present.MainActivity;
-import myahkota.homedelivery.com.data.SharedPrefManager;
 import in.srain.cube.views.GridViewWithHeaderAndFooter;
+import myahkota.homedelivery.com.R;
+import myahkota.homedelivery.com.data.Const;
+import myahkota.homedelivery.com.data.SharedPrefManager;
+import myahkota.homedelivery.com.present.base.BaseFragment;
+import myahkota.homedelivery.com.present.categ.CategoryAdapter;
 
 public class OldCategoryFragment extends BaseFragment {
 
@@ -39,14 +38,14 @@ public class OldCategoryFragment extends BaseFragment {
         footerView = inflater.inflate(R.layout.grid_foother, null);
         footerView.setVisibility(View.INVISIBLE);
 
-        activity.setMenuBack(false);
-
-        gridView.addFooterView(footerView);
-        gridView.setNumColumns(2);
-        gridView.setAdapter(getAdapter());
-        gridView.setOnItemClickListener(onCategoryClickListener);
-        getData(Const.CATEGORY_KEY, "", "");
-        activity.clickableMenu(true);
+//        activity.setMenuBack(false);
+//
+//        gridView.addFooterView(footerView);
+//        gridView.setNumColumns(2);
+//        gridView.setAdapter(getAdapter());
+//        gridView.setOnItemClickListener(onCategoryClickListener);
+//        getData(Const.CATEGORY_KEY, "", "");
+//        activity.clickableMenu(true);
 
 
         return view;
@@ -76,7 +75,6 @@ public class OldCategoryFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         activity.setTitle(cityName);
-        ((MainActivity)getActivity()).setSearchVisible(true);
     }
 
     @Override

@@ -67,7 +67,6 @@ public class OldRestaurantFragment extends BaseFragment {
 
         getData(Const.PLACE_KEY, Const.P_COLUMN_CITY, SharedPrefManager.getInstance().retrieveCity());
 
-        activity.setMenuBack(true);
 
         return view;
     }
@@ -95,9 +94,9 @@ public class OldRestaurantFragment extends BaseFragment {
         ImageView imageView = (ImageView) view.findViewById(R.id.ivRestIcon);
         if (imageView.getDrawable() != null) {
             Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
-            activity.setDrawableHamb(bitmap);
+            activity.takeItem(bitmap);
         } else {
-            activity.setDrawableHamb(null);
+            activity.takeItem(null);
         }
     }
 
@@ -138,7 +137,7 @@ public class OldRestaurantFragment extends BaseFragment {
         getAdapter().setData(sortData);
         if (hasSave){
             ParseObject.pinAllInBackground(data);
-            SharedPrefManager.getInstance().saveLong(Const.PLACE_KEY + SharedPrefManager.getInstance().retrieveCity(), System.currentTimeMillis());
+            SharedPrefManager.getInstance().savePinDate();
         }
         calculateFooter(sortData.size());
     }

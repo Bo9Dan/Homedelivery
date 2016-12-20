@@ -36,6 +36,7 @@ public class CategoryFragment extends BaseGridFragment {
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
+
     @Override
     protected void getData() {
         provider.getCategoriesOff(callback);

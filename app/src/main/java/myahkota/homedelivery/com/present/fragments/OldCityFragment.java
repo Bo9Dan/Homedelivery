@@ -16,9 +16,8 @@ import in.srain.cube.views.GridViewWithHeaderAndFooter;
 import myahkota.homedelivery.com.R;
 import myahkota.homedelivery.com.data.Const;
 import myahkota.homedelivery.com.data.SharedPrefManager;
-import myahkota.homedelivery.com.present.city.CityAdapter;
 import myahkota.homedelivery.com.present.base.BaseFragment;
-import myahkota.homedelivery.com.present.categ.CategoryFragment;
+import myahkota.homedelivery.com.present.city.CityAdapter;
 
 public class OldCityFragment extends BaseFragment {
 
@@ -37,13 +36,13 @@ public class OldCityFragment extends BaseFragment {
         gridView = (GridViewWithHeaderAndFooter) view.findViewById(R.id.gvGridView);
         footerView = inflater.inflate(R.layout.grid_foother, null);
 
-        activity.setMenuBack(false);
-
-        gridView.addFooterView(footerView);
-        gridView.setNumColumns(1);
-        gridView.setAdapter(getAdapter());
-        gridView.setOnItemClickListener(onCityClickListener);
-        getData(Const.CITY_KEY, "", "");
+//        activity.setMenuBack(false);
+//
+//        gridView.addFooterView(footerView);
+//        gridView.setNumColumns(1);
+//        gridView.setAdapter(getAdapter());
+//        gridView.setOnItemClickListener(onCityClickListener);
+//        getData(Const.CITY_KEY, "", "");
         return view;
     }
 
@@ -51,14 +50,13 @@ public class OldCityFragment extends BaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity.setTitle(activity.getString(R.string.app_title));
-        activity.clickableMenu(false);
     }
 
     private AdapterView.OnItemClickListener onCityClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (position != getAdapter().getCount() && position >= 0){
-            activity.replaceFragment(new CategoryFragment(), true);
+            activity.replaceFragment(new OldCategoryFragment(), true);
             SharedPrefManager.getInstance().saveCity(getAdapter().getItem(position).getString(Const.P_COLUMN_TITLE));
         } else {
             /*activity.openBrowser("");*/

@@ -6,7 +6,6 @@ import android.preference.PreferenceManager;
 
 import myahkota.homedelivery.com.App;
 
-
 public class SharedPrefManager {
 
     private static SharedPrefManager instance;
@@ -29,54 +28,62 @@ public class SharedPrefManager {
         editor.apply();
     }
 
-    public void saveString(String _key, String _value) {
+    private void saveString(String _key, String _value) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(_key, _value);
         editor.apply();
     }
 
-    public void saveInt(String _key, int _value) {
+    private void saveInt(String _key, int _value) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt(_key, _value);
         editor.apply();
     }
 
-    public void saveLong(String _key, long _value) {
+    private void saveLong(String _key, long _value) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putLong(_key, _value);
         editor.apply();
     }
 
-    public void saveBoolean(String _key, boolean _value) {
+    private void saveBoolean(String _key, boolean _value) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(_key, _value);
         editor.apply();
     }
 
 
-    public String retrieveString(String _s) {
+    private String retrieveString(String _s) {
         return sharedPreferences.getString(_s, "");
     }
 
-    public boolean retrieveBoolean(String _s) {
+    private boolean retrieveBoolean(String _s) {
         return sharedPreferences.getBoolean(_s, false);
     }
 
-    public int retrieveInt(String _s) {
+    private int retrieveInt(String _s) {
         return sharedPreferences.getInt(_s, -1);
     }
 
-    public long retrieveLong(String _s) {
+    private long retrieveLong(String _s) {
         return sharedPreferences.getLong(_s, -1);
     }
 
 
     public void saveCity(String _value) {
-        saveString("CITY_ID", _value);
+        saveString("City_Id", _value);
     }
 
     public String retrieveCity() {
-        return retrieveString("CITY_ID");
+        return retrieveString("City_Id");
+    }
+
+    public void savePinDate() {
+        saveLong("Pin_Date_Id", System.currentTimeMillis());
+    }
+
+    public long retrievePinDate() {
+        return retrieveLong("Pin_Date_Id");
     }
 
 

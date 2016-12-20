@@ -34,7 +34,6 @@ public abstract class BaseFragment extends Fragment {
         super.onAttach(context);
         activity = (MainActivity) context;
         mAdapter = initAdapter();
-        activity.setSearchVisible(false);
     }
 
     protected void search(String text) {
@@ -62,13 +61,13 @@ public abstract class BaseFragment extends Fragment {
             query.orderByAscending(Const.P_COLUMN_ORDER);
         }
 
-        if (activity.isOnline()) {
-            if (hasNewData(saveKey))
-                            onlineData(query );
-            else offlineData(query);
-        } else {
-            offlineData(query);
-        }
+//        if (activity.isOnline()) {
+//            if (hasNewData(saveKey))
+//                            onlineData(query );
+//            else offlineData(query);
+//        } else {
+//            offlineData(query);
+//        }
     }
 
 

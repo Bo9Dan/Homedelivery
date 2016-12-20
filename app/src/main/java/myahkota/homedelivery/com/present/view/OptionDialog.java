@@ -1,6 +1,7 @@
 package myahkota.homedelivery.com.present.view;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -12,7 +13,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,8 +29,6 @@ import com.amplitude.api.Amplitude;
 import com.elmargomez.typer.Font;
 import com.elmargomez.typer.Typer;
 import com.vistrav.ask.Ask;
-import com.vistrav.ask.annotations.AskDenied;
-import com.vistrav.ask.annotations.AskGranted;
 
 import net.cachapa.expandablelayout.ExpandableLayout;
 
@@ -39,8 +37,8 @@ import org.json.JSONObject;
 
 import myahkota.homedelivery.com.R;
 import myahkota.homedelivery.com.data.Const;
-import myahkota.homedelivery.com.present.MainActivity;
 import myahkota.homedelivery.com.data.ParcelableDTO;
+import myahkota.homedelivery.com.present.MainActivity;
 
 public class OptionDialog extends DialogFragment {
 
@@ -90,7 +88,7 @@ public class OptionDialog extends DialogFragment {
         final Dialog dialog = new Dialog(getActivity(), R.style.MyCustomTheme);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-        dialog.setContentView(R.layout.dialog_option_alternative);
+        dialog.setContentView(R.layout.dialog_option_);
 
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                                      ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -104,7 +102,6 @@ public class OptionDialog extends DialogFragment {
     }
 
     private void prepareDialog(Dialog _dialog) {
-        // findUI
         frameLayout = (FrameLayout) _dialog.findViewById(R.id.frameDialog);
         frameLayout.getViewTreeObserver().addOnGlobalLayoutListener(
                 new ViewTreeObserver.OnGlobalLayoutListener(){
@@ -143,18 +140,19 @@ public class OptionDialog extends DialogFragment {
         setListeners();
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     private void fillData(ParcelableDTO model) {
         ivDialogBackground.setImageBitmap(((MainActivity) getActivity()).getDrawableBack());
 
         final Bitmap logoImage = ((MainActivity) getActivity()).getDrawableOption();
         if (logoImage == null)
             ivOptionLogo.setVisibility(View.GONE);
-        else    ivOptionLogo.setImageBitmap(((MainActivity) getActivity()).getDrawableOption());
+            else    ivOptionLogo.setImageBitmap(((MainActivity) getActivity()).getDrawableOption());
 
         tvWorking.setText(model.getWork());
         tvDelivery.setText(String.format("%s %s", model.getDelivery(), getResources().getString(R.string.delivery_time)));
-
-        wvMenuRestaurant.loadDataWithBaseURL("", model.getMenu(), "text/html", "UTF-8", "");
+        wvMenuRestaurant.getSettings().setJavaScriptEnabled(true);
+        wvMenuRestaurant.loadDataWithBaseURL(null, model.getMenu(), "text/html", "UTF-8", "");
     }
 
     private void setListeners() {
@@ -206,7 +204,6 @@ public class OptionDialog extends DialogFragment {
     }
 
     public void onSwipeTop() {
-        Log.d("TAG", "onSwipeTop");
         if (erlTop.isExpanded()) {
             erlTop.collapse();
             wvMenuRestaurant.scrollTo(wvMenuRestaurant.getScrollX(), 0);
@@ -214,7 +211,6 @@ public class OptionDialog extends DialogFragment {
     }
 
     public void onSwipeBottom() {
-        Log.d("TAG", "onSwipeBottom");
         if (!erlTop.isExpanded() && wvMenuRestaurant.getScrollY() ==0)
             erlTop.expand();
     }
@@ -308,24 +304,14 @@ public class OptionDialog extends DialogFragment {
         return jsonObject;
     }
 
-    @AskGranted(Manifest.permission.CALL_PHONE)
+    /*@AskGranted(Manifest.permission.CALL_PHONE)
     public void fileAccessGranted() {
     }
 
     //optional
     @AskDenied(Manifest.permission.CALL_PHONE)
     public void fileAccessDenied() {
-    }
-
-    //optional
-    @AskGranted(Manifest.permission.ACCESS_COARSE_LOCATION)
-    public void mapAccessGranted() {
-    }
-
-    //optional
-    @AskDenied(Manifest.permission.ACCESS_COARSE_LOCATION)
-    public void mapAccessDenied() {
-    }
+    }*/
 
 }
 
