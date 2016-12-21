@@ -51,6 +51,16 @@ public class SplashScreen extends AppCompatActivity {
         }
     };
 
+    private FindCallback<ParseObject> callbackCategory = new FindCallback<ParseObject>() {
+        @Override
+        public void done(List<ParseObject> objects, ParseException e) {
+            if (e == null) {
+                ParseObject.pinAllInBackground(objects);
+                dataProvider.getPlacesOn(callbackPlace);
+            }
+        }
+    };
+
     private FindCallback<ParseObject> callbackPlace = new FindCallback<ParseObject>() {
         @Override
         public void done(List<ParseObject> objects, ParseException e) {
@@ -58,16 +68,6 @@ public class SplashScreen extends AppCompatActivity {
                 ParseObject.pinAllInBackground(objects);
                 SharedPrefManager.getInstance().savePinDate();
                 openMain();
-            }
-        }
-    };
-
-    private FindCallback<ParseObject> callbackCategory = new FindCallback<ParseObject>() {
-        @Override
-        public void done(List<ParseObject> objects, ParseException e) {
-            if (e == null) {
-                ParseObject.pinAllInBackground(objects);
-                dataProvider.getPlacesOn(callbackPlace);
             }
         }
     };

@@ -5,7 +5,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
@@ -19,12 +18,12 @@ import com.elmargomez.typer.Typer;
 
 import myahkota.homedelivery.com.R;
 
-public class MenuController implements View.OnClickListener{
+public class MenuController {
 
+
+    private static MenuController instance;
 
     private Context context;
-    private View rootView;
-    private Toolbar toolbar;
 
     private ImageView menuBtn, searchBtn, backBtn;
     private TextView titleApp, cancelBtn;
@@ -34,19 +33,21 @@ public class MenuController implements View.OnClickListener{
     private LinearLayout searchBar;
 
     private ActionMenuListener actionListener;
+    private SearchListener searchListener;
 
 
     public MenuController(Context cntx) {
         this.context = cntx;
-        initBar();
+        instance = this;
+    }
+
+    public static MenuController getInstance() {
+        return instance;
     }
 
     @SuppressLint("InflateParams")
-    public void initBar() {
-        rootView = LayoutInflater.from(context).inflate(R.layout.app_toolbar, null);
-
-        toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
-
+    public void initBar(Toolbar rootView) {
+//        rootView = LayoutInflater.from(context).inflate(R.layout.app_toolbar, null);
 
         basicBar    = (RelativeLayout) rootView.findViewById(R.id.rlBasicBar_AT);
         searchBar   = (LinearLayout) rootView.findViewById(R.id.llSearchBar_AT);
@@ -60,19 +61,21 @@ public class MenuController implements View.OnClickListener{
         searchInput = (EditText) rootView.findViewById(R.id.etSearchInput_AT);
     }
 
-    public void prepareBar() {
-        menuBtn.setOnClickListener(this);
-        searchBtn.setOnClickListener(controllerListener);
+    private void connectActionListener() {
+        menuBtn.setOnClickListener(controllerListener);
+
         backBtn.setOnClickListener(controllerListener);
 
-        titleApp.setOnClickListener(this);
-        cancelBtn.setOnClickListener(controllerListener);
-        searchInput.setOnEditorActionListener(searchActionListener);
+        titleApp.setOnClickListener(controllerListener);
+
+
         titleApp.setTypeface(Typer.set(context).getFont(Font.ROBOTO_REGULAR));
     }
 
-    public Toolbar getToolbar() {
-        return toolbar;
+    private void connectSearchListener() {
+        searchBtn.setOnClickListener(controllerListener);
+        cancelBtn.setOnClickListener(controllerListener);
+        searchInput.setOnEditorActionListener(searchActionListener);
     }
 
     private View.OnClickListener controllerListener = new View.OnClickListener() {
@@ -84,7 +87,7 @@ public class MenuController implements View.OnClickListener{
                     break;
                 case R.id.ivSearchBtn_AT:
                     setSearchVisible(true);
-                    actionListener.onActiveSearch();
+                    searchListener.onActiveSearch();
                     break;
                 case R.id.ivBackBtn_AT:
                     actionListener.onBackClick();
@@ -94,51 +97,28 @@ public class MenuController implements View.OnClickListener{
                     break;
                 case R.id.tvCancelBtb_AT:
                     setSearchVisible(false);
-                    actionListener.onSearchCancelClick();
-                    actionListener.ondDeactivatedSearch();
+                    searchListener.onSearchCancelClick();
+                    searchListener.ondDeactivatedSearch();
                     break;
 
             }
         }
     };
 
-    /**
-     * Called when a view has been clicked.
-     *
-     * @param v The view that was clicked.
-     */
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.ivMenuBtn_AT:
-                actionListener.onMenuClick();
-                break;
-            case R.id.ivSearchBtn_AT:
-                setSearchVisible(true);
-                actionListener.onActiveSearch();
-                break;
-            case R.id.ivBackBtn_AT:
-                actionListener.onBackClick();
-                break;
-            case R.id.tvToolbarTitle_AT:
-                actionListener.onLogoClick();
-                break;
-            case R.id.tvCancelBtb_AT:
-                setSearchVisible(false);
-                actionListener.onSearchCancelClick();
-                actionListener.ondDeactivatedSearch();
-                break;
-
-        }
-    }
-
     public void setActionListener(ActionMenuListener actionListener) {
         if (actionListener != null) {
             this.actionListener = actionListener;
-            prepareBar();
+            connectActionListener();
         }
     }
 
+    public void setSearchListener(SearchListener searchListener) {
+        if (searchListener != null) {
+            this.searchListener = searchListener;
+            connectSearchListener();
+        }
+    }
+    
     private void setSearchVisible(boolean searchState) {
         if (searchState) {
             searchBar.setVisibility(View.VISIBLE);
@@ -154,7 +134,7 @@ public class MenuController implements View.OnClickListener{
         @Override
         public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
             if (actionListener!=null && actionId == EditorInfo.IME_ACTION_SEARCH) {
-                actionListener.onSearchClick(v.getText().toString());
+                searchListener.onSearchClick(v.getText().toString());
                 return true;
             }
             return false;
@@ -183,7 +163,10 @@ public class MenuController implements View.OnClickListener{
         void onBackClick();
 
         void onLogoClick();
-
+    }
+    
+    public interface SearchListener {
+        
         void onActiveSearch();
 
         void ondDeactivatedSearch();
@@ -191,9 +174,6 @@ public class MenuController implements View.OnClickListener{
         void onSearchClick(String searchWord);
 
         void onSearchCancelClick();
-
-
     }
-
 
 }

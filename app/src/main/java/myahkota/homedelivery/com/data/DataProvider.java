@@ -46,4 +46,12 @@ public class DataProvider {
         query.findInBackground(findCallback);
     }
 
+    public void getSearchPlaces(FindCallback<ParseObject> findCallback, String city, String word) {
+        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(Const.PLACE_KEY);
+        query.whereEqualTo(Const.P_COLUMN_CITY, city);
+        query.whereContains(Const.P_COLUMN_MENU, word);
+        query.fromLocalDatastore();
+        query.findInBackground(findCallback);
+    }
+
 }

@@ -1,5 +1,6 @@
 package myahkota.homedelivery.com.present.place;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import myahkota.homedelivery.com.data.DataProvider;
 import myahkota.homedelivery.com.data.ParcelableDTO;
 import myahkota.homedelivery.com.data.SharedPrefManager;
 import myahkota.homedelivery.com.present.BaseGridFragment;
+import myahkota.homedelivery.com.present.MenuController;
 import myahkota.homedelivery.com.present.view.OptionDialog;
 
 public class PlaceFragment extends BaseGridFragment {
@@ -40,6 +42,16 @@ public class PlaceFragment extends BaseGridFragment {
             mCity = SharedPrefManager.getInstance().retrieveCity();
         }
         return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        MenuController.getInstance().setActiveBackBtn(true);
+    }
+
+    public void onBaseResume() {
+        MenuController.getInstance().setActiveBackBtn(true);
     }
 
     @Override
@@ -76,6 +88,11 @@ public class PlaceFragment extends BaseGridFragment {
     @Override
     public void setData(List<ParseObject> data) {
         super.setData(getSortDataOrder(data));
+    }
+
+    @Override
+    public void onBasePause() {
+        MenuController.getInstance().setActiveBackBtn(false);
     }
 
     private List<ParseObject> getSortDataOrder(final List<ParseObject> objectsList) {

@@ -3,14 +3,10 @@ package myahkota.homedelivery.com.present;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
@@ -35,23 +31,23 @@ import myahkota.homedelivery.com.present.categ.CategoryFragment;
 import myahkota.homedelivery.com.present.city.CityFragment;
 import myahkota.homedelivery.com.present.place.PlaceFragment;
 
-import static android.view.Gravity.END;
+import static android.view.Gravity.RIGHT;
 
 public class MainActivity extends AppCompatActivity
-        implements RadioGroup.OnCheckedChangeListener,
-        MenuController.ActionMenuListener {
+        implements RadioGroup.OnCheckedChangeListener, MenuController.ActionMenuListener {
 
     private MenuController menuController;
     private MenuAdapter menuAdapter;
     private DataProvider provider;
 
     private FrameLayout fragmentContainer;
+    private DrawerLayout drawerLayout;
     private RadioGroup tabGroup;
     private ListView menuList;
     private LinearLayout fullLayout;
-    private int frameHeight;
-    private int frameWidth;
-    private DrawerLayout drawerLayout;
+
+    protected int frameHeight;
+    protected int frameWidth;
 
 
     private Bitmap drawableBack, drawableOption;
@@ -66,8 +62,6 @@ public class MainActivity extends AppCompatActivity
         provider = new DataProvider();
 
         findUI();
-//        menuController.getToolbar().setOnMenuItemClickListener(this);
-        setSupportActionBar(menuController.getToolbar());
         setupUI();
 
         provider.getCategoriesOff(categoryCallBack);
@@ -78,19 +72,19 @@ public class MainActivity extends AppCompatActivity
 
     private void getNextFragment() {
         if (!SharedPrefManager.getInstance().retrieveCity().isEmpty()){
-            replaceFragment(new CategoryFragment(), false);
-            getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            replaceFragment(CategoryFragment.newInstance(SharedPrefManager.getInstance().retrieveCity()), false);
         } else {
             replaceFragment(new CityFragment(), false);
         }
     }
 
     private void findUI() {
+        menuController.initBar((Toolbar) findViewById(R.id.toolbar));
+
         drawerLayout    = (DrawerLayout) findViewById(R.id.dlDrawer);
         fullLayout      = (LinearLayout) findViewById(R.id.mainContainer);
         tabGroup        = (RadioGroup) findViewById(R.id.rgTab);
         menuList        = (ListView) findViewById(R.id.lvMenu);
-
 
         fragmentContainer = (FrameLayout) findViewById(R.id.flBaseFrame);
         fragmentContainer.getViewTreeObserver().addOnGlobalLayoutListener(
@@ -106,7 +100,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void setupUI() {
-//        toolbarTitle.setOnClickListener(nawigateDrawerListener);
         tabGroup.setOnCheckedChangeListener(this);
         menuList.setAdapter(menuAdapter);
         menuList.setOnItemClickListener(menuOnClickListener);
@@ -116,28 +109,28 @@ public class MainActivity extends AppCompatActivity
     private AdapterView.OnItemClickListener menuOnClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            toggleDrawer();
-            if (menuAdapter.isCategory()) {
-                replaceFragment(PlaceFragment.newInstance(
-                        menuAdapter.getItem(position).getString(Const.P_COLUMN_TITLE)),
-                        true);
-            } else {
-                replaceFragment(CategoryFragment.newInstance(menuAdapter.getItem(position).getString(Const.P_COLUMN_TITLE)), true);
-            }
+        toggleDrawer();
+        String objectName = menuAdapter.getItem(position).getString(Const.P_COLUMN_TITLE);
+
+        if (menuAdapter.isCategory()) {
+            replaceFragment(PlaceFragment.newInstance(objectName),true);
+        } else {
+            replaceFragment(CategoryFragment.newInstance(objectName), true);
+        }
         }
     };
 
     protected FindCallback<ParseObject> cityCallBack = new FindCallback<ParseObject>() {
         @Override
         public void done(List<ParseObject> objects, ParseException e) {
-            if (e == null) menuAdapter.setCityDataList(objects);
+        if (e == null) menuAdapter.setCityDataList(objects);
         }
     };
 
     protected FindCallback<ParseObject> categoryCallBack = new FindCallback<ParseObject>() {
         @Override
         public void done(List<ParseObject> objects, ParseException e) {
-            if (e == null) menuAdapter.setCategoryDataList(objects);
+        if (e == null) menuAdapter.setCategoryDataList(objects);
         }
     };
 
@@ -154,28 +147,6 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private View.OnClickListener nawigateDrawerListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.tvToolbarTitle_AT:
-//                    getData(Const.CITY_KEY, false);
-                    menuList.setOnItemClickListener(menuOnClickListener);
-                    RadioButton rbCity = (RadioButton) tabGroup.findViewById(R.id.rbTabCity);
-                    rbCity.setChecked(true);
-                    toggleDrawer();
-                    break;
-                case R.id.ivMenuBtn_AT:
-//                    getData(Const.CATEGORY_KEY, false);
-//                    menuList.setOnItemClickListener(categoryOnItemClickListener);
-                    RadioButton rbCat = (RadioButton) tabGroup.findViewById(R.id.rbTabCat);
-                    rbCat.setChecked(true);
-                    toggleDrawer();
-                    break;
-            }
-        }
-    };
-
     @Override
     public void onMenuClick() {
         RadioButton rbCat = (RadioButton) tabGroup.findViewById(R.id.rbTabCat);
@@ -186,7 +157,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackClick() {
-
+        onBackPressed();
     }
 
     @Override
@@ -197,31 +168,11 @@ public class MainActivity extends AppCompatActivity
         toggleDrawer();
     }
 
-    @Override
-    public void onActiveSearch() {
-
-    }
-
-    @Override
-    public void ondDeactivatedSearch() {
-
-    }
-
-    @Override
-    public void onSearchClick(String searchWord) {
-
-    }
-
-    @Override
-    public void onSearchCancelClick() {
-
-    }
-
     private void toggleDrawer() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.END)) {
-            drawerLayout.closeDrawer(END); //CLOSE Nav Drawer!
+        if (drawerLayout.isDrawerOpen(RIGHT)) {
+            drawerLayout.closeDrawer(RIGHT); //CLOSE Nav Drawer!
         } else {
-            drawerLayout.openDrawer(END); //OPEN Nav Drawer!
+            drawerLayout.openDrawer(RIGHT); //OPEN Nav Drawer!
         }
     }
 

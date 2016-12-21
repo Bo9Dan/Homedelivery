@@ -163,6 +163,14 @@ public abstract class BaseGridFragment extends Fragment {
         startActivity(i);
     }
 
+    public void onBaseResume() {
+    }
+
+    public void onBasePause() {
+
+    }
+
+
     public void replaceFragment(Fragment frg, boolean isAdd) {
         activity.replaceFragment(frg, isAdd);
     }
@@ -178,6 +186,13 @@ public abstract class BaseGridFragment extends Fragment {
     public void hideLoadingDialog() {
         if (progressDialog != null && progressDialog.isShowing())
             progressDialog.dismiss();
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (hidden) onBasePause();
+        else onBaseResume();
     }
 
 
