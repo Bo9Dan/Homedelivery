@@ -6,8 +6,10 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 import com.amplitude.api.Amplitude;
+import com.crashlytics.android.Crashlytics;
 import com.parse.Parse;
 
+import io.fabric.sdk.android.Fabric;
 import myahkota.homedelivery.com.data.Const;
 
 public class App extends Application {
@@ -19,6 +21,7 @@ public class App extends Application {
         super.onCreate();
         instance = this;
 
+        Fabric.with(this, new Crashlytics());
         Amplitude.getInstance()
                 .initialize(this, Const.AMPLITUDE_API_KEY)
                 .enableForegroundTracking(this);

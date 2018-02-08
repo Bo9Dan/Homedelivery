@@ -18,6 +18,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="b0c83430a0eb8547fe59a8ab8be9e0da42264bd9"
+            />
+
         <activity
             android:name=".present.SplashScreen"
             android:label="@string/app_name"

@@ -10,7 +10,7 @@ public class Const {
     public static final String AMPLITUDE_API_KEY = "f313c507028bd0378fbbf2988d6ad5f9";
     public static final String AMPLITUDE_SECRET_KEY = "fcd3f88dec08b00715490db9d28094fc";
 
-    public static final String FOOTER_LINK = "https://www.facebook.com/groups/309567489378730/?ref=aymt_homepage_panel";
+    public static final String FOOTER_LINK = "http://wannaeat.com.ua";
 
 
     public static final  String CITY_KEY = "City";

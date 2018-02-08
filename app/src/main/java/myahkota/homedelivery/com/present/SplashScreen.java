@@ -83,7 +83,7 @@ public class SplashScreen extends AppCompatActivity {
         if (saveDate == -1) {
             return true;
         } else
-            return nowDate - saveDate >  24 * 60 * 60 * 1000 * 2;
+            return nowDate - saveDate >  TimeUnit.DAYS.toMillis(1);
     }
 
 }
