@@ -1,8 +1,12 @@
 package myahkota.homedelivery.com.data;
 
 import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+
+import java.util.List;
 
 public class DataProvider {
 
@@ -52,6 +56,10 @@ public class DataProvider {
         query.whereContains(Const.P_COLUMN_MENU, word);
         query.fromLocalDatastore();
         query.findInBackground(findCallback);
+    }
+
+    public  void clearParse() {
+         ParseObject.unpinAllInBackground();
     }
 
 }

@@ -28,6 +28,7 @@ public class SplashScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash);
         if (hasNewData() && App.getInstance().isOnline()) {
+            dataProvider.clearParse();
             dataProvider.getCitiesOn(callbackCity);
         } else {
             ScheduledExecutorService worker = Executors.newSingleThreadScheduledExecutor();
@@ -80,10 +81,7 @@ public class SplashScreen extends AppCompatActivity {
     private boolean hasNewData() {
         long saveDate = SharedPrefManager.getInstance().retrievePinDate();
         long nowDate = System.currentTimeMillis();
-        if (saveDate == -1) {
-            return true;
-        } else
-            return nowDate - saveDate >  TimeUnit.DAYS.toMillis(1);
+        return saveDate == -1 || nowDate - saveDate > TimeUnit.DAYS.toMillis(1);
     }
 
 }
