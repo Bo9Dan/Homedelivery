@@ -13,7 +13,7 @@ public class DataProvider {
     public DataProvider() {
 
     }
-
+    //region online data
     public void getCitiesOn(FindCallback<ParseObject> findCallback) {
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(Const.CITY_KEY);
         query.findInBackground(findCallback);
@@ -28,7 +28,9 @@ public class DataProvider {
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(Const.PLACE_KEY);
         query.findInBackground(findCallback);
     }
+    //endregion
 
+    //region offline data
     public void getCitiesOff(FindCallback<ParseObject> findCallback) {
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(Const.CITY_KEY);
         query.fromLocalDatastore();
@@ -49,6 +51,7 @@ public class DataProvider {
         query.fromLocalDatastore();
         query.findInBackground(findCallback);
     }
+    //endregion
 
     public void getSearchPlaces(FindCallback<ParseObject> findCallback, String city, String word) {
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(Const.PLACE_KEY);

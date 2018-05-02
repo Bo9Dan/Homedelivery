@@ -28,46 +28,48 @@ public class SharedPrefManager {
         editor.apply();
     }
 
-    private void saveString(String _key, String _value) {
+    // region primitive operations
+    private void saveString(final String _key, final String _value) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(_key, _value);
         editor.apply();
     }
 
-    private void saveInt(String _key, int _value) {
+    private void saveInt(final String _key, final int _value) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt(_key, _value);
         editor.apply();
     }
 
-    private void saveLong(String _key, long _value) {
+    private void saveLong(final String _key, final long _value) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putLong(_key, _value);
         editor.apply();
     }
 
-    private void saveBoolean(String _key, boolean _value) {
+    private void saveBoolean(final String _key, final boolean _value) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(_key, _value);
         editor.apply();
     }
 
 
-    private String retrieveString(String _s) {
+    private String retrieveString(final String _s) {
         return sharedPreferences.getString(_s, "");
     }
 
-    private boolean retrieveBoolean(String _s) {
+    private boolean retrieveBoolean(final String _s) {
         return sharedPreferences.getBoolean(_s, false);
     }
 
-    private int retrieveInt(String _s) {
+    private int retrieveInt(final String _s) {
         return sharedPreferences.getInt(_s, -1);
     }
 
-    private long retrieveLong(String _s) {
+    private long retrieveLong(final String _s) {
         return sharedPreferences.getLong(_s, -1);
     }
+    // endregion
 
 
     public void saveCity(String _value) {
@@ -77,6 +79,7 @@ public class SharedPrefManager {
     public String retrieveCity() {
         return retrieveString("City_Id");
     }
+
 
     public void savePinDate() {
         saveLong("Pin_Date_Id", System.currentTimeMillis());
