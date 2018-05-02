@@ -30,7 +30,7 @@ public abstract class BaseGridFragment extends Fragment {
     private MainActivity activity;
     private LoadingDialog progressDialog;
     private ExtendBaseAdapter adapter;
-    private View rootView, footerView;
+    private View footerView;
     protected GridViewWithHeaderAndFooter view;
 
 //    protected abstract void findUI(View rootView);
@@ -65,7 +65,7 @@ public abstract class BaseGridFragment extends Fragment {
         footerView.setVisibility(View.VISIBLE);
 
         if (getTypeFooter() == 0) {
-            defSize = rootHeight - Math.round(countData/2 + countData%2) * rootWidth/2;
+            defSize = rootHeight - Math.round(countData / 2 + countData % 2) * rootWidth / 2;
 
         } else {
             int dimension = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 48,
@@ -73,10 +73,10 @@ public abstract class BaseGridFragment extends Fragment {
             defSize = rootHeight - dimension * countData;
         }
 
-        if (defSize > rootWidth/2) {
+        if (defSize > rootWidth / 2) {
             footerView.getLayoutParams().height = defSize;
         } else {
-            footerView.getLayoutParams().height =rootWidth / 2;
+            footerView.getLayoutParams().height = rootWidth / 2;
         }
 
         footerView.requestLayout();
@@ -101,7 +101,7 @@ public abstract class BaseGridFragment extends Fragment {
     @SuppressLint("InflateParams")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        rootView = inflater.inflate(getLayoutResource(), container, false);
+        View rootView = inflater.inflate(getLayoutResource(), container, false);
         footerView = inflater.inflate(R.layout.grid_foother, null);
         findDataView(rootView);
 //        findUI(rootView);
@@ -129,9 +129,9 @@ public abstract class BaseGridFragment extends Fragment {
     private AdapterView.OnItemClickListener onClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            if (position != getAdapter().getCount() && position >= 0)
+            if (position < getAdapter().getCount() && position >= 0)
                 onClickItem(getAdapter().getData().get(position));
-                else onClickFooter();
+            else onClickFooter();
 
         }
     };
@@ -141,9 +141,6 @@ public abstract class BaseGridFragment extends Fragment {
         public void done(List<ParseObject> objects, ParseException e) {
             if (e == null) {
                 setData(objects);
-//                ParseObject.pinAllInBackground(objects);
-            } else {
-
             }
         }
     };

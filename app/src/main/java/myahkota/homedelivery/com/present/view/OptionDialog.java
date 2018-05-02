@@ -155,6 +155,7 @@ public class OptionDialog extends DialogFragment {
         wvMenuRestaurant.loadDataWithBaseURL(null, model.getMenu(), "text/html", "UTF-8", "");
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void setListeners() {
         wvMenuRestaurant.setOnTouchListener(new View.OnTouchListener() {
 
