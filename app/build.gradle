@@ -10,8 +10,8 @@ android {
         applicationId "cheipesh.homedelivery.com"
         minSdkVersion 17
         targetSdkVersion 23
-        versionCode 3
-        versionName "1.03"
+        versionCode 5
+        versionName "1.05"
 
         renderscriptTargetApi 19
         renderscriptSupportModeEnabled true
