@@ -30,7 +30,6 @@ repositories {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:recyclerview-v7:23.3.0'
     compile 'com.vistrav:ask:2.3'
     compile 'com.elmargomez.typer:typerlib:1.0.0'
     compile 'com.intuit.sdp:sdp-android:1.0.3'

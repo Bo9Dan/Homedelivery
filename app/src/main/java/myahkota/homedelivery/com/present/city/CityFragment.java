@@ -1,8 +1,13 @@
 package myahkota.homedelivery.com.present.city;
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.view.View;
 
 import com.parse.ParseObject;
+
+import java.util.List;
 
 import myahkota.homedelivery.com.R;
 import myahkota.homedelivery.com.data.Const;
@@ -13,6 +18,13 @@ import myahkota.homedelivery.com.present.categ.CategoryFragment;
 public class CityFragment extends BaseGridFragment {
 
     private DataProvider provider = new DataProvider();
+
+    @Override
+    public void onViewCreated(View _view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        footerView.setVisibility(View.GONE);
+        view.removeFooterView(footerView);
+    }
 
     @Override
     public int getLayoutResource() {
@@ -37,6 +49,12 @@ public class CityFragment extends BaseGridFragment {
     @Override
     protected CityAdapter initAdapter(Fragment _context) {
         return new CityAdapter(_context.getContext());
+    }
+
+    @Override
+    public void setData(List<ParseObject> data) {
+        getAdapter().setData(data);
+        hideLoadingDialog();
     }
 
     @Override

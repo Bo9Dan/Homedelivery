@@ -32,7 +32,7 @@ public abstract class BaseGridFragment extends Fragment {
 
     public Root root;
     public View rootView;
-    private View footerView;
+    public View footerView;
     private ExtendBaseAdapter adapter;
     private LoadingDialog progressDialog;
     protected GridViewWithHeaderAndFooter view;

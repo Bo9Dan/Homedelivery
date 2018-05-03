@@ -52,7 +52,7 @@ public class SplashScreen extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         final int value = SharedPrefManager.getInstance().retrieveHeight();
-//        if (value == -1) {
+        if (value == -1) {
             final ImageView view = (ImageView) findViewById(R.id.ivSplashIcon);
             view.getViewTreeObserver().addOnGlobalLayoutListener(
                 new ViewTreeObserver.OnGlobalLayoutListener(){
@@ -73,7 +73,7 @@ public class SplashScreen extends AppCompatActivity {
                         }
                     });
 
-//        }
+        }
     }
 
     private FindCallback<ParseObject> callbackCity = new FindCallback<ParseObject>() {

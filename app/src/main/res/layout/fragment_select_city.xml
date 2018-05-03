@@ -20,12 +20,22 @@
             android:id="@+id/rvRoot"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />-->
-
-        <in.srain.cube.views.GridViewWithHeaderAndFooter
-            android:id="@+id/gvGridView"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/place5" />
+            android:layout_height="match_parent">
+
+            <in.srain.cube.views.GridViewWithHeaderAndFooter
+                android:id="@+id/gvGridView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/place5" />
+
+            <include
+                layout="@layout/grid_foother"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/gvGridView" />
+        </RelativeLayout>
     </LinearLayout>
 
 </FrameLayout>

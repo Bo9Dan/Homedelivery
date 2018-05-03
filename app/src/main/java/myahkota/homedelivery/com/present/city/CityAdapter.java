@@ -50,10 +50,8 @@ public class CityAdapter extends ExtendBaseAdapter {
 
     private class CityHolder {
         private TextView mCityName;
-        private View view;
 
         public CityHolder(View v) {
-            view = v;
             mCityName = (TextView) v.findViewById(R.id.tvCitName);
             mCityName.setTypeface(Typer.set(getContext()).getFont(Font.ROBOTO_REGULAR));
         }

@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void screenShoot() {
         fragmentContainer.setDrawingCacheEnabled(true);
-        this.drawableBack = NativeStackBlur.process(fragmentContainer.getDrawingCache(), 160);
+        this.drawableBack = NativeStackBlur.process(fragmentContainer.getDrawingCache(), 110);
     }
 
     @Override
