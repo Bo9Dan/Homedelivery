@@ -89,7 +89,29 @@ public class SharedPrefManager {
         return retrieveLong("Pin_Date_Id");
     }
 
+    public void saveWidth(final int _width) {
+        saveInt("Screen_Width", _width);
+    }
 
+    public void saveHeight(final int _width) {
+        saveInt("Screen_Height", _width);
+    }
+
+    public void saveFrameHeight(final int _width) {
+        saveInt("Screen_Frame_Height", _width);
+    }
+
+    public int retrieveWidth() {
+        return retrieveInt("Screen_Width");
+    }
+
+    public int retrieveHeight() {
+        return retrieveInt("Screen_Height");
+    }
+
+    public int retrieveFrameHeight() {
+        return retrieveInt("Screen_Frame_Height");
+    }
 
 
 }

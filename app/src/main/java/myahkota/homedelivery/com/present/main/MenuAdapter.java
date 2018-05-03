@@ -1,4 +1,4 @@
-package myahkota.homedelivery.com.present;
+package myahkota.homedelivery.com.present.main;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -29,19 +29,13 @@ public class MenuAdapter extends ExtendBaseAdapter {
     @Override
     public ParseObject getItem(int position) {
         if (isCategory) return mCategoryDataList.get(position);
-            else return mCityDataList.get(position);
-
+        else return mCityDataList.get(position);
     }
 
     @Override
     public int getCount() {
         if (isCategory) return mCategoryDataList.size();
-            else return mCityDataList.size();
-    }
-
-    public void setListesData(List<ParseObject> categories, List<ParseObject> cities) {
-        this.mCategoryDataList = categories;
-        this.mCityDataList = cities;
+        else return mCityDataList.size();
     }
 
     public void setCityDataList(List<ParseObject> cities) {
@@ -70,7 +64,6 @@ public class MenuAdapter extends ExtendBaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         MenuHolder menuHolder;
-
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_menu, null);
             menuHolder = new MenuHolder(convertView);
@@ -83,7 +76,7 @@ public class MenuAdapter extends ExtendBaseAdapter {
         return convertView;
     }
 
-    public void shoesCities() {
+    public void choosingCities() {
         isCategory = false;
         notifyDataSetInvalidated();
     }
@@ -96,7 +89,7 @@ public class MenuAdapter extends ExtendBaseAdapter {
     private class MenuHolder {
         private TextView itemName;
 
-        public MenuHolder(View v) {
+        MenuHolder(View v) {
             itemName = (TextView) v.findViewById(R.id.tvNameItemMenu);
             itemName.setTypeface(Typer.set(getContext()).getFont(Font.ROBOTO_REGULAR));
         }

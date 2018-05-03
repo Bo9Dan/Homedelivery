@@ -49,13 +49,11 @@ public class CityAdapter extends ExtendBaseAdapter {
     }
 
     private class CityHolder {
-        private ImageView ivCityIcon;
         private TextView mCityName;
         private View view;
 
         public CityHolder(View v) {
             view = v;
-            ivCityIcon = (ImageView) v.findViewById(R.id.ivCityPictogram);
             mCityName = (TextView) v.findViewById(R.id.tvCitName);
             mCityName.setTypeface(Typer.set(getContext()).getFont(Font.ROBOTO_REGULAR));
         }
@@ -64,9 +62,9 @@ public class CityAdapter extends ExtendBaseAdapter {
     private void setColorView(View view, int position) {
         view.getLayoutParams().height =
                 (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 48,
-                                getContext().getResources().getDisplayMetrics());
+                        getContext().getResources().getDisplayMetrics());
 
-        if (position%2 == 0) {
+        if (position % 2 == 0) {
             view.setBackgroundColor(getContext().getResources().getColor(R.color.place1));
         } else {
             view.setBackgroundColor(getContext().getResources().getColor(R.color.place3));

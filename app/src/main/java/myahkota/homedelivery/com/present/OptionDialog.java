@@ -1,4 +1,4 @@
-package myahkota.homedelivery.com.present.view;
+package myahkota.homedelivery.com.present;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -38,7 +38,10 @@ import org.json.JSONObject;
 import myahkota.homedelivery.com.R;
 import myahkota.homedelivery.com.data.Const;
 import myahkota.homedelivery.com.data.ParcelableDTO;
-import myahkota.homedelivery.com.present.MainActivity;
+import myahkota.homedelivery.com.data.SharedPrefManager;
+import myahkota.homedelivery.com.present.main.MainActivity;
+import myahkota.homedelivery.com.present.main.Root;
+import myahkota.homedelivery.com.present.view.CircleImageView;
 
 public class OptionDialog extends DialogFragment {
 
@@ -53,11 +56,11 @@ public class OptionDialog extends DialogFragment {
     private WebView wvMenuRestaurant;
 
     private ExpandableLayout erlTop, erlBottom;
-    private FrameLayout frameLayout;
     private LinearLayout topLayout;
     private RelativeLayout relativeMenu, relativeCall;
 
     private ParcelableDTO mRestaurantDetail;
+    private Root root;
 
     public static OptionDialog newInstance(ParcelableDTO _placeDetail) {
         OptionDialog fragment = new OptionDialog();
@@ -74,14 +77,14 @@ public class OptionDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle _savedInstanceState) {
-
+        root = ((MainActivity) getActivity()).getRoot();
         if (getArguments() != null) {
             getOptions(getArguments());
         }
 
         final RelativeLayout root = new RelativeLayout(getActivity());
         root.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                                 ViewGroup.LayoutParams.MATCH_PARENT));
+                ViewGroup.LayoutParams.MATCH_PARENT));
 
 
         // creating the fullscreen dialog
@@ -91,9 +94,9 @@ public class OptionDialog extends DialogFragment {
         dialog.setContentView(R.layout.dialog_option_);
 
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                                     ViewGroup.LayoutParams.WRAP_CONTENT);
+                ViewGroup.LayoutParams.WRAP_CONTENT);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(getContext(),
-                                                                   R.color.transparent)));
+                R.color.transparent)));
         dialog.getWindow().getAttributes().windowAnimations = R.style.MyAnimation_Window;
 
         prepareDialog(dialog);
@@ -102,39 +105,31 @@ public class OptionDialog extends DialogFragment {
     }
 
     private void prepareDialog(Dialog _dialog) {
-        frameLayout = (FrameLayout) _dialog.findViewById(R.id.frameDialog);
-        frameLayout.getViewTreeObserver().addOnGlobalLayoutListener(
-                new ViewTreeObserver.OnGlobalLayoutListener(){
-                    @Override
-                    public void onGlobalLayout() {
-                        frameLayout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                        setSizes(frameLayout.getHeight());
-                        addEffects();
-                    }
-                });
-
-        topLayout    = (LinearLayout) _dialog.findViewById(R.id.llTopContErl);
+        topLayout = (LinearLayout) _dialog.findViewById(R.id.llTopContErl);
         relativeMenu = (RelativeLayout) _dialog.findViewById(R.id.rlMenuCont);
         relativeCall = (RelativeLayout) _dialog.findViewById(R.id.rlCallCont);
 
-        erlTop      = (ExpandableLayout) _dialog.findViewById(R.id.expandableLayoutTop);
-        erlBottom   = (ExpandableLayout) _dialog.findViewById(R.id.expandableLayoutBottom);
+        erlTop = (ExpandableLayout) _dialog.findViewById(R.id.expandableLayoutTop);
+        erlBottom = (ExpandableLayout) _dialog.findViewById(R.id.expandableLayoutBottom);
 
-        wvMenuRestaurant    = (WebView) _dialog.findViewById(R.id.wvListMenu);
+        wvMenuRestaurant = (WebView) _dialog.findViewById(R.id.wvListMenu);
 
-        ivDialogBackground  = (ImageView) _dialog.findViewById(R.id.ivOptionBackground);
-        ivOptionLogo        = (CircleImageView) _dialog.findViewById(R.id.ivOptionMenu);
+        ivDialogBackground = (ImageView) _dialog.findViewById(R.id.ivOptionBackground);
+        ivOptionLogo = (CircleImageView) _dialog.findViewById(R.id.ivOptionMenu);
 
         bottomSpace = (TextView) _dialog.findViewById(R.id.spaceBottom);
 
-        tvWorking           = (TextView) _dialog.findViewById(R.id.tvWorkingTime);
-        tvDelivery          = (TextView) _dialog.findViewById(R.id.tvDeliveryTime);
+        tvWorking = (TextView) _dialog.findViewById(R.id.tvWorkingTime);
+        tvDelivery = (TextView) _dialog.findViewById(R.id.tvDeliveryTime);
 
-        tvMenu           = (TextView) _dialog.findViewById(R.id.btnShowList);
-        tvCall          = (TextView) _dialog.findViewById(R.id.btnCall);
+        tvMenu = (TextView) _dialog.findViewById(R.id.btnShowList);
+        tvCall = (TextView) _dialog.findViewById(R.id.btnCall);
 
-        btnMenu             = _dialog.findViewById(R.id.fakeButtonShow);
-        btnCall             = _dialog.findViewById(R.id.fakeButtonCall);
+        btnMenu = _dialog.findViewById(R.id.fakeButtonShow);
+        btnCall = _dialog.findViewById(R.id.fakeButtonCall);
+
+        setSizes(SharedPrefManager.getInstance().retrieveHeight());
+        addEffects();
 
         fillData(mRestaurantDetail);
         setListeners();
@@ -142,12 +137,12 @@ public class OptionDialog extends DialogFragment {
 
     @SuppressLint("SetJavaScriptEnabled")
     private void fillData(ParcelableDTO model) {
-        ivDialogBackground.setImageBitmap(((MainActivity) getActivity()).getDrawableBack());
+        ivDialogBackground.setImageBitmap(root.fetchBehind());
 
-        final Bitmap logoImage = ((MainActivity) getActivity()).getDrawableOption();
-        if (logoImage == null)
-            ivOptionLogo.setVisibility(View.GONE);
-            else    ivOptionLogo.setImageBitmap(((MainActivity) getActivity()).getDrawableOption());
+        final Bitmap logoImage = root.fetchItemBitmap();
+        if (logoImage != null) {
+            ivOptionLogo.setImageBitmap(logoImage);
+        }
 
         tvWorking.setText(model.getWork());
         tvDelivery.setText(String.format("%s %s", model.getDelivery(), getResources().getString(R.string.delivery_time)));
@@ -164,7 +159,7 @@ public class OptionDialog extends DialogFragment {
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                switch(event.getAction()){
+                switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN: {
                         downX = event.getX();
                         downY = event.getY();
@@ -178,17 +173,27 @@ public class OptionDialog extends DialogFragment {
                         float deltaY = downY - upY;
 
                         // swipe horizontal?
-                        if(Math.abs(deltaX) > MIN_DISTANCE) {
+                        if (Math.abs(deltaX) > MIN_DISTANCE) {
                             // left or right
-                            if(deltaX < 0) { return true; }
-                            if(deltaX > 0) { return true; }
+                            if (deltaX < 0) {
+                                return true;
+                            }
+                            if (deltaX > 0) {
+                                return true;
+                            }
                         }
 
                         // swipe vertical?
-                        if(Math.abs(deltaY) > MIN_DISTANCE) {
+                        if (Math.abs(deltaY) > MIN_DISTANCE) {
                             // top or down
-                            if(deltaY > 0) { onSwipeTop(); return false; }
-                            if(deltaY < 0) { onSwipeBottom(); return false; }
+                            if (deltaY > 0) {
+                                onSwipeTop();
+                                return false;
+                            }
+                            if (deltaY < 0) {
+                                onSwipeBottom();
+                                return false;
+                            }
                         }
                     }
                 }
@@ -212,14 +217,14 @@ public class OptionDialog extends DialogFragment {
     }
 
     public void onSwipeBottom() {
-        if (!erlTop.isExpanded() && wvMenuRestaurant.getScrollY() ==0)
+        if (!erlTop.isExpanded() && wvMenuRestaurant.getScrollY() == 0)
             erlTop.expand();
     }
 
     private void setSizes(int height) {
 
         ViewGroup.LayoutParams layoutParamsErlTop = topLayout.getLayoutParams();
-        layoutParamsErlTop.height = (int) height/2;
+        layoutParamsErlTop.height = (int) height / 2;
         topLayout.setLayoutParams(layoutParamsErlTop);
 
 
@@ -234,7 +239,7 @@ public class OptionDialog extends DialogFragment {
 
 
         ViewGroup.LayoutParams layoutParamsErlBottom = bottomSpace.getLayoutParams();
-        layoutParamsErlBottom.height = (int) height/2 - 144;
+        layoutParamsErlBottom.height = (int) height / 2 - 144;
         bottomSpace.setLayoutParams(layoutParamsErlBottom);
     }
 
@@ -252,7 +257,7 @@ public class OptionDialog extends DialogFragment {
     private View.OnClickListener dialogListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            switch (v.getId()){
+            switch (v.getId()) {
                 case R.id.ivOptionBackground:
                     getDialog().dismiss();
                     break;
@@ -273,16 +278,16 @@ public class OptionDialog extends DialogFragment {
     };
 
     private void callHim() {
-            Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + mRestaurantDetail.getPhone()));
+        Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + mRestaurantDetail.getPhone()));
 
-            if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                getPermissions();
-                return;
-            }
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            getPermissions();
+            return;
+        }
 
-            getContext().startActivity(intent);
+        getContext().startActivity(intent);
 
-            Amplitude.getInstance().logEvent(Const.P_COLUMN_CALL, trackEventModel());
+        Amplitude.getInstance().logEvent(Const.P_COLUMN_CALL, trackEventModel());
     }
 
     public void getPermissions() {
@@ -305,14 +310,6 @@ public class OptionDialog extends DialogFragment {
         return jsonObject;
     }
 
-    /*@AskGranted(Manifest.permission.CALL_PHONE)
-    public void fileAccessGranted() {
-    }
-
-    //optional
-    @AskDenied(Manifest.permission.CALL_PHONE)
-    public void fileAccessDenied() {
-    }*/
 
 }
 

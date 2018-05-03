@@ -1,4 +1,4 @@
-package myahkota.homedelivery.com.present;
+package myahkota.homedelivery.com.present.base;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -22,28 +23,25 @@ import java.util.List;
 import in.srain.cube.views.GridViewWithHeaderAndFooter;
 import myahkota.homedelivery.com.R;
 import myahkota.homedelivery.com.data.Const;
-import myahkota.homedelivery.com.present.base.ExtendBaseAdapter;
+import myahkota.homedelivery.com.data.SharedPrefManager;
+import myahkota.homedelivery.com.present.main.MainActivity;
+import myahkota.homedelivery.com.present.main.Root;
 import myahkota.homedelivery.com.present.view.LoadingDialog;
 
 public abstract class BaseGridFragment extends Fragment {
 
-    private MainActivity activity;
-    private LoadingDialog progressDialog;
-    private ExtendBaseAdapter adapter;
+    public Root root;
+    public View rootView;
     private View footerView;
+    private ExtendBaseAdapter adapter;
+    private LoadingDialog progressDialog;
     protected GridViewWithHeaderAndFooter view;
-
-//    protected abstract void findUI(View rootView);
-//
-//    protected abstract void setupUI();
 
     protected abstract ExtendBaseAdapter initAdapter(Fragment _context);
 
     protected abstract void onClickItem(ParseObject model);
 
     protected abstract void onClickFooter();
-
-    protected abstract String EntityName();
 
     public int getLayoutResource() {
         return R.layout.grid_layout;
@@ -59,8 +57,8 @@ public abstract class BaseGridFragment extends Fragment {
 
     private void calculateFooter() {
         int countData = getAdapter().getCount();
-        int rootHeight = activity.getFrameHeight();
-        int rootWidth = activity.getFrameWidth();
+        int rootHeight = SharedPrefManager.getInstance().retrieveFrameHeight();
+        int rootWidth = SharedPrefManager.getInstance().retrieveWidth();
         int defSize;
         footerView.setVisibility(View.VISIBLE);
 
@@ -87,25 +85,19 @@ public abstract class BaseGridFragment extends Fragment {
         return adapter;
     }
 
-    public MainActivity getMain() {
-        return activity;
-    }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        activity = (MainActivity) getActivity();
         adapter = initAdapter(this);
+        root = ((MainActivity)getActivity()).getRoot();
     }
 
     @SuppressLint("InflateParams")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(getLayoutResource(), container, false);
+        rootView = inflater.inflate(getLayoutResource(), container, false);
         footerView = inflater.inflate(R.layout.grid_foother, null);
         findDataView(rootView);
-//        findUI(rootView);
-//        setupUI();
         progressDialog = new LoadingDialog();
         return rootView;
     }
@@ -119,12 +111,25 @@ public abstract class BaseGridFragment extends Fragment {
 
     private void findDataView(View _rootView) {
         view = (GridViewWithHeaderAndFooter) _rootView.findViewById(R.id.gvGridView);
+        ImageView menuView = (ImageView) _rootView.findViewById(R.id.ivMenuBtn_AT);
+        ImageView appView = (ImageView) _rootView.findViewById(R.id.ivLogoIcon_AT);
         footerView.setVisibility(View.INVISIBLE);
         view.addFooterView(footerView);
         view.setNumColumns(getCount());
         view.setAdapter(getAdapter());
         view.setOnItemClickListener(onClickListener);
+        if (menuView != null && appView != null) {
+            menuView.setOnClickListener(menuOpenListener);
+            appView.setOnClickListener(menuOpenListener);
+        }
     }
+
+    private View.OnClickListener menuOpenListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            root.toggleDrawer();
+        }
+    };
 
     private AdapterView.OnItemClickListener onClickListener = new AdapterView.OnItemClickListener() {
         @Override
@@ -160,16 +165,9 @@ public abstract class BaseGridFragment extends Fragment {
         startActivity(i);
     }
 
-    public void onBaseResume() {
-    }
-
-    public void onBasePause() {
-
-    }
-
 
     public void replaceFragment(Fragment frg, boolean isAdd) {
-        activity.replaceFragment(frg, isAdd);
+        root.replaceFragment(frg, isAdd);
     }
 
     public void showLoadingDialog() {
@@ -184,13 +182,5 @@ public abstract class BaseGridFragment extends Fragment {
         if (progressDialog != null && progressDialog.isShowing())
             progressDialog.dismiss();
     }
-
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        if (hidden) onBasePause();
-        else onBaseResume();
-    }
-
 
 }

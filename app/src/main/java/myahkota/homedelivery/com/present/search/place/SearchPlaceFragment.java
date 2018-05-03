@@ -1,12 +1,14 @@
-package myahkota.homedelivery.com.present.place;
+package myahkota.homedelivery.com.present.search.place;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
+import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.parse.ParseObject;
@@ -24,56 +26,55 @@ import myahkota.homedelivery.com.data.SharedPrefManager;
 import myahkota.homedelivery.com.present.OptionDialog;
 import myahkota.homedelivery.com.present.base.BaseGridFragment;
 
-public class PlaceFragment extends BaseGridFragment {
+public class SearchPlaceFragment extends BaseGridFragment {
 
-    private String mCategory, mCity;
+    private String mCity;
     private DataProvider provider = new DataProvider();
-
-    public static PlaceFragment newInstance(final String category) {
-        PlaceFragment fragment = new PlaceFragment();
-        Bundle args = new Bundle();
-        args.putString(Const.CATEGORY_KEY, category);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if (getArguments() != null) {
-            mCategory = getArguments().getString(Const.CATEGORY_KEY, "");
-            mCity = SharedPrefManager.getInstance().retrieveCity();
-        }
-        return super.onCreateView(inflater, container, savedInstanceState);
-    }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        ImageView backButton = (ImageView) rootView.findViewById(R.id.ivBackBtn_AT);
-        backButton.setOnClickListener(new View.OnClickListener() {
+        mCity = SharedPrefManager.getInstance().retrieveCity();
+        EditText input = (EditText) rootView.findViewById(R.id.etSearchInput_AT);
+        TextView cancel = (TextView) rootView.findViewById(R.id.tvCancelBtb_AT);
+        input.setOnEditorActionListener(searchActionListener);
+        cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 root.back();
             }
         });
-
-        TextView title = (TextView) rootView.findViewById(R.id.tvToolbarTitle_AT);
-        title.setText(mCategory);
     }
+
+    private TextView.OnEditorActionListener searchActionListener = new TextView.OnEditorActionListener() {
+        @Override
+        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                final String text = v.getText().toString();
+                if (text.trim().length() > 2) {
+                    provider.getSearchPlaces(callback, mCity, v.getText().toString());
+                    InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                    return true;
+                }
+                return true;
+            }
+            return true;
+        }
+    };
 
     @Override
     public int getLayoutResource() {
-        return R.layout.fragment_select_place;
+        return R.layout.fragment_search_place;
     }
 
     @Override
     protected void getData() {
-        provider.getPlacesOff(callback, mCity, mCategory);
+//        provider.getPlacesOff(callback, mCity, mCategory);
     }
 
     @Override
-    protected PlaceAdapter initAdapter(Fragment _context) {
-        return new PlaceAdapter(_context.getContext());
+    protected SearchPlaceAdapter initAdapter(Fragment _context) {
+        return new SearchPlaceAdapter(_context.getContext());
     }
 
     @Override
@@ -89,11 +90,12 @@ public class PlaceFragment extends BaseGridFragment {
     }
 
     private ParcelableDTO getDTO(ParseObject object) {
-        return new ParcelableDTO(object, mCategory);
+        return new ParcelableDTO(object, "");
     }
 
     @Override
     public void setData(List<ParseObject> data) {
+        getAdapter().clear();
         super.setData(getSortDataOrder(data));
     }
 
@@ -110,26 +112,23 @@ public class PlaceFragment extends BaseGridFragment {
 
             for (Object category : categoriesList) {
 
-                if (category.toString().equals(mCategory)) {
+                orderList = object.getList(Const.P_COLUMN_ORDER);
 
-                    orderList = object.getList(Const.P_COLUMN_ORDER);
+                if (orderList == null || orderList.isEmpty()) {
 
-                    if (orderList == null || orderList.isEmpty()) {
+                    sortDataList.add(createNewSortItem(object, defOrder));
 
-                        sortDataList.add(createNewSortItem(object, defOrder));
+                } else {
 
-                    } else {
+                    String ladder = defOrder;
 
-                        String ladder = defOrder;
+                    if (orderList.size() >= categoriesList.indexOf(category))
+                        ladder = orderList.get(categoriesList.indexOf(category));
 
-                        if (orderList.size() >= categoriesList.indexOf(category))
-                            ladder = orderList.get(categoriesList.indexOf(category));
-
-                        sortDataList.add(createNewSortItem(object, ladder));
-                    }
-
-                    break;
+                    sortDataList.add(createNewSortItem(object, ladder));
                 }
+
+                break;
             }
         }
 

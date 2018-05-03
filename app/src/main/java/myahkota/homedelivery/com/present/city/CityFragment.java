@@ -4,14 +4,20 @@ import android.support.v4.app.Fragment;
 
 import com.parse.ParseObject;
 
+import myahkota.homedelivery.com.R;
 import myahkota.homedelivery.com.data.Const;
 import myahkota.homedelivery.com.data.DataProvider;
-import myahkota.homedelivery.com.present.BaseGridFragment;
+import myahkota.homedelivery.com.present.base.BaseGridFragment;
 import myahkota.homedelivery.com.present.categ.CategoryFragment;
 
 public class CityFragment extends BaseGridFragment {
 
     private DataProvider provider = new DataProvider();
+
+    @Override
+    public int getLayoutResource() {
+        return R.layout.fragment_select_city;
+    }
 
     @Override
     protected void getData() {
@@ -43,8 +49,4 @@ public class CityFragment extends BaseGridFragment {
         openBrowser("");
     }
 
-    @Override
-    protected String EntityName() {
-        return Const.CITY_KEY;
-    }
 }

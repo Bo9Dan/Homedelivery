@@ -4,6 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.util.TypedValue;
+import android.view.ViewTreeObserver;
+import android.widget.ImageView;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -18,6 +22,8 @@ import myahkota.homedelivery.com.App;
 import myahkota.homedelivery.com.R;
 import myahkota.homedelivery.com.data.DataProvider;
 import myahkota.homedelivery.com.data.SharedPrefManager;
+import myahkota.homedelivery.com.present.main.MainActivity;
+import myahkota.homedelivery.com.present.view.LoadingDialog;
 
 public class SplashScreen extends AppCompatActivity {
 
@@ -37,9 +43,37 @@ public class SplashScreen extends AppCompatActivity {
                         openMain();
                     }
             };
-            worker.schedule(task, 3, TimeUnit.SECONDS);
+            worker.schedule(task, 1, TimeUnit.SECONDS);
         }
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        final int value = SharedPrefManager.getInstance().retrieveHeight();
+//        if (value == -1) {
+            final ImageView view = (ImageView) findViewById(R.id.ivSplashIcon);
+            view.getViewTreeObserver().addOnGlobalLayoutListener(
+                new ViewTreeObserver.OnGlobalLayoutListener(){
+                    @Override
+                    public void onGlobalLayout() {
+                        view.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                        SharedPrefManager.getInstance().saveHeight(view.getHeight());
+                        SharedPrefManager.getInstance().saveWidth(view.getWidth());
+                    }
+                });
+            final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+            toolbar.getViewTreeObserver().addOnGlobalLayoutListener(
+                    new ViewTreeObserver.OnGlobalLayoutListener(){
+                        @Override
+                        public void onGlobalLayout() {
+                            toolbar.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                            SharedPrefManager.getInstance().saveFrameHeight(SharedPrefManager.getInstance().retrieveHeight() - toolbar.getHeight());
+                        }
+                    });
+
+//        }
     }
 
     private FindCallback<ParseObject> callbackCity = new FindCallback<ParseObject>() {
