@@ -23,6 +23,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -36,9 +38,12 @@ import com.vistrav.ask.Ask;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.concurrent.TimeUnit;
+
 import myahkota.homedelivery.com.R;
 import myahkota.homedelivery.com.data.Const;
 import myahkota.homedelivery.com.data.ParcelableDTO;
+import myahkota.homedelivery.com.present.BounceInterpolator;
 import myahkota.homedelivery.com.present.view.CircleImageView;
 
 public class OrderFragment extends AppCompatActivity implements View.OnClickListener {
@@ -82,6 +87,13 @@ public class OrderFragment extends AppCompatActivity implements View.OnClickList
         webView.getSettings().setJavaScriptEnabled(true);
         backArrow.setOnClickListener(this);
         fabCall.setOnClickListener(this);
+
+        final Animation bounceAnim = AnimationUtils.loadAnimation(this, R.anim.bounce);
+        BounceInterpolator interpolator = new BounceInterpolator(0.2, 20);
+        bounceAnim.setInterpolator(interpolator);
+        bounceAnim.setStartOffset(300);
+
+        fabCall.startAnimation(bounceAnim);
     }
 
     private void findUI() {
