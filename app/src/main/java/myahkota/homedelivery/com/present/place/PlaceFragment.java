@@ -22,9 +22,7 @@ import myahkota.homedelivery.com.data.Const;
 import myahkota.homedelivery.com.data.DataProvider;
 import myahkota.homedelivery.com.data.ParcelableDTO;
 import myahkota.homedelivery.com.data.SharedPrefManager;
-import myahkota.homedelivery.com.present.OptionDialog;
 import myahkota.homedelivery.com.present.base.BaseGridFragment;
-import myahkota.homedelivery.com.present.main.MainActivity;
 import myahkota.homedelivery.com.present.order.OrderFragment;
 
 public class PlaceFragment extends BaseGridFragment {

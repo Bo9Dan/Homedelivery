@@ -60,14 +60,6 @@ public class OrderFragment extends AppCompatActivity implements View.OnClickList
 
     private ParcelableDTO mRestaurantDetail;
 
-    /*public static OrderFragment newInstance(ParcelableDTO _placeDetail) {
-        OrderFragment fragment = new OrderFragment();
-        Bundle args = new Bundle();
-        args.putParcelable(Const.P_COLUMN_OBJECT, _placeDetail);
-        fragment.setArguments(args);
-        return fragment;
-    }*/
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

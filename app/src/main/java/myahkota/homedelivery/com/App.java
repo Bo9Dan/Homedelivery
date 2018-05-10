@@ -23,7 +23,7 @@ public class App extends Application {
         super.onCreate();
         instance = this;
 
-//        Fabric.with(this, new Crashlytics());
+        Fabric.with(this, new Crashlytics());
 
         Amplitude.getInstance()
                 .initialize(this, Const.AMPLITUDE_API_KEY)
@@ -48,7 +48,7 @@ public class App extends Application {
     }
 
     public boolean isOnline() {
-        ConnectivityManager cm = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
@@ -57,13 +57,13 @@ public class App extends Application {
         boolean deletedParseFolder = false;
         File cacheDir = context.getCacheDir();
         File parseApp;
-        parseApp = new File(cacheDir.getParent(),"app_Parse");
-        File installationId = new File(parseApp,"installationId");
-        File currentInstallation = new File(parseApp,"currentInstallation");
-        if(installationId.exists()) {
+        parseApp = new File(cacheDir.getParent(), "app_Parse");
+        File installationId = new File(parseApp, "installationId");
+        File currentInstallation = new File(parseApp, "currentInstallation");
+        if (installationId.exists()) {
             deletedParseFolder = deletedParseFolder || installationId.delete();
         }
-        if(currentInstallation.exists()) {
+        if (currentInstallation.exists()) {
             deletedParseFolder = deletedParseFolder && currentInstallation.delete();
         }
         return deletedParseFolder;

@@ -1,15 +1,11 @@
 package myahkota.homedelivery.com.present.city;
 
 import android.content.Context;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.elmargomez.typer.Font;
-import com.elmargomez.typer.Typer;
 import com.parse.ParseObject;
 
 import myahkota.homedelivery.com.R;
@@ -17,7 +13,7 @@ import myahkota.homedelivery.com.present.base.ExtendBaseAdapter;
 
 public class CityAdapter extends ExtendBaseAdapter {
 
-    public CityAdapter(Context context) {
+    CityAdapter(Context context) {
         super(context);
     }
 
@@ -51,17 +47,12 @@ public class CityAdapter extends ExtendBaseAdapter {
     private class CityHolder {
         private TextView mCityName;
 
-        public CityHolder(View v) {
+        CityHolder(View v) {
             mCityName = (TextView) v.findViewById(R.id.tvCitName);
-            mCityName.setTypeface(Typer.set(getContext()).getFont(Font.ROBOTO_REGULAR));
         }
     }
 
     private void setColorView(View view, int position) {
-        view.getLayoutParams().height =
-                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 48,
-                        getContext().getResources().getDisplayMetrics());
-
         if (position % 2 == 0) {
             view.setBackgroundColor(getContext().getResources().getColor(R.color.place1));
         } else {

@@ -10,8 +10,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.parse.ParseObject;
 
-import java.util.List;
-
 import myahkota.homedelivery.com.R;
 import myahkota.homedelivery.com.present.base.ExtendBaseAdapter;
 

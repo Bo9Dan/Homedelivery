@@ -1,24 +1,19 @@
 package myahkota.homedelivery.com.present.main;
 
-import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.transition.TransitionInflater;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RadioGroup;
 
-import com.commit451.nativestackblur.NativeStackBlur;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -34,35 +29,29 @@ import myahkota.homedelivery.com.present.city.CityFragment;
 import myahkota.homedelivery.com.present.place.PlaceFragment;
 
 import static android.view.Gravity.END;
-import static android.view.Gravity.RIGHT;
 
 public class MainActivity extends AppCompatActivity
         implements RadioGroup.OnCheckedChangeListener, Root, View.OnClickListener {
 
     private DataProvider provider = new DataProvider();
-    private MenuAdapter menuAdapter;
+    private MenuAdapter menuAdapter = new MenuAdapter(this);
 
-    private ImageView menuView;
-    private FrameLayout fragmentContainer;
     private DrawerLayout drawerLayout;
     private RadioGroup tabGroup;
+    private ImageView menuView;
     private ListView menuList;
 
-    private Bitmap drawableBack, drawableOption;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
-
-        menuAdapter = new MenuAdapter(this);
         findUI();
         setupUI();
 
         provider.getCategoriesOff(categoryCallBack);
         provider.getCitiesOff(cityCallBack);
         getNextFragment();
-
     }
 
     private void getNextFragment() {
@@ -71,7 +60,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void findUI() {
-        fragmentContainer = (FrameLayout) findViewById(R.id.flBaseFrame);
         drawerLayout = (DrawerLayout) findViewById(R.id.dlDrawer);
         menuView = (ImageView) findViewById(R.id.ivMenuBtn_AT);
         tabGroup = (RadioGroup) findViewById(R.id.rgTab);
@@ -140,26 +128,12 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void takeItem(Bitmap drawable) {
-        this.drawableOption = drawable;
-    }
-
-    @Override
-    public Bitmap fetchItemBitmap() {
-        return drawableOption;
-    }
-
-    @Override
     public void replaceFragment(Fragment _fragment, View view) {
-        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && view != null) {
-            replaceFragmentView(_fragment, view);
-        } else {*/
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .addToBackStack("TAG")
-                    .replace(R.id.flBaseFrame, _fragment)
-                    .commit();
-//        }
+        getSupportFragmentManager()
+                .beginTransaction()
+                .addToBackStack("TAG")
+                .replace(R.id.flBaseFrame, _fragment)
+                .commit();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -173,17 +147,6 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-    @Override
-    public void screenShoot() {
-        fragmentContainer.setDrawingCacheEnabled(true);
-        this.drawableBack = NativeStackBlur.process(fragmentContainer.getDrawingCache(), 110);
-    }
-
-    @Override
-    public Bitmap fetchBehind() {
-        return drawableBack;
-    }
-
     public Root getRoot() {
         return this;
     }
@@ -195,7 +158,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        if (getSupportFragmentManager().getBackStackEntryCount()<=1) finish();
+        if (getSupportFragmentManager().getBackStackEntryCount() <= 1) finish();
 
         if (drawerLayout.isDrawerOpen(Gravity.END)) {
             toggleDrawer();

@@ -9,8 +9,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.elmargomez.typer.Font;
-import com.elmargomez.typer.Typer;
 import com.parse.ParseObject;
 
 import myahkota.homedelivery.com.R;
@@ -47,7 +45,7 @@ public class CategoryAdapter extends ExtendBaseAdapter {
         categoryHolder.mFoodName.setText(getItem(position).getString("title"));
         setColorView(categoryHolder.view, position);
 
-        if (position%2 == 0) {
+        if (position % 2 == 0) {
             categoryHolder.lineEnd.setVisibility(View.VISIBLE);
             categoryHolder.lineStart.setVisibility(View.INVISIBLE);
         } else {
@@ -66,23 +64,22 @@ public class CategoryAdapter extends ExtendBaseAdapter {
 
     private class CategoryHolder {
         private ImageView mFoodImage;
-        private TextView  mFoodName;
+        private TextView mFoodName;
         private View view, lineStart, lineEnd;
 
         public CategoryHolder(View v) {
             view = v;
             mFoodImage = (ImageView) v.findViewById(R.id.ivFoodIcon);
             mFoodName = (TextView) v.findViewById(R.id.tvFoodName);
-            mFoodName.setTypeface(Typer.set(getContext()).getFont(Font.ROBOTO_REGULAR));
-            lineStart    = v.findViewById(R.id.vSingleLineStart);
-            lineEnd    = v.findViewById(R.id.vSingleLineEnd);
+            lineStart = v.findViewById(R.id.vSingleLineStart);
+            lineEnd = v.findViewById(R.id.vSingleLineEnd);
         }
     }
 
     private void setColorView(View view, int position) {
         int indicator;
-        if (position < 6 ) indicator = position;
-            else indicator = position%6;
+        if (position < 6) indicator = position;
+        else indicator = position % 6;
 
         switch (indicator) {
             case 0:

@@ -26,7 +26,6 @@ import myahkota.homedelivery.com.data.Const;
 import myahkota.homedelivery.com.data.SharedPrefManager;
 import myahkota.homedelivery.com.present.main.MainActivity;
 import myahkota.homedelivery.com.present.main.Root;
-import myahkota.homedelivery.com.present.order.OrderFragment;
 import myahkota.homedelivery.com.present.view.LoadingDialog;
 
 public abstract class BaseGridFragment extends Fragment {
@@ -90,7 +89,7 @@ public abstract class BaseGridFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         adapter = initAdapter(this);
-        root = ((MainActivity)getActivity()).getRoot();
+        root = ((MainActivity) getActivity()).getRoot();
     }
 
     @SuppressLint("InflateParams")
