@@ -108,7 +108,7 @@ public class OrderFragment extends AppCompatActivity implements View.OnClickList
         webView.loadDataWithBaseURL(null, model.getMenu(), "text/html", "UTF-8", "");
         if (model.getCondition() != null && !model.getCondition().isEmpty()) {
             Snackbar snackbar = Snackbar.make(coordinatorLayout, model.getCondition(), Snackbar.LENGTH_LONG);
-            snackbar.show();
+//            snackbar.show();
         }
     }
 
