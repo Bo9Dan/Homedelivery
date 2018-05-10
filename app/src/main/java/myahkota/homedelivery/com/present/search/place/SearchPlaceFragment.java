@@ -1,8 +1,10 @@
 package myahkota.homedelivery.com.present.search.place;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.KeyEvent;
 import android.view.View;
@@ -25,6 +27,7 @@ import myahkota.homedelivery.com.data.ParcelableDTO;
 import myahkota.homedelivery.com.data.SharedPrefManager;
 import myahkota.homedelivery.com.present.OptionDialog;
 import myahkota.homedelivery.com.present.base.BaseGridFragment;
+import myahkota.homedelivery.com.present.order.OrderFragment;
 
 public class SearchPlaceFragment extends BaseGridFragment {
 
@@ -55,6 +58,9 @@ public class SearchPlaceFragment extends BaseGridFragment {
                     InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                     return true;
+                } else {
+                    Snackbar snackbar = Snackbar.make(rootView, getResources().getString(R.string.too_short_word), Snackbar.LENGTH_LONG);
+                    snackbar.show();
                 }
                 return true;
             }
@@ -78,10 +84,10 @@ public class SearchPlaceFragment extends BaseGridFragment {
     }
 
     @Override
-    protected void onClickItem(ParseObject model) {
-        root.screenShoot();
-        OptionDialog placeDetail = OptionDialog.newInstance(getDTO(model));
-        placeDetail.show(getFragmentManager(), Const.PLACE_KEY);
+    protected void onClickItem(ParseObject model, View view) {
+        Intent intent = new Intent(getActivity(), OrderFragment.class);
+        intent.putExtra(Const.P_COLUMN_OBJECT, getDTO(model));
+        startActivity(intent);
     }
 
     @Override
@@ -97,6 +103,10 @@ public class SearchPlaceFragment extends BaseGridFragment {
     public void setData(List<ParseObject> data) {
         getAdapter().clear();
         super.setData(getSortDataOrder(data));
+        if (data.size() == 0) {
+            Snackbar snackbar = Snackbar.make(rootView, getResources().getString(R.string.empty_result), Snackbar.LENGTH_LONG);
+            snackbar.show();
+        }
     }
 
     private List<ParseObject> getSortDataOrder(final List<ParseObject> objectsList) {

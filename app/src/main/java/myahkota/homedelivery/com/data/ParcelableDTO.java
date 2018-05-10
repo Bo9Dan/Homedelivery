@@ -14,6 +14,8 @@ public class ParcelableDTO implements Parcelable {
     private String delivery;
     private String menu;
     private String phone;
+    private String icon;
+    private String condition;
 
     public ParcelableDTO(ParseObject parseObject, String _category) {
         category = _category;
@@ -23,7 +25,8 @@ public class ParcelableDTO implements Parcelable {
         delivery = parseObject.getString(Const.P_COLUMN_DELIVERY);
         menu = parseObject.getString(Const.P_COLUMN_MENU);
         phone = parseObject.getString(Const.P_COLUMN_PHONE);
-
+        icon = parseObject.getParseFile(Const.P_COLUMN_IMAGE).getUrl();
+        condition = parseObject.getString(Const.P_COLUMN_CONDITION);
     }
 
     public String getCategory() {
@@ -82,6 +85,22 @@ public class ParcelableDTO implements Parcelable {
         this.phone = phone;
     }
 
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+    public String getCondition() {
+        return condition;
+    }
+
+    public void setCondition(String condition) {
+        this.condition = condition;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -96,6 +115,8 @@ public class ParcelableDTO implements Parcelable {
         dest.writeString(this.delivery);
         dest.writeString(this.menu);
         dest.writeString(this.phone);
+        dest.writeString(this.icon);
+        dest.writeString(this.condition);
     }
 
     protected ParcelableDTO(Parcel in) {
@@ -106,9 +127,11 @@ public class ParcelableDTO implements Parcelable {
         this.delivery = in.readString();
         this.menu = in.readString();
         this.phone = in.readString();
+        this.icon = in.readString();
+        this.condition = in.readString();
     }
 
-    public static final Parcelable.Creator<ParcelableDTO> CREATOR = new Parcelable.Creator<ParcelableDTO>() {
+    public static final Creator<ParcelableDTO> CREATOR = new Creator<ParcelableDTO>() {
         @Override
         public ParcelableDTO createFromParcel(Parcel source) {
             return new ParcelableDTO(source);

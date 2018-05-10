@@ -53,13 +53,14 @@ public class CityFragment extends BaseGridFragment {
 
     @Override
     public void setData(List<ParseObject> data) {
+        getAdapter().clear();
         getAdapter().setData(data);
         hideLoadingDialog();
     }
 
     @Override
-    protected void onClickItem(ParseObject model) {
-        replaceFragment(CategoryFragment.newInstance(model.getString(Const.P_COLUMN_TITLE)), true);
+    protected void onClickItem(ParseObject model, View view) {
+        replaceFragment(CategoryFragment.newInstance(model.getString(Const.P_COLUMN_TITLE)), null);
     }
 
     @Override

@@ -67,9 +67,9 @@ public class CategoryFragment extends BaseGridFragment implements View.OnClickLi
     }
 
     @Override
-    protected void onClickItem(ParseObject model) {
+    protected void onClickItem(ParseObject model, View view) {
         Fragment frgPlace = PlaceFragment.newInstance(model.getString(Const.P_COLUMN_TITLE));
-        replaceFragment(frgPlace, true);
+        replaceFragment(frgPlace, null);
     }
 
     @Override
@@ -79,6 +79,6 @@ public class CategoryFragment extends BaseGridFragment implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
-        replaceFragment(new SearchPlaceFragment(), true);
+        replaceFragment(new SearchPlaceFragment(), null);
     }
 }

@@ -39,6 +39,5 @@ public class Const {
     public static final  String P_COLUMN_HEIGHT = "height";
 
 
-
-
+    public static String P_COLUMN_CONDITION = "deliveryConditions";
 }

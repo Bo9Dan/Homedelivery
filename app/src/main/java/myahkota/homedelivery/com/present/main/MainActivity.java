@@ -1,11 +1,16 @@
 package myahkota.homedelivery.com.present.main;
 
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.transition.TransitionInflater;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
@@ -28,6 +33,7 @@ import myahkota.homedelivery.com.present.categ.CategoryFragment;
 import myahkota.homedelivery.com.present.city.CityFragment;
 import myahkota.homedelivery.com.present.place.PlaceFragment;
 
+import static android.view.Gravity.END;
 import static android.view.Gravity.RIGHT;
 
 public class MainActivity extends AppCompatActivity
@@ -61,7 +67,7 @@ public class MainActivity extends AppCompatActivity
 
     private void getNextFragment() {
         final String city = SharedPrefManager.getInstance().retrieveCity();
-        replaceFragment(city.isEmpty() ? new CityFragment() : CategoryFragment.newInstance(city), false);
+        replaceFragment(city.isEmpty() ? new CityFragment() : CategoryFragment.newInstance(city), null);
     }
 
     private void findUI() {
@@ -88,7 +94,7 @@ public class MainActivity extends AppCompatActivity
             final boolean isCategory = menuAdapter.isCategory();
             replaceFragment(isCategory ? PlaceFragment.newInstance(objectName)
                             : CategoryFragment.newInstance(objectName),
-                    false);
+                    null);
         }
     };
 
@@ -126,10 +132,10 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void toggleDrawer() {
-        if (drawerLayout.isDrawerOpen(RIGHT)) {
-            drawerLayout.closeDrawer(RIGHT); //CLOSE Nav Drawer!
+        if (drawerLayout.isDrawerOpen(END)) {
+            drawerLayout.closeDrawer(END); //CLOSE Nav Drawer!
         } else {
-            drawerLayout.openDrawer(RIGHT); //OPEN Nav Drawer!
+            drawerLayout.openDrawer(END); //OPEN Nav Drawer!
         }
     }
 
@@ -144,21 +150,26 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void replaceFragment(Fragment _fragment, boolean _addToBackStack) {
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
-        if (_addToBackStack) fragmentTransaction.addToBackStack(null);
+    public void replaceFragment(Fragment _fragment, View view) {
+        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && view != null) {
+            replaceFragmentView(_fragment, view);
+        } else {*/
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .addToBackStack("TAG")
+                    .replace(R.id.flBaseFrame, _fragment)
+                    .commit();
+//        }
+    }
 
-        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.flBaseFrame);
-        if (fragment != null)
-            fragmentTransaction.hide(fragment);
-        if (_addToBackStack) {
-            fragmentTransaction.add(R.id.flBaseFrame, _fragment, _fragment.getClass().getName());
-        } else {
-            fragmentTransaction.replace(R.id.flBaseFrame, _fragment, _fragment.getClass().getName());
-        }
-        fragmentTransaction.show(_fragment);
-        fragmentTransaction.commitAllowingStateLoss();
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    public void replaceFragmentView(Fragment fragment, View view) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .addSharedElement(view, ViewCompat.getTransitionName(view))
+                .addToBackStack("TAG")
+                .replace(R.id.flBaseFrame, fragment)
+                .commit();
     }
 
 
@@ -182,5 +193,14 @@ public class MainActivity extends AppCompatActivity
         onBackPressed();
     }
 
+    @Override
+    public void onBackPressed() {
+        if (getSupportFragmentManager().getBackStackEntryCount()<=1) finish();
 
+        if (drawerLayout.isDrawerOpen(Gravity.END)) {
+            toggleDrawer();
+        } else {
+            super.onBackPressed();
+        }
+    }
 }

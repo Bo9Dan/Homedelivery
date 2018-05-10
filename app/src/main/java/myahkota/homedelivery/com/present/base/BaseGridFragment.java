@@ -26,6 +26,7 @@ import myahkota.homedelivery.com.data.Const;
 import myahkota.homedelivery.com.data.SharedPrefManager;
 import myahkota.homedelivery.com.present.main.MainActivity;
 import myahkota.homedelivery.com.present.main.Root;
+import myahkota.homedelivery.com.present.order.OrderFragment;
 import myahkota.homedelivery.com.present.view.LoadingDialog;
 
 public abstract class BaseGridFragment extends Fragment {
@@ -39,7 +40,7 @@ public abstract class BaseGridFragment extends Fragment {
 
     protected abstract ExtendBaseAdapter initAdapter(Fragment _context);
 
-    protected abstract void onClickItem(ParseObject model);
+    protected abstract void onClickItem(ParseObject model, View view);
 
     protected abstract void onClickFooter();
 
@@ -135,7 +136,7 @@ public abstract class BaseGridFragment extends Fragment {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             if (position < getAdapter().getCount() && position >= 0)
-                onClickItem(getAdapter().getData().get(position));
+                onClickItem(getAdapter().getData().get(position), view);
             else onClickFooter();
 
         }
@@ -153,6 +154,7 @@ public abstract class BaseGridFragment extends Fragment {
     protected abstract void getData();
 
     public void setData(List<ParseObject> data) {
+        getAdapter().clear();
         getAdapter().setData(data);
         calculateFooter();
         hideLoadingDialog();
@@ -166,8 +168,8 @@ public abstract class BaseGridFragment extends Fragment {
     }
 
 
-    public void replaceFragment(Fragment frg, boolean isAdd) {
-        root.replaceFragment(frg, isAdd);
+    public void replaceFragment(Fragment frg, View view) {
+        root.replaceFragment(frg, view);
     }
 
     public void showLoadingDialog() {

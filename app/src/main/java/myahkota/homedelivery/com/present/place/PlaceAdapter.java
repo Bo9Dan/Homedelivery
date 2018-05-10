@@ -1,6 +1,7 @@
 package myahkota.homedelivery.com.present.place;
 
 import android.content.Context;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,6 +71,7 @@ public class PlaceAdapter extends ExtendBaseAdapter {
     }
 
     private void setColorView(View view, int position) {
+
         int indicator;
         if (position < 6) indicator = position;
         else indicator = position % 6;

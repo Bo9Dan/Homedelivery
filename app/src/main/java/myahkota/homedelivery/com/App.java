@@ -23,7 +23,7 @@ public class App extends Application {
         super.onCreate();
         instance = this;
 
-        Fabric.with(this, new Crashlytics());
+//        Fabric.with(this, new Crashlytics());
 
         Amplitude.getInstance()
                 .initialize(this, Const.AMPLITUDE_API_KEY)

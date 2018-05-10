@@ -13,6 +13,6 @@
     <string name="ok">Відміна</string>
     <string name="try_again">Спробувати ще</string>
     <string name="delivery_time">хвилин</string>
-
-
+    <string name="empty_result">Не знайдено нічого</string>
+    <string name="too_short_word">Занадто короткий  ..</string>
 </resources>

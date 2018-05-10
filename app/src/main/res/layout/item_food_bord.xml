@@ -33,7 +33,7 @@
                 android:layout_gravity="center"
                 android:ellipsize="middle"
                 android:maxLength="22"
-                android:lines="1"/>
+                android:singleLine="true"/>
 
         </LinearLayout>
 

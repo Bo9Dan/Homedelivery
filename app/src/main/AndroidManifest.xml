@@ -40,6 +40,7 @@
 
         <activity android:name="myahkota.homedelivery.com.present.main.MainActivity"
             android:screenOrientation="portrait"/>
+        <activity android:name=".present.order.OrderFragment" />
 
 
     </application>

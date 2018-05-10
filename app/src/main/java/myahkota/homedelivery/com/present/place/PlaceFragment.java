@@ -1,5 +1,6 @@
 package myahkota.homedelivery.com.present.place;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -23,6 +24,8 @@ import myahkota.homedelivery.com.data.ParcelableDTO;
 import myahkota.homedelivery.com.data.SharedPrefManager;
 import myahkota.homedelivery.com.present.OptionDialog;
 import myahkota.homedelivery.com.present.base.BaseGridFragment;
+import myahkota.homedelivery.com.present.main.MainActivity;
+import myahkota.homedelivery.com.present.order.OrderFragment;
 
 public class PlaceFragment extends BaseGridFragment {
 
@@ -77,10 +80,14 @@ public class PlaceFragment extends BaseGridFragment {
     }
 
     @Override
-    protected void onClickItem(ParseObject model) {
-        root.screenShoot();
+    protected void onClickItem(ParseObject model, View view) {
+        Intent intent = new Intent(getActivity(), OrderFragment.class);
+        intent.putExtra(Const.P_COLUMN_OBJECT, getDTO(model));
+        startActivity(intent);
+//        replaceFragment(OrderFragment.newInstance(getDTO(model)), view);
+        /*root.screenShoot();
         OptionDialog placeDetail = OptionDialog.newInstance(getDTO(model));
-        placeDetail.show(getFragmentManager(), Const.PLACE_KEY);
+        placeDetail.show(getFragmentManager(), Const.PLACE_KEY);*/
     }
 
     @Override

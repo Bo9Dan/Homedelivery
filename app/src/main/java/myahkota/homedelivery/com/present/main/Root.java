@@ -2,10 +2,11 @@ package myahkota.homedelivery.com.present.main;
 
 import android.graphics.Bitmap;
 import android.support.v4.app.Fragment;
+import android.view.View;
 
 public interface Root {
 
-    void replaceFragment(Fragment frg, boolean isAdd);
+    void replaceFragment(Fragment frg, View view);
 
     void screenShoot();
 
