@@ -1,7 +1,6 @@
 package myahkota.homedelivery.com.present.place;
 
 import android.content.Context;
-import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +31,7 @@ public class PlaceAdapter extends ExtendBaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        PlaceHolder placeHolder;
+        final PlaceHolder placeHolder;
 
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_venue, parent, false);

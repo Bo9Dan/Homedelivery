@@ -32,6 +32,7 @@ import android.widget.TextView;
 
 import com.amplitude.api.Amplitude;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.vistrav.ask.Ask;
 
@@ -129,6 +130,7 @@ public class OrderFragment extends AppCompatActivity implements View.OnClickList
         Glide.with(this)
                 .load(model.getIcon())
                 .asBitmap()
+                .diskCacheStrategy(DiskCacheStrategy.RESULT)
                 .into(new BitmapImageViewTarget(icon) {
                     @Override
                     protected void setResource(Bitmap resource) {
